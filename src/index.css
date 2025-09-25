@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -136,6 +138,8 @@ table {
 ::after,
 ::before {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 input:-webkit-autofill,
@@ -158,4 +162,10 @@ textarea,
 select,
 button {
   font-family: inherit;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  color: #1a1a1a;
 }
