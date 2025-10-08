@@ -157,6 +157,25 @@ input:-webkit-autofill:focus {
   box-shadow: 0 0 0 1000px transparent inset !important;
 }
 
+html ::-webkit-scrollbar {
+  border-radius: 0px;
+  width: 8px;
+}
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(22, 24, 35, 0.06);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
 input,
 textarea,
 select,
@@ -168,4 +187,5 @@ body {
   font-family: 'Inter', sans-serif;
   font-style: normal;
   color: #1a1a1a;
+  font-size: 15px;
 }

@@ -16,8 +16,8 @@ export const schemaRegister = yup.object({
   fullname: yup
     .string()
     .trim()
-    .min(10, AUTH_MESSAGE.FULLNAME_INVALID_MIN_LENGTH)
-    .max(160, AUTH_MESSAGE.FULLNAME_INVALID_LENGTH)
+    .min(6, AUTH_MESSAGE.FULLNAME_INVALID_MIN_LENGTH)
+    .max(180, AUTH_MESSAGE.FULLNAME_INVALID_LENGTH)
     .required(AUTH_MESSAGE.FULLNAME_REQUIRED),
   password: yup
     .string()
