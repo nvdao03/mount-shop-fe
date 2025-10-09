@@ -1,24 +1,61 @@
-import { Link } from 'react-router-dom'
-import InputAuth from '../../components/InputAuth'
-import { PATH } from '../../constants/path'
 import { useForm } from 'react-hook-form'
+import { schemaRegister, type TypeSchemaRegister } from '../../../utils/validation'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useEffect, useState } from 'react'
-import BackgroundRegister from '../../assets/images/register/background-register.png'
-import { schemaRegister, type TypeSchemaRegister } from '../../utils/validation'
+import { useContext, useEffect, useState } from 'react'
+import InputAuth from '../../../components/InputAuth'
+import { PATH } from '../../../constants/path'
+import { Link, useNavigate } from 'react-router-dom'
+import BackgroundRegister from '../../../assets/images/register/background-register.png'
+import { useMutation } from '@tanstack/react-query'
+import { authApi } from '../../../apis/shared/auth.api'
+import { toast } from 'react-toastify'
+import { AUTH_MESSAGE } from '../../../constants/message'
+import type { AuthResponseSuccess } from '../../../types/auth.type'
+import { AppContext } from '../../../contexts/app.context'
+import Loading from '../../../components/Loading'
 
 type FormData = TypeSchemaRegister
 
 export default function Register() {
+  const { setAvatar, setRefreshToken, setIsAuthenticated, setUserRole, setEmail, setFullName } = useContext(AppContext)
+  const navigate = useNavigate()
+
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
+
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm({
     resolver: yupResolver(schemaRegister)
   })
 
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
+  const registerMutation = useMutation({
+    mutationFn: (body: FormData) => authApi.register(body),
+    onSuccess: (response) => {
+      const data: AuthResponseSuccess = response.data
+      toast.success(AUTH_MESSAGE.REGISTER_SUCCESS, {
+        style: {
+          lineHeight: '1.5'
+        }
+      })
+      setIsAuthenticated(true)
+      setRefreshToken(data.data.refresh_token)
+      setUserRole(data.data.user.role)
+      setAvatar(data.data.user.avatar || '')
+      setEmail(data.data.user.email)
+      setFullName(data.data.user.full_name)
+      navigate(PATH.HOME)
+    },
+    onError: (errors: any) => {
+      const error = errors.response.data.errors
+      setError('email', {
+        message: error.email.message,
+        type: 'Server'
+      })
+    }
+  })
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024)
@@ -26,7 +63,9 @@ export default function Register() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const handleSubmitForm = handleSubmit((data: FormData) => {})
+  const handleSubmitForm = handleSubmit((data: FormData) => {
+    registerMutation.mutate(data)
+  })
 
   return (
     <div className='min-h-screen flex'>
@@ -66,10 +105,10 @@ export default function Register() {
                   classNameErrorMessage='text-red-500 text-[13px]'
                   classNameInput='text-[15px] w-full h-full border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none'
                   register={register}
-                  errorMessage={errors?.fullname?.message as string}
+                  errorMessage={errors?.full_name?.message as string}
                   type='text'
-                  name='fullname'
-                  errors={errors.fullname}
+                  name='full_name'
+                  errors={errors.full_name}
                   placeholder='Nhập họ và tên'
                 />
                 <InputAuth
@@ -112,7 +151,13 @@ export default function Register() {
                   placeholder='Nhập lại mật khẩu'
                 />
                 <button className='w-full bg-blue-600 hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'>
-                  Đăng nhập
+                  {registerMutation.isLoading ? (
+                    <div className='w-full flex items-center justify-center'>
+                      <Loading className='w-6 h-6 fill-white' />
+                    </div>
+                  ) : (
+                    <span>Đăng ký</span>
+                  )}
                 </button>
               </form>
               <div className='flex items-center gap-3 justify-center text-center text-sm mt-5'>
@@ -145,10 +190,10 @@ export default function Register() {
                   classNameErrorMessage='text-red-500 text-[13px]'
                   classNameInput='text-[15px] w-full h-full border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none'
                   register={register}
-                  errorMessage={errors?.fullname?.message as string}
+                  errorMessage={errors?.full_name?.message as string}
                   type='text'
-                  name='fullname'
-                  errors={errors.fullname}
+                  name='full_name'
+                  errors={errors.full_name}
                   placeholder='Nhập họ và tên'
                 />
                 <InputAuth
@@ -191,7 +236,13 @@ export default function Register() {
                   placeholder='Nhập lại mật khẩu'
                 />
                 <button className='w-full bg-blue-600 hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'>
-                  Đăng nhập
+                  {registerMutation.isLoading ? (
+                    <div className='w-full flex items-center justify-center'>
+                      <Loading className='w-6 h-6 fill-white' />
+                    </div>
+                  ) : (
+                    <span>Đăng ký</span>
+                  )}
                 </button>
               </form>
               <div className='flex items-center gap-3 justify-center text-center text-sm mt-5'>

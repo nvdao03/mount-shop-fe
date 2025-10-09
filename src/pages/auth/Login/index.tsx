@@ -1,35 +1,75 @@
-import BackgroundLogin from '../../assets/images/login/background-login.jpg'
-import { Link } from 'react-router-dom'
-import { PATH } from '../../constants/path'
-import googleIcon from '../../assets/icons/google.svg'
+import BackgroundLogin from '../../../assets/images/login/background-login.jpg'
+import { Link, useNavigate } from 'react-router-dom'
+import googleIcon from '../../../assets/icons/google.svg'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { schemaLogin, type TypeSchemaLogin } from '../../utils/validation'
-import InputAuth from '../../components/InputAuth'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { schemaLogin, type TypeSchemaLogin } from '../../../utils/validation'
+import InputAuth from '../../../components/InputAuth'
+import { PATH } from '../../../constants/path'
+import { useMutation } from '@tanstack/react-query'
+import { authApi } from '../../../apis/shared/auth.api'
+import { toast } from 'react-toastify'
+import { AUTH_MESSAGE } from '../../../constants/message'
+import { AppContext } from '../../../contexts/app.context'
+import type { AuthResponseSuccess } from '../../../types/auth.type'
+import Loading from '../../../components/Loading'
 
 type FormData = TypeSchemaLogin
 
 export default function Login() {
+  const { setIsAuthenticated, setAvatar, setEmail, setFullName, setRefreshToken, setUserRole } = useContext(AppContext)
+  const navigate = useNavigate()
+
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
+
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm({
     resolver: yupResolver(schemaLogin)
   })
 
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
+  // --- Login mutation ---
+  const loginMutation = useMutation({
+    mutationFn: (body: FormData) => authApi.login(body),
+    onSuccess: (response) => {
+      const data: AuthResponseSuccess = response.data
+      toast.success(AUTH_MESSAGE.LOGIN_SUCCESS)
+      setIsAuthenticated(true)
+      setRefreshToken(data.data.refresh_token)
+      setUserRole(data.data.user.role)
+      setAvatar(data.data.user.avatar || '')
+      setEmail(data.data.user.email)
+      setFullName(data.data.user.full_name)
+      navigate(PATH.HOME)
+    },
+    onError(errors: any) {
+      const error = errors.response.data
+      setError('email', {
+        message: error.message,
+        type: 'Server'
+      })
+      setError('password', {
+        message: error.message,
+        type: 'Server'
+      })
+    }
+  })
 
+  // --- Handle Submit Form ---
+  const handleSubmitForm = handleSubmit((data: FormData) => {
+    loginMutation.mutate(data)
+  })
+
+  // --- Handle Resize ---
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024)
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  const handleSubmitForm = handleSubmit((data: FormData) => {
-    console.log(data)
-  })
 
   return (
     <div className='min-h-screen flex'>
@@ -88,7 +128,13 @@ export default function Login() {
                   placeholder='Nhập mật khẩu'
                 />
                 <button className='w-full bg-blue-600 hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'>
-                  Đăng nhập
+                  {loginMutation.isLoading ? (
+                    <div className='w-full flex items-center justify-center'>
+                      <Loading className='w-6 h-6 fill-white' />
+                    </div>
+                  ) : (
+                    <span>Đăng nhập</span>
+                  )}
                 </button>
               </form>
               <div className='flex items-center justify-center mt-4 text-color_auth'>
@@ -154,7 +200,13 @@ export default function Login() {
                   placeholder='Nhập mật khẩu'
                 />
                 <button className='w-full bg-blue-600 hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'>
-                  Đăng nhập
+                  {loginMutation.isLoading ? (
+                    <div className='w-full flex items-center justify-center'>
+                      <Loading className='w-6 h-6 fill-white' />
+                    </div>
+                  ) : (
+                    <span>Đăng nhập</span>
+                  )}
                 </button>
               </form>
               <div className='flex items-center justify-center mt-4 text-color_auth'>

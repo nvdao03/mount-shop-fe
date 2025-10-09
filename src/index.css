@@ -142,15 +142,15 @@ table {
   padding: 0;
 }
 
-input:-webkit-autofill,
+/* input:-webkit-autofill,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #181c23 inset !important; /* màu nền */
+  -webkit-box-shadow: 0 0 0 1000px #181c23 inset !important;
   box-shadow: 0 0 0 1000px #181c23 inset !important;
-  -webkit-text-fill-color: #fff !important; /* màu chữ */
+  -webkit-text-fill-color: #fff !important;
   transition: background-color 5000s ease-in-out 0s;
-}
+} */
 
 input:-webkit-autofill,
 input:-webkit-autofill:focus {

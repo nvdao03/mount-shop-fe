@@ -1,10 +1,10 @@
 import { useRoutes } from 'react-router-dom'
 import { PATH } from './constants/path'
 import AuthLayout from './layouts/AuthLayout'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Register from './pages/auth/Register'
 import MainLayout from './layouts/MainLayout'
-import Home from './pages/Home'
+import Login from './pages/auth/Login'
+import Home from './pages/shop/Home'
 
 export default function useRouterElements() {
   const useRouterElements = useRoutes([

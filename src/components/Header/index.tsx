@@ -1,18 +1,26 @@
 import Logo from '../../assets/images/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PATH } from '../../constants/path'
 import Cart from '../../assets/icons/cart.svg'
 import User from '../../assets/icons/user.svg'
 import Notification from '../../assets/icons/notification.svg'
 import CategoryIcon from '../../assets/icons/category.svg'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { categoryApi } from '../../apis/shared/category.api'
 import type { CategoryType } from '../../types/category.type'
 import type { BrandType } from '../../types/brand.type'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { AppContext } from '../../contexts/app.context'
+import AvatarDefault from '../../assets/images/avatar-default.png'
+import { getUsernameFromEmail } from '../../utils/other'
+import { authApi } from '../../apis/shared/auth.api'
+import { toast } from 'react-toastify'
+import { AUTH_MESSAGE } from '../../constants/message'
 
 export default function Header() {
+  const { avatar, isAuthenticated, fullName, email, refreshToken, resetAppContext } = useContext(AppContext)
   const queryClient = useQueryClient()
+  const navidate = useNavigate()
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -33,6 +41,16 @@ export default function Header() {
     enabled: !!selectedCategoryId,
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000
+  })
+
+  // --- Handle Logout Mutation ---
+  const logoutMutation = useMutation({
+    mutationFn: (body: { refresh_token: string }) => authApi.logout(body),
+    onSuccess: () => {
+      toast.success(AUTH_MESSAGE.LOGOUT_SUCCESS)
+      resetAppContext()
+      navidate(PATH.HOME)
+    }
   })
 
   // --- Prefetch query khi hover ---
@@ -76,6 +94,11 @@ export default function Header() {
       })
     }
     setMobileSelectedCategory(category)
+  }
+
+  // --- Handle Logout ---
+  const handleLogout = () => {
+    logoutMutation.mutate({ refresh_token: refreshToken as string })
   }
 
   const brands = getBrandsByCategoryId?.data?.data && getBrandsByCategoryId?.data?.data.data.brands
@@ -184,7 +207,7 @@ export default function Header() {
           </button>
         </form>
         {/* Right icons */}
-        <div className='relative group ml-auto flex items-center gap-x-[18px]'>
+        <div className='relative ml-auto flex items-center gap-x-[18px]'>
           <button className='bg-[#EAE9FC] hidden md:block p-2 md:p-2.5 rounded-[50%]'>
             <img src={Notification} alt='' />
           </button>
@@ -199,9 +222,63 @@ export default function Header() {
               />
             </svg>
           </button>
-          <Link to={PATH.LOGIN} className='bg-[#EAE9FC] rounded-[50%] p-2 md:p-2.5'>
-            <img src={User} alt='' />
-          </Link>
+          {isAuthenticated ? (
+            <div className='relative group'>
+              <button className='bg-[#EAE9FC] rounded-[50%] w-10 md:w-11 cursor-pointer'>
+                <img className='w-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
+              </button>
+              <div className='absolute hidden md:block right-0 mt-3 w-[300px] bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-md [box-shadow:0px_0px_8px_0px_rgba(0,_0,_0,_0.25)]'>
+                <Link
+                  to={PATH.PROFILE}
+                  className='flex items-center gap-4 pt-5 pb-4 px-5 hover:underline transition-all duration-300 ease-in-out'
+                >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' fill='none'>
+                    <path
+                      d='M11.0013 12C14.2233 12 16.8346 9.38867 16.8346 6.16667C16.8346 2.94466 14.2233 0.333336 11.0013 0.333336C7.7793 0.333336 5.16797 2.94466 5.16797 6.16667C5.16797 9.38867 7.7793 12 11.0013 12ZM15.0846 13.4583H14.3236C13.3118 13.9232 12.1862 14.1875 11.0013 14.1875C9.81641 14.1875 8.69531 13.9232 7.67904 13.4583H6.91797C3.53646 13.4583 0.792969 16.2018 0.792969 19.5833V21.4792C0.792969 22.6869 1.77279 23.6667 2.98047 23.6667H19.0221C20.2298 23.6667 21.2096 22.6869 21.2096 21.4792V19.5833C21.2096 16.2018 18.4661 13.4583 15.0846 13.4583Z'
+                      fill='#4F46E5'
+                    />
+                  </svg>
+                  <span className='text-[#333] font-semibold'>Thông tin cá nhân</span>
+                </Link>
+                <Link
+                  to={''}
+                  className='flex items-center gap-4 py-[18px] px-5 hover:underline transition-all duration-300 ease-in-out'
+                >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 24 22' fill='none'>
+                    <path
+                      d='M21.7258 12.8358L23.6408 4.40991C23.779 3.80154 23.3166 3.22222 22.6927 3.22222H6.78143L6.41012 1.407C6.3176 0.954552 5.91947 0.629627 5.45763 0.629627H1.30425C0.767303 0.629627 0.332031 1.0649 0.332031 1.60185V2.25C0.332031 2.78695 0.767303 3.22222 1.30425 3.22222H4.13516L6.98086 17.1345C6.30006 17.526 5.84129 18.2602 5.84129 19.1019C5.84129 20.3547 6.85694 21.3704 8.10981 21.3704C9.36268 21.3704 10.3783 20.3547 10.3783 19.1019C10.3783 18.4669 10.1172 17.8933 9.6968 17.4815H18.1894C17.7691 17.8933 17.508 18.4669 17.508 19.1019C17.508 20.3547 18.5236 21.3704 19.7765 21.3704C21.0293 21.3704 22.045 20.3547 22.045 19.1019C22.045 18.2037 21.5229 17.4275 20.7658 17.06L20.9892 16.0766C21.1275 15.4682 20.6651 14.8889 20.0412 14.8889H9.16779L8.90266 13.5926H20.7777C21.2317 13.5926 21.6252 13.2785 21.7258 12.8358Z'
+                      fill='#4F46E5'
+                    />
+                  </svg>
+                  <span className='text-[#333] font-semibold'>Đơn hàng của tôi</span>
+                </Link>
+                <Link
+                  to={''}
+                  className='flex items-center gap-4 pt-4 pb-5 px-5 hover:underline transition-all duration-300 ease-in-out'
+                >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' fill='none'>
+                    <path
+                      d='M11.0013 23.6667C12.611 23.6667 13.9166 22.361 13.9166 20.75H8.08603C8.08603 22.361 9.3917 23.6667 11.0013 23.6667ZM20.8173 16.8439C19.9368 15.8979 18.2894 14.4746 18.2894 9.8125C18.2894 6.27149 15.8065 3.43685 12.4588 2.74141V1.79167C12.4588 0.986396 11.8062 0.333336 11.0013 0.333336C10.1965 0.333336 9.54391 0.986396 9.54391 1.79167V2.74141C6.19613 3.43685 3.71331 6.27149 3.71331 9.8125C3.71331 14.4746 2.06585 15.8979 1.18538 16.8439C0.911946 17.1379 0.790722 17.4893 0.793 17.8333C0.798013 18.5807 1.38454 19.2917 2.25589 19.2917H19.7468C20.6181 19.2917 21.2051 18.5807 21.2097 17.8333C21.2119 17.4893 21.0907 17.1374 20.8173 16.8439V16.8439Z'
+                      fill='#4F46E5'
+                    />
+                  </svg>
+                  <span className='text-[#333] font-semibold'>Thông báo</span>
+                </Link>
+                <div className='px-5 pb-4'>
+                  <button
+                    onClick={handleLogout}
+                    className='w-full bg-blue-600 hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Link to={PATH.LOGIN} className='bg-[#EAE9FC] rounded-[50%] p-2 md:p-2.5'>
+              <img src={User} alt='avatar' />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -247,26 +324,56 @@ export default function Header() {
         {/* Màn hình danh mục */}
         {!mobileSelectedCategory && (
           <div className='overflow-y-auto h-full pb-20'>
-            {/* Đăng nhập / đăng ký */}
-            <div className='mx-4 my-3 p-4 border bg-[#EAE9FC] rounded-lg'>
-              <p className='text-sm mb-4 text-[#000000] leading-[1.5]'>
-                Đăng ký hoặc đăng nhập để được hưởng các chương trình ưu đãi
-              </p>
-              <div className='flex gap-3'>
-                <Link
-                  to={PATH.REGISTER}
-                  className='flex-1 border border-[#4F46E5] border-solid rounded-lg bg-[white] text-[#4F46E5] py-2 text-center text-sm font-semibold'
-                >
-                  Đăng ký
+            {/* Khi chưa login hiển thị Đăng nhập / đăng ký và ngược lại */}
+            {isAuthenticated ? (
+              <>
+                <Link to={PATH.PROFILE} className='block mx-4 my-3 p-4 border bg-[#EAE9FC] rounded-lg'>
+                  <div className='flex items-center'>
+                    <div className='bg-[#EAE9FC] rounded-[50%] w-10 md:w-11 flex-shrink-0'>
+                      <img className='w-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
+                    </div>
+                    <div className='ml-3 h-full'>
+                      <h3 className='text-primary text-[16px] font-semibold max-w-[250px] leading-[1.5] truncate'>
+                        {fullName}
+                      </h3>
+                      <span className='block text-sm text-[#666]'>@{getUsernameFromEmail(email)}</span>
+                    </div>
+                    <button className='ml-auto'>
+                      <span className='px-1 py-[2px]'>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='8' height='14' viewBox='0 0 8 14' fill='none'>
+                          <path
+                            d='M0.0766602 12.4867L1.25666 13.6667L7.92333 7L1.25666 0.333336L0.0766602 1.51334L5.56333 7L0.0766602 12.4867Z'
+                            fill='#666666'
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
                 </Link>
-                <Link
-                  to={PATH.LOGIN}
-                  className='flex-1 bg-[#4F46E5] text-white rounded-lg py-2 text-center text-sm font-semibold'
-                >
-                  Đăng nhập
-                </Link>
-              </div>
-            </div>
+              </>
+            ) : (
+              <>
+                <div className='mx-4 my-3 p-4 border bg-[#EAE9FC] rounded-lg'>
+                  <p className='text-sm mb-4 text-[#000000] leading-[1.5]'>
+                    Đăng ký hoặc đăng nhập để được hưởng các chương trình ưu đãi
+                  </p>
+                  <div className='flex gap-3'>
+                    <Link
+                      to={PATH.REGISTER}
+                      className='flex-1 border border-[#4F46E5] border-solid rounded-lg bg-[white] text-[#4F46E5] py-2 text-center text-sm font-semibold'
+                    >
+                      Đăng ký
+                    </Link>
+                    <Link
+                      to={PATH.LOGIN}
+                      className='flex-1 bg-[#4F46E5] text-white rounded-lg py-2 text-center text-sm font-semibold'
+                    >
+                      Đăng nhập
+                    </Link>
+                  </div>
+                </div>
+              </>
+            )}
             {/* Danh mục */}
             <div className='flex flex-col'>
               {categories &&
@@ -368,9 +475,9 @@ export default function Header() {
             <h4 className='text-sm font-semibold text-[#1A1A1A] mb-3'>Từ khóa nổi bật</h4>
             <div className='flex flex-wrap gap-3'>
               {['Iphone 16 Pro', 'Xiaomi 14T', 'Oppo ra sản phẩm mới', 'Gucci ra mắt bộ sưu tập', 'LLV ra mắt'].map(
-                (keyword, i) => (
+                (keyword, index) => (
                   <button
-                    key={i}
+                    key={index}
                     className='px-4 py-2 border border-gray-300 rounded-full text-sm bg-white hover:bg-gray-100 transition'
                   >
                     {keyword}

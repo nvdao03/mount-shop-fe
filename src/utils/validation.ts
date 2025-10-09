@@ -13,7 +13,7 @@ export const schemaLogin = yup.object({
 
 export const schemaRegister = yup.object({
   email: yup.string().trim().email(AUTH_MESSAGE.EMAIL_INVALID).required(AUTH_MESSAGE.EMAIL_REQUIRED),
-  fullname: yup
+  full_name: yup
     .string()
     .trim()
     .min(6, AUTH_MESSAGE.FULLNAME_INVALID_MIN_LENGTH)

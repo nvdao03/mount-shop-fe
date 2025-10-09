@@ -11,5 +11,7 @@ export const AUTH_MESSAGE = {
   FULLNAME_INVALID_LENGTH: 'Họ và tên phải có ít nhất 6 - 180 ký tự',
   FULLNAME_REQUIRED: 'Vui lòng nhập họ và tên',
   CONFIRM_PASSWORD_NOT_MATCH: 'Mật khẩu nhập lại không khớp',
-  CONFIRM_PASSWORD_REQUIRED: 'Vui lòng nhập mật khẩu xác nhận'
+  CONFIRM_PASSWORD_REQUIRED: 'Vui lòng nhập mật khẩu xác nhận',
+  LOGOUT_SUCCESS: 'Đăng xuất thành công',
+  LOGIN_SUCCESS: 'Đăng nhập thành công'
 }
