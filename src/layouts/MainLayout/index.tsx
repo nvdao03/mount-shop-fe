@@ -6,7 +6,7 @@ interface PropTypes {
 
 export default function MainLayout({ children }: PropTypes) {
   return (
-    <div className='max-w-7xl mx-auto px-4 md:px-7'>
+    <div>
       <Header />
       {children}
     </div>

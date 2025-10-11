@@ -154,7 +154,7 @@ export default function Header() {
                     <div className='p-2 rounded-lg bg-[#F5F5FA] w-12 h-12 flex items-center justify-center'>
                       <img src={item.image} alt={item.name} className='w-10 h-10 object-contain' />
                     </div>
-                    <span className='text-[#1A1A1A]'>{item.name}</span>
+                    <span className='text-[#1A1A1A] font-semibold'>{item.name}</span>
                   </button>
                 ))}
             </div>
