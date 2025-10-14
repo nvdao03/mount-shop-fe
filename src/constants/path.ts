@@ -3,12 +3,12 @@ export const PATH = {
   LOGIN: '/login',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
-  PROFILE: '/profile',
 
   // --- Shop (public pages) ---
-  HOME: '/'
+  HOME: '/',
 
-  // --- User ---
+  // --- User  ---
+  USER_PROFILE: '/profile'
 
   // --- Admin ---
 }

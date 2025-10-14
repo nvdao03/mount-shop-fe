@@ -13,5 +13,10 @@ export const AUTH_MESSAGE = {
   CONFIRM_PASSWORD_NOT_MATCH: 'Mật khẩu nhập lại không khớp',
   CONFIRM_PASSWORD_REQUIRED: 'Vui lòng nhập mật khẩu xác nhận',
   LOGOUT_SUCCESS: 'Đăng xuất thành công',
-  LOGIN_SUCCESS: 'Đăng nhập thành công'
+  LOGIN_SUCCESS: 'Đăng nhập thành công',
+  PHONE_INVALID_LENGTH: 'Số điện thoại tối thiểu và tối đa 10 ký tự'
+}
+
+export const USER_MESSAGE = {
+  UPDATE_USER_SUCCESS: 'Cập nhật thông tin tài khoản thành công'
 }

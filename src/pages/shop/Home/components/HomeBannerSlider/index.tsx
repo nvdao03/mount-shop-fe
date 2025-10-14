@@ -35,7 +35,7 @@ export default function HomeBannerSlider() {
   )
 
   return (
-    <section className='w-full'>
+    <section className='w-full bg-white pt-[96px] md:pt-[117px]'>
       <div className='max-w-7xl mx-auto px-4 relative'>
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}

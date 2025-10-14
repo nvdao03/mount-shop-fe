@@ -22,9 +22,9 @@ export default function HomeFeaturedCategories() {
   }, [queryClient])
 
   return (
-    <section className='mt-[20px] md:mt-[40px]'>
+    <section className='pt-[20px] md:pt-[40px] pb-7 bg-white'>
       <div className='max-w-7xl mx-auto px-4 relative'>
-        <h2 className='text-[#1A1A1A] text-[16px] md:text-[18px] font-semibold'>Danh mục nổi bật</h2>
+        <h2 className='text-[#1A1A1A] custom_title_h2'>Danh mục nổi bật</h2>
         <div className='mt-5 grid gap-x-4 gap-y-7 sm:mt-7 sm:gap-4 grid-cols-4 lg:grid-cols-5'>
           {categories &&
             categories.map((category) => (

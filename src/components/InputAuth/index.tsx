@@ -7,8 +7,8 @@ interface InputEmailPropTypes extends InputHTMLAttributes<HTMLInputElement> {
   classNameLabel: string
   classNameError: string
   classNameErrorMessage: string
-  errors: any
-  errorMessage: string
+  errors?: any
+  errorMessage?: string
 }
 
 export default function InputAuth({

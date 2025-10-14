@@ -1,3 +1,4 @@
+import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 
 interface PropTypes {
@@ -6,9 +7,10 @@ interface PropTypes {
 
 export default function MainLayout({ children }: PropTypes) {
   return (
-    <div>
+    <div className='bg-[#F5F5FA]'>
       <Header />
       {children}
+      <Footer />
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import { schemaRegister, type TypeSchemaRegister } from '../../../utils/validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useContext, useEffect, useState } from 'react'
 import InputAuth from '../../../components/InputAuth'
@@ -13,6 +12,7 @@ import { AUTH_MESSAGE } from '../../../constants/message'
 import type { AuthResponseSuccess } from '../../../types/auth.type'
 import { AppContext } from '../../../contexts/app.context'
 import Loading from '../../../components/Loading'
+import { schemaRegister, type TypeSchemaRegister } from '../../../validation/auth'
 
 type FormData = TypeSchemaRegister
 

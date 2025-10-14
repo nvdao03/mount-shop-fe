@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { categoryApi } from '../../apis/shared/category.api'
 import type { CategoryType } from '../../types/category.type'
 import type { BrandType } from '../../types/brand.type'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../contexts/app.context'
 import AvatarDefault from '../../assets/images/avatar-default.png'
 import { getUsernameFromEmail } from '../../utils/other'
@@ -26,6 +26,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [mobileSelectedCategory, setMobileSelectedCategory] = useState<CategoryType | null>(null)
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false)
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
 
   // --- Get All Category ---
   const getAllCategory = useQuery({
@@ -52,6 +53,13 @@ export default function Header() {
       navidate(PATH.HOME)
     }
   })
+
+  // --- Handle Resize ---
+  useEffect(() => {
+    const handleResize = () => setIsTablet(window.innerWidth <= 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // --- Prefetch query khi hover ---
   const handleMouseEnter = (categoryId: number) => {
@@ -224,12 +232,15 @@ export default function Header() {
           </button>
           {isAuthenticated ? (
             <div className='relative group'>
-              <button className='bg-[#EAE9FC] rounded-[50%] w-10 md:w-11 cursor-pointer'>
-                <img className='w-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
-              </button>
+              <Link
+                to={isTablet ? PATH.USER_PROFILE : ''}
+                className='block bg-[#EAE9FC] rounded-[50%] w-10 h-10 md:w-11 md:h-11 cursor-pointer'
+              >
+                <img className='w-full h-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
+              </Link>
               <div className='absolute hidden md:block right-0 mt-3 w-[300px] bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-md [box-shadow:0px_0px_8px_0px_rgba(0,_0,_0,_0.25)]'>
                 <Link
-                  to={PATH.PROFILE}
+                  to={PATH.USER_PROFILE}
                   className='flex items-center gap-4 pt-5 pb-4 px-5 hover:underline transition-all duration-300 ease-in-out'
                 >
                   <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' fill='none'>
@@ -327,10 +338,14 @@ export default function Header() {
             {/* Khi chưa login hiển thị Đăng nhập / đăng ký và ngược lại */}
             {isAuthenticated ? (
               <>
-                <Link to={PATH.PROFILE} className='block mx-4 my-3 p-4 border bg-[#EAE9FC] rounded-lg'>
+                <Link to={PATH.USER_PROFILE} className='block mx-4 my-3 p-4 border bg-[#EAE9FC] rounded-lg'>
                   <div className='flex items-center'>
-                    <div className='bg-[#EAE9FC] rounded-[50%] w-10 md:w-11 flex-shrink-0'>
-                      <img className='w-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
+                    <div className='bg-[#EAE9FC] rounded-[50%] w-10 h-10 md:w-11 md:h-11 flex-shrink-0'>
+                      <img
+                        className='w-full h-full object-cover rounded-[50%]'
+                        src={avatar || AvatarDefault}
+                        alt='avatar'
+                      />
                     </div>
                     <div className='ml-3 h-full'>
                       <h3 className='text-primary text-[16px] font-semibold max-w-[250px] leading-[1.5] truncate'>

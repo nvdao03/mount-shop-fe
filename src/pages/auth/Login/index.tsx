@@ -4,7 +4,6 @@ import googleIcon from '../../../assets/icons/google.svg'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useContext, useEffect, useState } from 'react'
-import { schemaLogin, type TypeSchemaLogin } from '../../../utils/validation'
 import InputAuth from '../../../components/InputAuth'
 import { PATH } from '../../../constants/path'
 import { useMutation } from '@tanstack/react-query'
@@ -14,6 +13,7 @@ import { AUTH_MESSAGE } from '../../../constants/message'
 import { AppContext } from '../../../contexts/app.context'
 import type { AuthResponseSuccess } from '../../../types/auth.type'
 import Loading from '../../../components/Loading'
+import { schemaLogin, type TypeSchemaLogin } from '../../../validation/auth'
 
 type FormData = TypeSchemaLogin
 

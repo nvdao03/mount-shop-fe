@@ -189,3 +189,7 @@ body {
   color: #1a1a1a;
   font-size: 15px;
 }
+
+.custom_title_h2 {
+  @apply text-[16px] md:text-[18px] font-semibold;
+}

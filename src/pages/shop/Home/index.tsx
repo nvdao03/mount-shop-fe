@@ -1,11 +1,13 @@
 import HomeBannerSlider from './components/HomeBannerSlider'
 import HomeFeaturedCategories from './components/HomeFeaturedCategories'
+import HomeFlashSale from './components/HomeFlashSale'
 
 export default function Home() {
   return (
-    <main className='mt-[96px] md:mt-[117px] h-[5000px]'>
+    <main className='h-[5000px]'>
       <HomeBannerSlider />
       <HomeFeaturedCategories />
+      <HomeFlashSale />
     </main>
   )
 }

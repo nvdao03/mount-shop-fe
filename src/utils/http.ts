@@ -48,6 +48,11 @@ class Http {
         if (access_token && config.headers) {
           config.headers.Authorization = `Bearer ${access_token}`
         }
+        if (config.data instanceof FormData) {
+          config.headers['Content-Type'] = 'multipart/form-data'
+        } else {
+          config.headers['Content-Type'] = 'application/json'
+        }
         return config
       },
       (error) => {
