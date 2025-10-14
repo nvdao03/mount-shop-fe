@@ -109,7 +109,7 @@ export default function Categories() {
                     <td className='p-3 border border-solid border-[#E6E6E6] text-center align-middle text-white'>
                       <div className='flex items-center justify-center gap-3'>
                         <Link
-                          to={PATH.ADMIN_UPDATE_CATEGORY}
+                          to={`/admin/categories/update-category/${category.id}`}
                           className='bg-[#FFCA2C] hover:underline px-4 py-2 rounded-lg'
                         >
                           Sửa

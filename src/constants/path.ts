@@ -15,7 +15,7 @@ export const PATH = {
   ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_CATEGORIES: '/admin/categories',
   ADMIN_ADD_CATEGORY: '/admin/categories/add-category',
-  ADMIN_UPDATE_CATEGORY: '/admin/categories/update-category',
+  ADMIN_UPDATE_CATEGORY: '/admin/categories/update-category/:category_id',
   ADMIN_BRANDS: '/admin/brands',
   ADMIN_USERS: '/admin/users',
   ADMIN_PRODUCTS: '/admin/products',

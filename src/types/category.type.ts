@@ -15,3 +15,8 @@ export interface AdminGetCategoriesResponseSuccess {
     }
   }
 }
+
+export interface AdminGetCategoryResponseSuccess {
+  message: string
+  data: CategoryType
+}
