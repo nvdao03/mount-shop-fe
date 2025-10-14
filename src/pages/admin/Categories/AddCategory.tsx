@@ -46,8 +46,6 @@ export default function AddCategory() {
     }
   })
 
-  console.log(imagePreview)
-
   // --- Handle File Upload --- //
   const handleOnChangeSubmitImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImagePreview('')

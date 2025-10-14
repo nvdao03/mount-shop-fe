@@ -1,15 +1,20 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import type { CategoryQueryParamsConfig } from '../../../configs/category.config'
 import useQueryParams from '../../../hooks/useQueryParams'
 import { categoryApi } from '../../../apis/shared/category.api'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
 import type { CategoryType } from '../../../types/category.type'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import useDebounce from '../../../hooks/useDebounce'
+import { adminCategoryApi } from '../../../apis/admin/category.api'
+import { toast } from 'react-toastify'
+import { CATEGORY_MESSAGE } from '../../../constants/message'
 
 export default function Categories() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [search, setSearch] = useState<string>('')
   const debounceSearch = useDebounce(search, 500)
 
@@ -32,6 +37,16 @@ export default function Categories() {
     getNextPageParam: (lastPage) => {
       const { pagination } = lastPage.data.data
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
+    }
+  })
+
+  // --- Delete Category Mutation --- //
+  const deleteCategoryMutation = useMutation({
+    mutationFn: (category_id: number) => adminCategoryApi.deleteCategory(category_id),
+    onSuccess: () => {
+      ;(toast.success(CATEGORY_MESSAGE.DELETE_CATEGORY_SUCCESS), queryClient.invalidateQueries(['adminGetCategories']))
+      queryClient.invalidateQueries(['getCategories'])
+      navigate(PATH.ADMIN_CATEGORIES)
     }
   })
 
@@ -99,7 +114,12 @@ export default function Categories() {
                         >
                           Sửa
                         </Link>
-                        <button className='px-4 py-2 rounded-lg bg-[#BB2D3B] hover:underline'>Xóa</button>
+                        <button
+                          onClick={() => deleteCategoryMutation.mutate(category.id)}
+                          className='px-4 py-2 rounded-lg bg-[#BB2D3B] hover:underline'
+                        >
+                          Xóa
+                        </button>
                       </div>
                     </td>
                   </tr>

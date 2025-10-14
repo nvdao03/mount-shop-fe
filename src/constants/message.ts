@@ -27,5 +27,6 @@ export const CATEGORY_MESSAGE = {
   CATEGORY_NAME_REQUIRED: 'Tên danh mục không được để trống',
   CATEGORY_NAME_INVALID_LENGTH: 'Tên danh mục phải có ít nhất 2 - 180 ký tự',
   CATEGORY_IMAGE_REQUIRED: 'Hình ảnh danh mục không được để trống',
-  CATEGORY_IMAGE_INVALID: 'Hình ảnh danh mục không hợp lệ'
+  CATEGORY_IMAGE_INVALID: 'Hình ảnh danh mục không hợp lệ',
+  DELETE_CATEGORY_SUCCESS: 'Xóa danh mục thành công'
 }
