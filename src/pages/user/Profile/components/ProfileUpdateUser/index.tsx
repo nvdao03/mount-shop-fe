@@ -17,7 +17,9 @@ import { USER_MESSAGE } from '../../../../../constants/message'
 import { saveAvtar, saveFullName } from '../../../../../utils/auth'
 
 interface PropTypes {
-  setMenu: React.Dispatch<React.SetStateAction<'sider_bar' | 'user_info' | 'order_item' | 'update_profile'>>
+  setMenu: React.Dispatch<
+    React.SetStateAction<'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'>
+  >
   user: UserType | null
 }
 

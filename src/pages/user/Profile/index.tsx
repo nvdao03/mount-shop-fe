@@ -17,7 +17,7 @@ export default function Profile() {
   const { refreshToken: refresh_token, resetAppContext } = useContext(AppContext)
   const navigate = useNavigate()
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
-  const [menu, setMenu] = useState<'sider_bar' | 'user_info' | 'order_item' | 'update_profile'>(
+  const [menu, setMenu] = useState<'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'>(
     isTablet ? 'sider_bar' : 'user_info'
   )
   const [user, setUser] = useState<UserType | null>(null)

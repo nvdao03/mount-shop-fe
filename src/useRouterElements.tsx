@@ -8,7 +8,10 @@ import Home from './pages/shop/Home'
 import { useContext } from 'react'
 import { AppContext } from './contexts/app.context'
 import Profile from './pages/user/Profile'
-import ProfileUpdateUser from './pages/user/Profile/components/ProfileUpdateUser'
+import AdminLayout from './layouts/AdminLayout'
+import Dashboard from './pages/admin/Dashboard'
+import Categories from './pages/admin/Categories'
+import Brands from './pages/admin/Brands'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -18,6 +21,16 @@ const ProtectedRoute = () => {
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
   return !isAuthenticated ? <Outlet /> : <Navigate to={PATH.HOME} />
+}
+
+const RoleGuard = ({ role }: { role: 'admin' | 'customer' }) => {
+  const { userRole } = useContext(AppContext)
+
+  if (userRole !== role) {
+    return <Navigate to={PATH.HOME} />
+  }
+
+  return <Outlet />
 }
 
 export default function useRouterElements() {
@@ -40,6 +53,35 @@ export default function useRouterElements() {
               <Profile />
             </MainLayout>
           )
+        },
+        {
+          element: <RoleGuard role='admin' />,
+          children: [
+            {
+              path: PATH.ADMIN_DASHBOARD,
+              element: (
+                <AdminLayout>
+                  <Dashboard />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_CATEGORIES,
+              element: (
+                <AdminLayout>
+                  <Categories />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_BRANDS,
+              element: (
+                <AdminLayout>
+                  <Brands />
+                </AdminLayout>
+              )
+            }
+          ]
         }
       ]
     },

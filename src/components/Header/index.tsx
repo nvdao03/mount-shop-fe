@@ -29,9 +29,9 @@ export default function Header() {
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
 
   // --- Get All Category ---
-  const getAllCategory = useQuery({
-    queryKey: ['getAllCategory'],
-    queryFn: () => categoryApi.getAllCategories(),
+  const getCategories = useQuery({
+    queryKey: ['getCategories'],
+    queryFn: () => categoryApi.getCategories(),
     staleTime: 30 * 60 * 1000
   })
 
@@ -110,7 +110,7 @@ export default function Header() {
   }
 
   const brands = getBrandsByCategoryId?.data?.data && getBrandsByCategoryId?.data?.data.data.brands
-  const categories = getAllCategory?.data?.data && getAllCategory.data?.data.data.categories
+  const categories = getCategories?.data?.data && getCategories.data?.data.data.categories
   const mobileBrands =
     mobileSelectedCategory &&
     (queryClient.getQueryData<any>(['getBrandsByCategoryId', mobileSelectedCategory.id])?.data?.data?.brands || [])
@@ -147,7 +147,7 @@ export default function Header() {
               <img src={CategoryIcon} alt='' />
             </button>
             <div className='absolute mt-[5px] z-10 overflow-y-auto max-h-[346px] invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white flex flex-col translate-y-[10px] py-2 text-gray-800 rounded-md [box-shadow:0px_0px_8px_0px_rgba(0,_0,_0,_0.25)] left-0 min-w-[250px]'>
-              {getAllCategory?.isLoading && (
+              {getCategories?.isLoading && (
                 <span className='px-3 py-2 flex items-center gap-x-4 hover:bg-gray-100 transition'>
                   <span className='text-[#1A1A1A]'>Loading ...</span>
                 </span>
@@ -264,16 +264,13 @@ export default function Header() {
                   <span className='text-[#333] font-semibold'>Đơn hàng của tôi</span>
                 </Link>
                 <Link
-                  to={''}
-                  className='flex items-center gap-4 pt-4 pb-5 px-5 hover:underline transition-all duration-300 ease-in-out'
+                  to={PATH.ADMIN_DASHBOARD}
+                  className='flex items-center gap-4 pt-4 pb-5 px-[21px] hover:underline transition-all duration-300 ease-in-out'
                 >
-                  <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' fill='none'>
-                    <path
-                      d='M11.0013 23.6667C12.611 23.6667 13.9166 22.361 13.9166 20.75H8.08603C8.08603 22.361 9.3917 23.6667 11.0013 23.6667ZM20.8173 16.8439C19.9368 15.8979 18.2894 14.4746 18.2894 9.8125C18.2894 6.27149 15.8065 3.43685 12.4588 2.74141V1.79167C12.4588 0.986396 11.8062 0.333336 11.0013 0.333336C10.1965 0.333336 9.54391 0.986396 9.54391 1.79167V2.74141C6.19613 3.43685 3.71331 6.27149 3.71331 9.8125C3.71331 14.4746 2.06585 15.8979 1.18538 16.8439C0.911946 17.1379 0.790722 17.4893 0.793 17.8333C0.798013 18.5807 1.38454 19.2917 2.25589 19.2917H19.7468C20.6181 19.2917 21.2051 18.5807 21.2097 17.8333C21.2119 17.4893 21.0907 17.1374 20.8173 16.8439V16.8439Z'
-                      fill='#4F46E5'
-                    />
+                  <svg className='w-[22px] h-6 fill-[#4F46E5]' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'>
+                    <path d='M136 192C136 125.7 189.7 72 256 72C322.3 72 376 125.7 376 192C376 258.3 322.3 312 256 312C189.7 312 136 258.3 136 192zM48 546.3C48 447.8 127.8 368 226.3 368L285.7 368C384.2 368 464 447.8 464 546.3C464 562.7 450.7 576 434.3 576L77.7 576C61.3 576 48 562.7 48 546.3zM544 160C557.3 160 568 170.7 568 184L568 232L616 232C629.3 232 640 242.7 640 256C640 269.3 629.3 280 616 280L568 280L568 328C568 341.3 557.3 352 544 352C530.7 352 520 341.3 520 328L520 280L472 280C458.7 280 448 269.3 448 256C448 242.7 458.7 232 472 232L520 232L520 184C520 170.7 530.7 160 544 160z' />
                   </svg>
-                  <span className='text-[#333] font-semibold'>Thông báo</span>
+                  <span className='text-[#333] font-semibold'>Trang quản trị</span>
                 </Link>
                 <div className='px-5 pb-4'>
                   <button

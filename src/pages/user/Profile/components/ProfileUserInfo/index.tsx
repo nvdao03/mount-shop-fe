@@ -6,7 +6,9 @@ import { PATH } from '../../../../../constants/path'
 import type { UserType } from '../../../../../types/user.type'
 
 interface PropTypes {
-  setMenu: React.Dispatch<React.SetStateAction<'sider_bar' | 'user_info' | 'order_item' | 'update_profile'>>
+  setMenu: React.Dispatch<
+    React.SetStateAction<'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'>
+  >
   user: UserType | null
 }
 

@@ -11,8 +11,8 @@ export default function HomeFeaturedCategories() {
   useEffect(() => {
     const loadCategories = async () => {
       const data = await queryClient.fetchQuery({
-        queryKey: ['getAllCategory'],
-        queryFn: () => categoryApi.getAllCategories(),
+        queryKey: ['getCategories'],
+        queryFn: () => categoryApi.getCategories(),
         staleTime: 30 * 60 * 1000
       })
       setCategories(data.data.data.categories)
