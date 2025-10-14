@@ -20,3 +20,12 @@ export const AUTH_MESSAGE = {
 export const USER_MESSAGE = {
   UPDATE_USER_SUCCESS: 'Cập nhật thông tin tài khoản thành công'
 }
+
+export const CATEGORY_MESSAGE = {
+  CREATE_CATEGORY_SUCCESS: 'Tạo danh mục thành công',
+  UPDATE_CATEGORY_SUCCESS: 'Cập nhật danh mục thành công',
+  CATEGORY_NAME_REQUIRED: 'Tên danh mục không được để trống',
+  CATEGORY_NAME_INVALID_LENGTH: 'Tên danh mục phải có ít nhất 2 - 180 ký tự',
+  CATEGORY_IMAGE_REQUIRED: 'Hình ảnh danh mục không được để trống',
+  CATEGORY_IMAGE_INVALID: 'Hình ảnh danh mục không hợp lệ'
+}

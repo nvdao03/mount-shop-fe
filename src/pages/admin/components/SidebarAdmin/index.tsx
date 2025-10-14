@@ -59,10 +59,10 @@ export default function SidebarAdmin() {
         </ul>
       </div>
       {/* --- Logout --- */}
-      <div className='px-4 mb-4 mt-auto'>
+      <div className='px-4 mb-4 mt-auto text-[15px]'>
         <button
           onClick={() => handleLogout()}
-          className='flex-1 bg-[#4F46E5] w-full mt-auto text-white rounded-lg py-3 text-center text-sm font-semibold'
+          className='flex-1 bg-[#4F46E5] w-full mt-auto text-white rounded-lg py-3 text-center font-semibold'
         >
           Đăng xuất
         </button>

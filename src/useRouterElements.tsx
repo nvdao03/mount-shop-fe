@@ -12,6 +12,7 @@ import AdminLayout from './layouts/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
 import Categories from './pages/admin/Categories'
 import Brands from './pages/admin/Brands'
+import AddCategory from './pages/admin/Categories/AddCategory'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -78,6 +79,14 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <Brands />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_ADD_CATEGORY,
+              element: (
+                <AdminLayout>
+                  <AddCategory />
                 </AdminLayout>
               )
             }
