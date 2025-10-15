@@ -66,7 +66,7 @@ export default function Brands() {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
               value={search}
               type='text'
-              placeholder='Tìm kiếm thuowng hiệu...'
+              placeholder='Tìm kiếm thương hiệu...'
               className='w-[80%] border rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
             />
             <Link to={PATH.ADMIN_ADD_BRAND} className='bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700'>
@@ -108,7 +108,7 @@ export default function Brands() {
                     <td className='p-3 border border-solid border-[#E6E6E6] text-center align-middle text-white'>
                       <div className='flex items-center justify-center gap-3'>
                         <Link
-                          to={`/admin/categories/update-brand/${brand.id}`}
+                          to={`/admin/brands/update-brand/${brand.id}`}
                           className='bg-[#FFCA2C] hover:underline px-4 py-2 rounded-lg'
                         >
                           Sửa

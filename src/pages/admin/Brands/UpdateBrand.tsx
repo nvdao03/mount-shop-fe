@@ -1,43 +1,45 @@
-import { useForm } from 'react-hook-form'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Input from '../../../components/Input'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { schemaAddBrand, type TypeSchemaAddBrand } from '../../../validation/brand'
-import { handleUploadImageHelper } from '../../../utils/other'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { mediaApi } from '../../../apis/shared/media.api'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import Loading from '../../../components/Loading'
 import type { CategoryType } from '../../../types/category.type'
-import { useNavigate } from 'react-router-dom'
-import type { BrandQueryParamConfig } from '../../../configs/brand.config'
-import useQueryParams from '../../../hooks/useQueryParams'
-import { categoryApi } from '../../../apis/shared/category.api'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { schemaUpdateCategory, type TypeSchemaUpdateCategory } from '../../../validation/category'
+import { mediaApi } from '../../../apis/shared/media.api'
+import { handleUploadImageHelper } from '../../../utils/other'
+import Loading from '../../../components/Loading'
 import { adminBrandApi } from '../../../apis/admin/brand.api'
+import { PATH } from '../../../constants/path'
 import { toast } from 'react-toastify'
 import { BRAND_MESSAGE } from '../../../constants/message'
-import { PATH } from '../../../constants/path'
+import type { BrandType } from '../../../types/brand.type'
 
-export default function AddBrand() {
+export default function UpdateBrand() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
-
-  const queryParams: BrandQueryParamConfig = useQueryParams()
-  const queryConfig: BrandQueryParamConfig = {
-    limit: queryParams.limit || 30,
-    page: queryParams.page || 1,
-    search: queryParams.search || ''
-  }
+  const params = useParams()
+  const brand_id = Number(params.brand_id)
 
   const [imagePreview, setImagePreview] = useState<string>('')
-  const [categories, setCategories] = useState<CategoryType[] | []>([])
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError
+    setValue
   } = useForm({
-    resolver: yupResolver(schemaAddBrand)
+    resolver: yupResolver(schemaUpdateCategory),
+    defaultValues: {
+      image: '',
+      name: ''
+    }
+  })
+
+  // --- Get Brand Mutation --- //
+  const getBrandMutation = useQuery({
+    queryKey: ['getBrand'],
+    queryFn: () => adminBrandApi.getBrand(brand_id)
   })
 
   // --- Upload Image Mutation --- //
@@ -49,22 +51,15 @@ export default function AddBrand() {
     }
   })
 
-  // --- Add Brand Mutation --- //
-  const addBrandMutation = useMutation({
-    mutationFn: (body: TypeSchemaAddBrand) => adminBrandApi.addBrand(body),
+  // --- Update Brand Mutation --- //
+  const updateBrandMutation = useMutation({
+    mutationFn: (body: TypeSchemaUpdateCategory) => adminBrandApi.updateBrand(brand_id, body),
     onSuccess: () => {
       setImagePreview('')
       queryClient.invalidateQueries(['adminGetBrands'])
       queryClient.invalidateQueries(['getBrandsByCategoryId'])
       navigate(PATH.ADMIN_BRANDS)
-      toast.success(BRAND_MESSAGE.CREATE_BRAND_SUCCESS)
-    },
-    onError: (errors: any) => {
-      const message = errors.response.data.errors.image
-      setError('image', {
-        message,
-        type: 'Server'
-      })
+      toast.success(BRAND_MESSAGE.UPDATE_BRAND_SUCCESS)
     }
   })
 
@@ -74,31 +69,28 @@ export default function AddBrand() {
     handleUploadImageHelper(uploadImageMutation, e)
   }
 
-  // --- Handle Submit Add Brand --- //
+  // --- Handle Submit Update Brand --- //
   const handleSubmitAddBrand = handleSubmit((data) => {
-    addBrandMutation.mutate({
+    updateBrandMutation.mutate({
       ...data,
       image: imagePreview
     })
   })
 
-  // --- Get Categories --- //
+  // --- Set Brand Form Values --- //
   useEffect(() => {
-    const getCategories = async () => {
-      const data = await queryClient.fetchQuery({
-        queryKey: ['adminGetCategories'],
-        queryFn: () => categoryApi.getCategories(queryConfig)
-      })
-      setCategories(data.data.data.categories)
-    }
-    getCategories()
-  }, [])
+    if (!getBrandMutation?.data?.data) return
+    const brand = getBrandMutation.data.data.data as BrandType
+    setImagePreview(brand.image)
+    setValue('name', brand.name)
+    setValue('image', brand.image)
+  }, [getBrandMutation?.data?.data])
 
   return (
     <div className='h-full'>
       {/* --- Title --- */}
       <div className='px-4 text-[16px] py-6 justify-center flex items-center gap-3 border-b-[0.5px] border-solid border-[#E6E6E6] font-semibold'>
-        Thêm Thương Hiệu
+        Chỉnh Sửa Thương Hiệu
       </div>
       {/* --- Form Submit Categories --- */}
       <form
@@ -142,32 +134,8 @@ export default function AddBrand() {
             <img src={imagePreview} alt='image preview' className='w-full h-full object-cover rounded-lg' />
           </div>
         )}
-        <div>
-          <select
-            className='w-[200px] border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2'
-            {...register('category_id')}
-          >
-            <option value=''>Chọn danh mục</option>
-            {categories.map((category: CategoryType) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          {errors.category_id && (
-            <div className='mt-2 flex items-center gap-1'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='15' height='14' viewBox='0 0 15 14' fill='none'>
-                <path
-                  d='M7.49967 0.333252C3.81967 0.333252 0.833008 3.31992 0.833008 6.99992C0.833008 10.6799 3.81967 13.6666 7.49967 13.6666C11.1797 13.6666 14.1663 10.6799 14.1663 6.99992C14.1663 3.31992 11.1797 0.333252 7.49967 0.333252ZM8.16634 10.3333H6.83301V6.33325H8.16634V10.3333ZM8.16634 4.99992H6.83301V3.66659H8.16634V4.99992Z'
-                  fill='#FF3B30'
-                />
-              </svg>
-              <p className=' text-red-500 text-[13px]'>Danh mục không được để trống</p>
-            </div>
-          )}
-        </div>
         <button className='flex-1 max-w-[180px] ml-auto bg-[#4F46E5] w-full mt-auto text-white rounded-lg py-3 text-center font-semibold'>
-          Thêm thương hiệu
+          Cập nhật thương hiệu
         </button>
       </form>
     </div>

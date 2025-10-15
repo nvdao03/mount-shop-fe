@@ -15,6 +15,7 @@ import Brands from './pages/admin/Brands'
 import AddCategory from './pages/admin/Categories/AddCategory'
 import UpdateCategory from './pages/admin/Categories/UpdateCategory'
 import AddBrand from './pages/admin/Brands/AddBrand'
+import UpdateBrand from './pages/admin/Brands/UpdateBrand'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -105,6 +106,14 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <AddBrand />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_UPDATE_BRAND,
+              element: (
+                <AdminLayout>
+                  <UpdateBrand />
                 </AdminLayout>
               )
             }
