@@ -14,6 +14,7 @@ import Categories from './pages/admin/Categories'
 import Brands from './pages/admin/Brands'
 import AddCategory from './pages/admin/Categories/AddCategory'
 import UpdateCategory from './pages/admin/Categories/UpdateCategory'
+import AddBrand from './pages/admin/Brands/AddBrand'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -76,14 +77,6 @@ export default function useRouterElements() {
               )
             },
             {
-              path: PATH.ADMIN_BRANDS,
-              element: (
-                <AdminLayout>
-                  <Brands />
-                </AdminLayout>
-              )
-            },
-            {
               path: PATH.ADMIN_ADD_CATEGORY,
               element: (
                 <AdminLayout>
@@ -96,6 +89,22 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <UpdateCategory />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_BRANDS,
+              element: (
+                <AdminLayout>
+                  <Brands />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_ADD_BRAND,
+              element: (
+                <AdminLayout>
+                  <AddBrand />
                 </AdminLayout>
               )
             }

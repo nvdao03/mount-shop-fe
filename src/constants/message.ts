@@ -28,5 +28,16 @@ export const CATEGORY_MESSAGE = {
   CATEGORY_NAME_INVALID_LENGTH: 'Tên danh mục phải có ít nhất 2 - 180 ký tự',
   CATEGORY_IMAGE_REQUIRED: 'Hình ảnh danh mục không được để trống',
   CATEGORY_IMAGE_INVALID: 'Hình ảnh danh mục không hợp lệ',
-  DELETE_CATEGORY_SUCCESS: 'Xóa danh mục thành công'
+  DELETE_CATEGORY_SUCCESS: 'Xóa danh mục thành công',
+  CATEGORY_ID_REQUIRED: 'Vui lòng nhập ID danh mục'
+}
+
+export const BRAND_MESSAGE = {
+  CREATE_BRAND_SUCCESS: 'Tạo thương hiệu thành công',
+  UPDATE_BRAND_SUCCESS: 'Cập nhật thương hiệu thành công',
+  BRAND_NAME_REQUIRED: 'Tên thương hiệu không được để trống',
+  BRAND_NAME_INVALID_LENGTH: 'Tên thương hiệu phải có ít nhất 2 - 180 ký tự',
+  BRAND_IMAGE_REQUIRED: 'Hình ảnh thương hiệu không được để trống',
+  BRAND_IMAGE_INVALID: 'Hình ảnh thương hiệu không hợp lệ',
+  DELETE_BRAND_SUCCESS: 'Xóa thương hiệu thành công'
 }

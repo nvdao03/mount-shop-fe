@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import useQueryParams from '../../../hooks/useQueryParams'
 import type { BrandQueryParamConfig } from '../../../configs/brand.config'
 import { adminBrandApi } from '../../../apis/admin/brand.api'
@@ -8,8 +8,11 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import type { BrandType } from '../../../types/brand.type'
 import { useState } from 'react'
 import useDebounce from '../../../hooks/useDebounce'
+import { toast } from 'react-toastify'
+import { BRAND_MESSAGE } from '../../../constants/message'
 
 export default function Brands() {
+  const queryClient = useQueryClient()
   const [search, setSearch] = useState<string>('')
   const debounceSearch = useDebounce(search, 500)
 
@@ -20,6 +23,7 @@ export default function Brands() {
     search: queryParams.search || debounceSearch
   }
 
+  // --- Get Brands --- //
   const getBrands = useInfiniteQuery({
     queryKey: ['adminGetBrands', queryConfig],
     queryFn: ({ pageParam = queryConfig.page }) =>
@@ -33,6 +37,16 @@ export default function Brands() {
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
     },
     staleTime: 30 * 60 * 1000
+  })
+
+  // --- Delete Brand Mutation --- //
+  const deleteBrandMutation = useMutation({
+    mutationFn: (brand_id: number) => adminBrandApi.deleteBrand(brand_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['adminGetBrands'])
+      queryClient.invalidateQueries(['getBrandsByCategoryId'])
+      toast.success(BRAND_MESSAGE.DELETE_BRAND_SUCCESS)
+    }
   })
 
   const { data, fetchNextPage, hasNextPage } = getBrands
@@ -99,7 +113,12 @@ export default function Brands() {
                         >
                           Sửa
                         </Link>
-                        <button className='px-4 py-2 rounded-lg bg-[#BB2D3B] hover:underline'>Xóa</button>
+                        <button
+                          className='px-4 py-2 rounded-lg bg-[#BB2D3B] hover:underline'
+                          onClick={() => deleteBrandMutation.mutate(brand.id)}
+                        >
+                          Xóa
+                        </button>
                       </div>
                     </td>
                   </tr>
