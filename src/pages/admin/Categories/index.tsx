@@ -37,7 +37,8 @@ export default function Categories() {
     getNextPageParam: (lastPage) => {
       const { pagination } = lastPage.data.data
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
-    }
+    },
+    staleTime: 30 * 60 * 1000
   })
 
   // --- Delete Category Mutation --- //
