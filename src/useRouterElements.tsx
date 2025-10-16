@@ -17,6 +17,9 @@ import UpdateCategory from './pages/admin/Categories/UpdateCategory'
 import AddBrand from './pages/admin/Brands/AddBrand'
 import UpdateBrand from './pages/admin/Brands/UpdateBrand'
 import VerifyEmail from './pages/auth/VerifyEmail'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import VerifyForgotPassword from './pages/auth/VerifyForgotPassword'
+import ResetPassword from './pages/auth/ResetPassword'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -51,6 +54,18 @@ export default function useRouterElements() {
     {
       path: PATH.VERIFY_EMAIL,
       element: <VerifyEmail />
+    },
+    {
+      path: PATH.FORGOT_PASSWORD,
+      element: <ForgotPassword />
+    },
+    {
+      path: PATH.VERIFY_FORGOT_PASSWORD,
+      element: <VerifyForgotPassword />
+    },
+    {
+      path: PATH.RESET_PASSWORD,
+      element: <ResetPassword />
     },
     {
       element: <ProtectedRoute />,

@@ -1,4 +1,6 @@
 import type { InputHTMLAttributes } from 'react'
+import { Link } from 'react-router-dom'
+import { PATH } from '../../constants/path'
 
 interface InputEmailPropTypes extends InputHTMLAttributes<HTMLInputElement> {
   label: string
@@ -9,6 +11,7 @@ interface InputEmailPropTypes extends InputHTMLAttributes<HTMLInputElement> {
   classNameErrorMessage: string
   errors?: any
   errorMessage?: string
+  messageForgotPassword?: string
 }
 
 export default function InputAuth({
@@ -22,11 +25,17 @@ export default function InputAuth({
   name,
   type,
   errorMessage,
-  placeholder
+  placeholder,
+  messageForgotPassword
 }: InputEmailPropTypes) {
   return (
     <div>
-      <label className={classNameLabel}>{label}</label>
+      <div className='flex items-center justify-between'>
+        <label className={classNameLabel}>{label}</label>
+        <Link to={PATH.FORGOT_PASSWORD} className='text-primary text-[14px] underline'>
+          {messageForgotPassword}
+        </Link>
+      </div>
       <div className='h-10'>
         <input {...register(name)} type={type} placeholder={placeholder} className={classNameInput} />
       </div>

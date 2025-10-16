@@ -116,6 +116,7 @@ export default function Login() {
                 />
                 <InputAuth
                   label='Mật khẩu'
+                  messageForgotPassword='Quên mật khẩu?'
                   classNameLabel='block text-sm mb-1'
                   classNameError='mt-2 flex items-center gap-1'
                   classNameErrorMessage='text-red-500 text-[13px]'

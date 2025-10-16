@@ -17,7 +17,9 @@ export const AUTH_MESSAGE = {
   PHONE_INVALID_LENGTH: 'Số điện thoại tối thiểu và tối đa 10 ký tự',
   CONFIRM_PASSWORD_INVALID: 'Mật khẩu nhập lại không khớp',
   CHANGE_PASSWORD_SUCCESS: 'Đổi mật khâu thành công',
-  VERIFY_EMAIL_SUCCESS: 'Kích hoạt tài khoản thành công'
+  VERIFY_EMAIL_SUCCESS: 'Kích hoạt tài khoản thành công',
+  RESET_PASSWORD_SUCCESS: 'Đổi mật khâu thành công',
+  FORGOT_PASSWORD_TOKEN_REQUIRED: 'Token không được để trống'
 }
 
 export const USER_MESSAGE = {

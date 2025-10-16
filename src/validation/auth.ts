@@ -56,6 +56,28 @@ export const schemaChangePassword = yup.object({
     .oneOf([yup.ref('new_password')], AUTH_MESSAGE.CONFIRM_PASSWORD_INVALID)
 })
 
+export const schemaForgotPassword = yup.object({
+  email: yup.string().trim().email(AUTH_MESSAGE.EMAIL_INVALID).required(AUTH_MESSAGE.EMAIL_REQUIRED)
+})
+
+export const schemaResetPassword = yup.object({
+  password: yup
+    .string()
+    .trim()
+    .min(6, AUTH_MESSAGE.PASSWORD_INVALID_MIN_LENGTH)
+    .max(180, AUTH_MESSAGE.PASSWORD_INVALID_LENGTH)
+    .required(AUTH_MESSAGE.PASSWORD_REQUIRED),
+  confirm_password: yup
+    .string()
+    .trim()
+    .min(6, AUTH_MESSAGE.PASSWORD_INVALID_MIN_LENGTH)
+    .max(180, AUTH_MESSAGE.PASSWORD_INVALID_LENGTH)
+    .required(AUTH_MESSAGE.PASSWORD_REQUIRED)
+    .oneOf([yup.ref('password')], AUTH_MESSAGE.CONFIRM_PASSWORD_INVALID)
+})
+
 export type TypeSchemaLogin = yup.InferType<typeof schemaLogin>
 export type TypeSchemaRegister = yup.InferType<typeof schemaRegister>
 export type TypeSchemaChangePassword = yup.InferType<typeof schemaChangePassword>
+export type TypeSchemaForgotPassword = yup.InferType<typeof schemaForgotPassword>
+export type TypeSchemaResetPassword = yup.InferType<typeof schemaResetPassword>

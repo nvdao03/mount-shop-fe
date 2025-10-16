@@ -1,5 +1,10 @@
 import http from '../../utils/http'
-import type { TypeSchemaChangePassword, TypeSchemaLogin, TypeSchemaRegister } from '../../validation/auth'
+import type {
+  TypeSchemaChangePassword,
+  TypeSchemaForgotPassword,
+  TypeSchemaLogin,
+  TypeSchemaRegister
+} from '../../validation/auth'
 
 type RegisterFromData = TypeSchemaRegister
 type LoginFromData = TypeSchemaLogin
@@ -14,5 +19,12 @@ export const authApi = {
   changePassword: (body: TypeSchemaChangePassword) => http.put('/auth/change-password', body),
 
   // --- Vefiy Email ---
-  verifyEmail: (body: { email_verify_token: string }) => http.post('/auth/verify-email', body)
+  verifyEmail: (body: { email_verify_token: string }) => http.post('/auth/verify-email', body),
+
+  // --- Forgot Password ---
+  forgotPassword: (body: TypeSchemaForgotPassword) => http.post('/auth/forgot-password', body),
+  verifyForgotPasswodToken: (body: { forgot_password_token: string }) =>
+    http.post('/auth/verify-forgot-password', body),
+  resetPassword: (body: { forgot_password_token: string; password: string; confirm_password: string }) =>
+    http.post('/auth/reset-password', body)
 }

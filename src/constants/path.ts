@@ -4,6 +4,8 @@ export const PATH = {
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   VERIFY_EMAIL: '/verify-email',
+  VERIFY_FORGOT_PASSWORD: '/verify-forgot-password',
+  RESET_PASSWORD: '/reset-password',
 
   // --- Shop (public pages) ---
   HOME: '/',
