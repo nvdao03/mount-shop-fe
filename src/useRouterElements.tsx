@@ -16,6 +16,7 @@ import AddCategory from './pages/admin/Categories/AddCategory'
 import UpdateCategory from './pages/admin/Categories/UpdateCategory'
 import AddBrand from './pages/admin/Brands/AddBrand'
 import UpdateBrand from './pages/admin/Brands/UpdateBrand'
+import VerifyEmail from './pages/auth/VerifyEmail'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -46,6 +47,10 @@ export default function useRouterElements() {
           <Home />
         </MainLayout>
       )
+    },
+    {
+      path: PATH.VERIFY_EMAIL,
+      element: <VerifyEmail />
     },
     {
       element: <ProtectedRoute />,

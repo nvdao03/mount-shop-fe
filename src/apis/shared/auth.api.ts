@@ -11,5 +11,8 @@ export const authApi = {
   logout: (body: { refresh_token: string }) => http.post('/auth/logout', body),
 
   // --- change password ---
-  changePassword: (body: TypeSchemaChangePassword) => http.put('/auth/change-password', body)
+  changePassword: (body: TypeSchemaChangePassword) => http.put('/auth/change-password', body),
+
+  // --- Vefiy Email ---
+  verifyEmail: (body: { email_verify_token: string }) => http.post('/auth/verify-email', body)
 }
