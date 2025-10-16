@@ -18,7 +18,7 @@ export default function Brands() {
 
   const queryParams: BrandQueryParamConfig = useQueryParams()
   const queryConfig: BrandQueryParamConfig = {
-    limit: queryParams.limit || 30,
+    limit: queryParams.limit || 10,
     page: queryParams.page || 1,
     search: queryParams.search || debounceSearch
   }

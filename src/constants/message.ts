@@ -14,7 +14,9 @@ export const AUTH_MESSAGE = {
   CONFIRM_PASSWORD_REQUIRED: 'Vui lòng nhập mật khẩu xác nhận',
   LOGOUT_SUCCESS: 'Đăng xuất thành công',
   LOGIN_SUCCESS: 'Đăng nhập thành công',
-  PHONE_INVALID_LENGTH: 'Số điện thoại tối thiểu và tối đa 10 ký tự'
+  PHONE_INVALID_LENGTH: 'Số điện thoại tối thiểu và tối đa 10 ký tự',
+  CONFIRM_PASSWORD_INVALID: 'Mật khẩu nhập lại không khớp',
+  CHANGE_PASSWORD_SUCCESS: 'Đổi mật khâu thành công'
 }
 
 export const USER_MESSAGE = {

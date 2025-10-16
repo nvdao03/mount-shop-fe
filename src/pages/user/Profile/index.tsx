@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import ProfileUpdateUser from './components/ProfileUpdateUser'
 import type { GetUserProfileResponseSuccess, UserType } from '../../../types/user.type'
 import { userApi } from '../../../apis/users/user.api'
+import ProfileChangePassword from './components/ProfileChangePassword'
 
 export default function Profile() {
   const { refreshToken: refresh_token, resetAppContext } = useContext(AppContext)
@@ -85,6 +86,7 @@ export default function Profile() {
           {menu === 'user_info' && <ProfileUserInfo user={user} setMenu={setMenu} />}
           {menu === 'order_item' && <ProfileOrderItem />}
           {menu === 'update_profile' && <ProfileUpdateUser user={user} setMenu={setMenu} />}
+          {menu === 'change_password' && <ProfileChangePassword setMenu={setMenu} />}
         </section>
       </div>
     </main>
