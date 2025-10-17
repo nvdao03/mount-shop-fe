@@ -9,6 +9,8 @@ interface InputEmailPropTypes extends InputHTMLAttributes<HTMLInputElement> {
   classNameErrorMessage: string
   errors?: any
   errorMessage?: string
+  disabled?: boolean
+  multiple?: boolean
   handleOnChangeSubmitImage?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -24,6 +26,8 @@ export default function Input({
   type,
   errorMessage,
   placeholder,
+  disabled,
+  multiple,
   handleOnChangeSubmitImage
 }: InputEmailPropTypes) {
   return (
@@ -32,6 +36,8 @@ export default function Input({
       <div className='h-10'>
         <input
           {...register(name)}
+          disabled={disabled}
+          multiple={multiple}
           type={type}
           placeholder={placeholder}
           className={classNameInput}

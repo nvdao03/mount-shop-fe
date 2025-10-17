@@ -7,5 +7,7 @@ export const productApi = {
     return http.get('/products', {
       params
     })
-  }
+  },
+  // --- Get Product ---
+  getProduct: (product_id: number) => http.get(`/products/${product_id}`)
 }

@@ -21,6 +21,8 @@ import ForgotPassword from './pages/auth/ForgotPassword'
 import VerifyForgotPassword from './pages/auth/VerifyForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import Products from './pages/admin/Products'
+import AddProduct from './pages/admin/Products/AddProduct'
+import AdminProductDetail from './pages/admin/Products/AdminProductDetail'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -143,6 +145,22 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <Products />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_ADD_PRODUCT,
+              element: (
+                <AdminLayout>
+                  <AddProduct />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_PRODUCT_DETAIL,
+              element: (
+                <AdminLayout>
+                  <AdminProductDetail />
                 </AdminLayout>
               )
             }

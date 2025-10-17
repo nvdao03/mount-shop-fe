@@ -161,7 +161,7 @@ export default function Products() {
                             />
                           </svg>
                         </button>
-                        <button>
+                        <Link to={`/admin/products/product-detail/${product.id}`}>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             width={22}
@@ -174,7 +174,7 @@ export default function Products() {
                               fill='#4F46E5'
                             />
                           </svg>
-                        </button>
+                        </Link>
                       </div>
                     </td>
                   </tr>

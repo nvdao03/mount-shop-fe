@@ -46,3 +46,22 @@ export const BRAND_MESSAGE = {
   BRAND_IMAGE_INVALID: 'Hình ảnh thương hiệu không hợp lệ',
   DELETE_BRAND_SUCCESS: 'Xóa thương hiệu thành công'
 }
+
+export const PRODUCT_MESSAGE = {
+  PRODUCT_NAME_REQUIRED: 'Tên sản phẩm không được để trống',
+  PRODUCT_NAME_INVALID_LENGTH: 'Tên sản phẩm phải có ít nhất từ 2 - 180 ký tự',
+  PRODUCT_IMAGE_REQUIRED: 'Hình ảnh sản phẩm không được để trống',
+  PRODUCT_IMAGES_REQUIRED: 'Hình ảnh sản phẩm phụ không được để trống',
+  PRODUCT_DESCRIPTION_REQUIRED: 'Thống tin chi tiết sản phẩm không được để trống',
+  PRODUCT_DESCRIPTION_INVALID_LENGTH: 'Thống tin chi tiết sản phẩm phải có ít nhất từ 2 ký tự trở lên',
+  PRODUCT_DISCOUNT_PRICE_REQUIRED: 'Giá sản phẩm gốc không được để trống',
+  PRODUCT_PRICE_REQUIRED: 'Giá sản phẩm bán ra không được để trống',
+  PRODUCT_RATING_REQUIRED: 'Số lượng sao của sản phẩm không được để trống',
+  PRODUCT_SOLD_REQUIRED: 'Số lượng sản phẩm bán ra không được để trống',
+  PRODUCT_STOCK_REQUIRED: 'Số lượng sản phẩm tồn kho không được để trống',
+  PRODUCT_CATEGORY_ID_REQUIRED: 'Vui lòng nhập ID danh mục',
+  PRODUCT_BRAND_ID_REQUIRED: 'Vui lòng nhập ID thương hiệu',
+  PRODUCT_DISCOUNT_PRICE_INVALID: 'Giá sản phẩm bán ra không hợp lệ',
+  PRODUCT_PRICE_INVALID: 'Giá sản phẩm không hợp lệ',
+  ADD_PRODUCT_SUCCESS: 'Tạo sản phẩm thành công'
+}

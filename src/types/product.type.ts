@@ -4,7 +4,7 @@ export interface ProductType {
   image: string
   images: string[]
   description: string
-  discount_price: number
+  price_before_discount: number
   price: number
   rating: string
   sold: number
@@ -24,5 +24,31 @@ export interface GetProductsResponseSuccess {
       limit: number
       total_page: number
     }
+  }
+}
+
+export interface GetProductResponseSuccess {
+  message: string
+  data: {
+    id: number
+    name: string
+    image: string
+    images: string[]
+    description: string
+    price_before_discount: number
+    price: number
+    rating: string
+    sold: number
+    stock: number
+    category: {
+      id: number
+      name: string
+    }
+    brand: {
+      id: number
+      name: string
+    }
+    createAt: string
+    updateAt: string
   }
 }
