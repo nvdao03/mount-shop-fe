@@ -1,83 +1,66 @@
 import { Link } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import useQueryParams from '../../../hooks/useQueryParams'
-import type { BrandQueryParamConfig } from '../../../configs/brand.config'
-import { adminBrandApi } from '../../../apis/admin/brand.api'
+import type { ProductQueryParamsConfig } from '../../../configs/product.config'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { productApi } from '../../../apis/shared/product.api'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import type { BrandType } from '../../../types/brand.type'
-import { useState } from 'react'
-import useDebounce from '../../../hooks/useDebounce'
-import { toast } from 'react-toastify'
-import { BRAND_MESSAGE } from '../../../constants/message'
+import type { ProductType } from '../../../types/product.type'
+import { formatCurrency } from '../../../utils/other'
 
-export default function Brands() {
-  const queryClient = useQueryClient()
-  const [search, setSearch] = useState<string>('')
-  const debounceSearch = useDebounce(search, 500)
-
-  const queryParams: BrandQueryParamConfig = useQueryParams()
-  const queryConfig: BrandQueryParamConfig = {
-    limit: queryParams.limit || 15,
+export default function Products() {
+  const queryParams: ProductQueryParamsConfig = useQueryParams()
+  const queryConfig: ProductQueryParamsConfig = {
     page: queryParams.page || 1,
-    search: queryParams.search || debounceSearch
+    limit: queryParams.limit || 15,
+    category: queryParams.category,
+    search: queryParams.search || ''
   }
 
-  // --- Get Brands --- //
-  const getBrands = useInfiniteQuery({
-    queryKey: ['adminGetBrands', queryConfig],
+  // --- Get Products --- //
+  const getProducts = useInfiniteQuery({
+    queryKey: ['adminGetProducts', queryConfig],
     queryFn: ({ pageParam = queryConfig.page }) =>
-      adminBrandApi.getBrands({
+      productApi.getProducts({
         page: pageParam,
-        limit: queryConfig.limit,
-        search: queryConfig.search
+        ...queryConfig
       }),
-    getNextPageParam: (lastPage) => {
-      const { pagination } = lastPage.data.data
+    getNextPageParam: (lastpage) => {
+      const { pagination } = lastpage.data.data
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
     },
     staleTime: 30 * 60 * 1000
   })
 
-  // --- Delete Brand Mutation --- //
-  const deleteBrandMutation = useMutation({
-    mutationFn: (brand_id: number) => adminBrandApi.deleteBrand(brand_id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['adminGetBrands'])
-      queryClient.invalidateQueries(['getBrandsByCategoryId'])
-      toast.success(BRAND_MESSAGE.DELETE_BRAND_SUCCESS)
-    }
-  })
-
-  const { data, fetchNextPage, hasNextPage } = getBrands
-  const brands = data?.pages.flatMap((page) => page.data.data.brands) || []
+  const { data, fetchNextPage, hasNextPage } = getProducts
+  const products = data?.pages.flatMap((page) => page.data.data.products) || []
 
   return (
     <div className='h-full bg-white'>
       {/* --- Title --- */}
       <div className='px-4 text-[16px] py-6 justify-center flex items-center gap-3 border-b-[0.5px] border-solid border-[#E6E6E6] font-semibold'>
-        Quản Lý Thương Hiệu
+        Quản Lý Sản Phẩm
       </div>
-      {/* --- Filter Brands --- */}
+      {/* --- Filter Products --- */}
       <div id='scrollableDiv' className='py-4 h-[calc(100vh-120px)] overflow-y-scroll'>
         <div className='mb-4 px-4'>
           <div className='flex items-center justify-between'>
             <input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-              value={search}
+              // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+              // value={search}
               type='text'
-              placeholder='Tìm kiếm thương hiệu...'
+              placeholder='Tìm kiếm sản phẩm...'
               className='w-[80%] border rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
             />
-            <Link to={PATH.ADMIN_ADD_BRAND} className='bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700'>
-              + Thêm thương hiệu
+            <Link to={PATH.ADMIN_ADD_PRODUCT} className='bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700'>
+              + Thêm sản phẩm
             </Link>
           </div>
         </div>
-        {/* --- Table Brands --- */}
+        {/* --- Table Products --- */}
         <div className=''>
           <InfiniteScroll
-            dataLength={brands.length}
+            dataLength={products.length}
             hasMore={!!hasNextPage}
             next={fetchNextPage}
             loader={<h4>Loading...</h4>}
@@ -88,27 +71,35 @@ export default function Brands() {
               <thead className='font-semibold'>
                 <tr>
                   <th className='p-4 border-b border-solid border-[#E6E6E6] w-[10%]'>ID</th>
-                  <th className='p-4 border-b border-solid border-[#E6E6E6] w-[30%]'>Tên danh mục</th>
-                  <th className='p-4 border-b border-solid border-[#E6E6E6] text-center w-[30%]'>Hình ảnh</th>
-                  <th className='p-4 border-b border-solid border-[#E6E6E6] text-center w-[25%]'>Thao tác</th>
+                  <th className='p-4 border-b border-solid border-[#E6E6E6] w-[40%]'>Tên sản phẩm</th>
+                  <th className='p-4 border-b border-solid border-[#E6E6E6] text-center w-[20%]'>Hình ảnh</th>
+                  <th className='p-4 border-b border-solid border-[#E6E6E6] text-center w-[10%]'>Giá bán</th>
+                  <th className='p-4 border-b border-solid border-[#E6E6E6] text-center w-[20%]'>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
-                {brands.map((brand: BrandType, index) => (
-                  <tr key={brand.id} className={index % 2 === 0 ? 'bg-[#F9F9F9]' : ''}>
-                    <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{brand.id}</td>
-                    <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{brand.name}</td>
+                {products.map((product: ProductType, index) => (
+                  <tr key={product.id} className={index % 2 === 0 ? 'bg-[#F9F9F9]' : ''}>
+                    <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{product.id}</td>
+                    <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>
+                      <div className='line-clamp-3 leading-[1.5] py-2 text-[14px]'>{product.name}</div>
+                    </td>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] text-center'>
-                      <div className='flex justify-center items-center'>
+                      <div className='flex justify-center items-center h-full rounded-[10px]'>
                         <img
-                          src={brand.image}
-                          className='w-14 h-14 py-1 object-contain rounded-md shadow-sm border border-gray-200'
+                          src={product.image}
+                          alt={product.name}
+                          className='max-h-[80px] py-2 w-auto object-contain rounded-[10px] shadow-sm border border-gray-200'
                         />
                       </div>
                     </td>
+                    <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle truncate ml-1'>
+                      <span>{formatCurrency(product.price)}</span>
+                      <span className='text-[13px] ml-[2px]'>₫</span>
+                    </td>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] text-center align-middle text-white'>
                       <div className='flex items-center justify-center gap-3'>
-                        <Link to={`/admin/brands/update-brand/${brand.id}`}>
+                        <Link to={`/admin/products/update-product/${product.id}`}>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             width={22}
@@ -132,7 +123,7 @@ export default function Brands() {
                             />
                           </svg>
                         </Link>
-                        <button onClick={() => deleteBrandMutation.mutate(brand.id)}>
+                        <button>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             width={22}
@@ -167,6 +158,20 @@ export default function Brands() {
                               strokeWidth={2}
                               strokeLinecap='round'
                               strokeLinejoin='round'
+                            />
+                          </svg>
+                        </button>
+                        <button>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            width={22}
+                            height={22}
+                            viewBox='0 0 24 24'
+                            fill='none'
+                          >
+                            <path
+                              d='M12 8.11103C11.632 8.11679 11.2667 8.17525 10.9153 8.28465C11.0778 8.57052 11.1644 8.8933 11.1667 9.22215C11.1667 9.4775 11.1164 9.73034 11.0187 9.96626C10.9209 10.2022 10.7777 10.4165 10.5971 10.5971C10.4166 10.7776 10.2022 10.9209 9.96632 11.0186C9.73041 11.1163 9.47757 11.1666 9.22222 11.1666C8.89336 11.1643 8.57059 11.0778 8.28471 10.9152C8.05917 11.6974 8.08546 12.5308 8.35985 13.2972C8.63425 14.0637 9.14284 14.7244 9.8136 15.1857C10.4843 15.6471 11.2832 15.8857 12.0971 15.8677C12.911 15.8498 13.6987 15.5762 14.3484 15.0858C14.9982 14.5954 15.4772 13.9129 15.7176 13.1351C15.958 12.3573 15.9475 11.5236 15.6877 10.7521C15.428 9.98058 14.932 9.31034 14.2702 8.83633C13.6083 8.36233 12.8141 8.10858 12 8.11103ZM21.8792 11.493C19.9962 7.81902 16.2684 5.33325 12 5.33325C7.73159 5.33325 4.00276 7.82076 2.12081 11.4933C2.04138 11.6505 2 11.824 2 12.0001C2 12.1762 2.04138 12.3498 2.12081 12.5069C4.0038 16.1808 7.73159 18.6666 12 18.6666C16.2684 18.6666 19.9972 16.1791 21.8792 12.5065C21.9586 12.3494 22 12.1758 22 11.9998C22 11.8237 21.9586 11.6501 21.8792 11.493ZM12 16.9999C8.57465 16.9999 5.43436 15.0902 3.73853 11.9999C5.43436 8.90965 8.5743 6.99992 12 6.99992C15.4257 6.99992 18.5656 8.90965 20.2615 11.9999C18.566 15.0902 15.4257 16.9999 12 16.9999Z'
+                              fill='#4F46E5'
                             />
                           </svg>
                         </button>

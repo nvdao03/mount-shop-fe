@@ -24,8 +24,11 @@ export const PATH = {
   ADMIN_ADD_BRAND: '/admin/brands/add-brand',
   ADMIN_UPDATE_BRAND: '/admin/brands/update-brand/:brand_id',
 
-  ADMIN_USERS: '/admin/users',
   ADMIN_PRODUCTS: '/admin/products',
+  ADMIN_ADD_PRODUCT: '/admin/products/add-product',
+  ADMIN_UPDATE_PRODUCT: '/admin/products/update-product/:product_id',
+
+  ADMIN_USERS: '/admin/users',
   ADMIN_VOUCHERS: '/admin/vouchers',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_COMMENTS: '/admin/comments'

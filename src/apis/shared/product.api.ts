@@ -1,7 +1,9 @@
+import type { ProductQueryParamsConfig } from '../../configs/product.config'
 import http from '../../utils/http'
 
 export const productApi = {
-  getProducts: (params: { limit: string; page: string }) => {
+  // --- Get Products ---
+  getProducts: (params: ProductQueryParamsConfig) => {
     return http.get('/products', {
       params
     })

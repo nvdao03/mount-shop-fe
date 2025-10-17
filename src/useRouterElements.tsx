@@ -20,6 +20,7 @@ import VerifyEmail from './pages/auth/VerifyEmail'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import VerifyForgotPassword from './pages/auth/VerifyForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
+import Products from './pages/admin/Products'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -134,6 +135,14 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <UpdateBrand />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_PRODUCTS,
+              element: (
+                <AdminLayout>
+                  <Products />
                 </AdminLayout>
               )
             }

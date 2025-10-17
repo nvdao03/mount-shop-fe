@@ -18,3 +18,8 @@ export const handleUploadImageHelper = (
     mutation.mutate(formData)
   }
 }
+
+// Chuyển đổi dạng tiền
+export function formatCurrency(currency: number) {
+  return new Intl.NumberFormat('de-DE').format(currency)
+}
