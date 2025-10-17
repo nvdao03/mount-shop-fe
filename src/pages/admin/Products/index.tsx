@@ -2,13 +2,17 @@ import { Link } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
 import useQueryParams from '../../../hooks/useQueryParams'
 import type { ProductQueryParamsConfig } from '../../../configs/product.config'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { productApi } from '../../../apis/shared/product.api'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import type { ProductType } from '../../../types/product.type'
 import { formatCurrency } from '../../../utils/other'
+import { adminProductApi } from '../../../apis/admin/product.api'
+import { toast } from 'react-toastify'
+import { PRODUCT_MESSAGE } from '../../../constants/message'
 
 export default function Products() {
+  const queryClient = useQueryClient()
   const queryParams: ProductQueryParamsConfig = useQueryParams()
   const queryConfig: ProductQueryParamsConfig = {
     page: queryParams.page || 1,
@@ -30,6 +34,16 @@ export default function Products() {
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
     },
     staleTime: 30 * 60 * 1000
+  })
+
+  // --- Delete Product Mutation ---
+  const deleteProductMutation = useMutation({
+    mutationFn: (product_id: number) => adminProductApi.deleteProduct(product_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminGetProducts'] })
+      queryClient.invalidateQueries({ queryKey: ['getProducts'] })
+      toast.success(PRODUCT_MESSAGE.DELETE_PRODUCT_SUCCESS)
+    }
   })
 
   const { data, fetchNextPage, hasNextPage } = getProducts
@@ -123,7 +137,7 @@ export default function Products() {
                             />
                           </svg>
                         </Link>
-                        <button>
+                        <button onClick={() => deleteProductMutation.mutate(product.id)}>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             width={22}

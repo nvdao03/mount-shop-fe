@@ -14,5 +14,7 @@ export const adminProductApi = {
     stock: number
     category_id: number
     brand_id: number
-  }) => http.post('/admin/products', body)
+  }) => http.post('/admin/products', body),
+  // --- Delete Product ---
+  deleteProduct: (product_id: number) => http.delete(`/admin/products/${product_id}`)
 }

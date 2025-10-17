@@ -5,7 +5,7 @@ import { schemaAddProduct } from '../../../validation/product'
 import { useState } from 'react'
 import Loading from '../../../components/Loading'
 import { handleUploadImageHelper } from '../../../utils/other'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { mediaApi } from '../../../apis/shared/media.api'
 import { categoryApi } from '../../../apis/shared/category.api'
 import type { CategoryType } from '../../../types/category.type'
@@ -19,6 +19,7 @@ import { PRODUCT_MESSAGE } from '../../../constants/message'
 import { PATH } from '../../../constants/path'
 
 export default function AddProduct() {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imagesPreview, setImagesPreview] = useState<string[] | []>([])
@@ -85,6 +86,8 @@ export default function AddProduct() {
         images: imagesPreview
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminGetProducts'] })
+      queryClient.invalidateQueries({ queryKey: ['getProducts'] })
       toast.success(PRODUCT_MESSAGE.ADD_PRODUCT_SUCCESS)
       navigate(PATH.ADMIN_PRODUCTS)
     }
