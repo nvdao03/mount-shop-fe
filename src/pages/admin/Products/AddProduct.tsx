@@ -88,6 +88,7 @@ export default function AddProduct() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminGetProducts'] })
       queryClient.invalidateQueries({ queryKey: ['getProducts'] })
+      queryClient.invalidateQueries({ queryKey: ['getProductFlashSale'] })
       toast.success(PRODUCT_MESSAGE.ADD_PRODUCT_SUCCESS)
       navigate(PATH.ADMIN_PRODUCTS)
     }
@@ -179,7 +180,7 @@ export default function AddProduct() {
           <div className='w-full relative'>
             <label className='block mb-2'>Danh Mục</label>
             <select
-              className='appearance-none w-full h-10 outline-none border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2'
+              className='appearance-none leading-[1.5] w-full h-10 outline-none border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2'
               {...register('category_id')}
               onChange={(e) => setCaregoryId(Number(e.target.value))}
             >

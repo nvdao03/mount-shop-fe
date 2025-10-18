@@ -57,8 +57,6 @@ export default function Products() {
     }
   })
 
-  console.log(queryConfig.category)
-
   const { data, fetchNextPage, hasNextPage } = getProducts
   const products = data?.pages.flatMap((page) => page.data.data.products) || []
   const categories = useMemo(() => {

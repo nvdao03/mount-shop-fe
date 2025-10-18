@@ -1,6 +1,7 @@
 import HomeBannerSlider from './components/HomeBannerSlider'
 import HomeFeaturedCategories from './components/HomeFeaturedCategories'
 import HomeFlashSale from './components/HomeFlashSale'
+import HomeProductSuggestions from './components/HomeProductSuggestions'
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <HomeBannerSlider />
       <HomeFeaturedCategories />
       <HomeFlashSale />
+      <HomeProductSuggestions />
     </main>
   )
 }

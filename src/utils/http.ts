@@ -37,7 +37,7 @@ class Http {
     this.fullName = getFullName()
     this.instance = axios.create({
       baseURL: URL,
-      timeout: 10000,
+      timeout: 20000,
       headers: {
         'Content-Type': 'application/json'
       }

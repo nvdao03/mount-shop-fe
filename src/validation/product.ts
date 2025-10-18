@@ -61,7 +61,9 @@ export const schemaUpdateProduct = yup.object({
     .required(PRODUCT_MESSAGE.PRODUCT_PRICE_REQUIRED)
     .typeError(PRODUCT_MESSAGE.PRODUCT_PRICE_REQUIRED)
     .test('price', PRODUCT_MESSAGE.PRODUCT_PRICE_INVALID, function (value) {
-      if (value > this.parent.price_before_discount) {
+      if (this.parent.price_before_discount === 0) {
+        return true
+      } else if (value > this.parent.price_before_discount) {
         return false
       }
       return true

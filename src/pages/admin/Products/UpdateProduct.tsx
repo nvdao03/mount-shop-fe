@@ -125,6 +125,8 @@ export default function UpdateProduct() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminGetProducts'] })
       queryClient.invalidateQueries({ queryKey: ['getProducts'] })
+      queryClient.invalidateQueries({ queryKey: ['getProductFlashSale'] })
+      queryClient.invalidateQueries({ queryKey: ['adminGetProduct'] })
       toast.success(PRODUCT_MESSAGE.UPDATE_PRODUCT_SUCCESS)
       navigate(PATH.ADMIN_PRODUCTS)
     }
