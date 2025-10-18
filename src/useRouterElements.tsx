@@ -23,6 +23,7 @@ import ResetPassword from './pages/auth/ResetPassword'
 import Products from './pages/admin/Products'
 import AddProduct from './pages/admin/Products/AddProduct'
 import AdminProductDetail from './pages/admin/Products/AdminProductDetail'
+import UpdateProduct from './pages/admin/Products/UpdateProduct'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -161,6 +162,14 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <AdminProductDetail />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_UPDATE_PRODUCT,
+              element: (
+                <AdminLayout>
+                  <UpdateProduct />
                 </AdminLayout>
               )
             }

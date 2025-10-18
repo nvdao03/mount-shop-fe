@@ -67,7 +67,7 @@ export default function Brands() {
               value={search}
               type='text'
               placeholder='Tìm kiếm thương hiệu...'
-              className='w-[80%] border rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
+              className='w-[80%] border border-[#B3B3B3] placeholder:text-[#1A1A1A] rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
             />
             <Link to={PATH.ADMIN_ADD_BRAND} className='bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700'>
               + Thêm thương hiệu

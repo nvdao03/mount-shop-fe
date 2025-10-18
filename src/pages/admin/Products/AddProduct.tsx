@@ -335,9 +335,10 @@ export default function AddProduct() {
                   {...field}
                   theme='snow'
                   placeholder='Nhập mô tả chi tiết sản phẩm ...'
-                  className='text-[15px] md:text-[15px] leading-[1.5] bg-transparent outline-none resize-none'
+                  className='text-[15px] leading-[1.5] bg-transparent outline-none resize-none min-h-[300px] max-h-[300px] overflow-y-auto'
                   style={{
-                    height: '300px'
+                    height: '300px',
+                    overflow: 'auto'
                   }}
                 />
               </div>

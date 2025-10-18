@@ -41,7 +41,14 @@ export default function SidebarAdmin() {
             />
           </svg>
         </button>
-        <button className='flex-shrink-0 text-xl ml-4 font-bold text-indigo-600'>
+        <button
+          onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.stopPropagation()
+            e.preventDefault()
+            navigate(PATH.HOME)
+          }}
+          className='flex-shrink-0 text-xl ml-4 font-bold text-indigo-600'
+        >
           <img src={Logo} alt='logo' />
         </button>
       </Link>

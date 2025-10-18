@@ -30,9 +30,8 @@ export default function Categories() {
     queryKey: ['adminGetCategories', queryConfig],
     queryFn: ({ pageParam = queryConfig.page }) =>
       categoryApi.getCategories({
-        page: pageParam,
-        limit: queryConfig.limit,
-        search: queryConfig.search
+        ...queryConfig,
+        page: pageParam
       }),
     getNextPageParam: (lastPage) => {
       const { pagination } = lastPage.data.data
@@ -69,7 +68,7 @@ export default function Categories() {
               value={search}
               type='text'
               placeholder='Tìm kiếm danh mục...'
-              className='w-[80%] border rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
+              className='w-[80%] border border-[#B3B3B3] placeholder:text-[#1A1A1A] rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
             />
             <Link to={PATH.ADMIN_ADD_CATEGORY} className='bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700'>
               + Thêm danh mục

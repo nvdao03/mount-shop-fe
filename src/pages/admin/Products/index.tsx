@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
 import useQueryParams from '../../../hooks/useQueryParams'
 import type { ProductQueryParamsConfig } from '../../../configs/product.config'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { productApi } from '../../../apis/shared/product.api'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import type { ProductType } from '../../../types/product.type'
@@ -10,29 +10,40 @@ import { formatCurrency } from '../../../utils/other'
 import { adminProductApi } from '../../../apis/admin/product.api'
 import { toast } from 'react-toastify'
 import { PRODUCT_MESSAGE } from '../../../constants/message'
+import { useMemo, useState } from 'react'
+import useDebounce from '../../../hooks/useDebounce'
+import { categoryApi } from '../../../apis/shared/category.api'
+import type { CategoryType } from '../../../types/category.type'
 
 export default function Products() {
   const queryClient = useQueryClient()
   const queryParams: ProductQueryParamsConfig = useQueryParams()
+  const [search, setSearch] = useState<string>('')
+  const [categoryID, setCategoryId] = useState<number | undefined>(undefined)
+  const searchDounce = useDebounce(search, 700)
+
   const queryConfig: ProductQueryParamsConfig = {
     page: queryParams.page || 1,
     limit: queryParams.limit || 15,
-    category: queryParams.category,
-    search: queryParams.search || ''
+    category: queryParams.category || (categoryID as number) || undefined,
+    search: queryParams.search || searchDounce
   }
 
   // --- Get Products --- //
   const getProducts = useInfiniteQuery({
     queryKey: ['adminGetProducts', queryConfig],
-    queryFn: ({ pageParam = queryConfig.page }) =>
-      productApi.getProducts({
-        page: pageParam,
-        ...queryConfig
-      }),
-    getNextPageParam: (lastpage) => {
-      const { pagination } = lastpage.data.data
+    queryFn: ({ pageParam = queryConfig.page }) => productApi.getProducts({ ...queryConfig, page: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const { pagination } = lastPage.data.data
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
     },
+    staleTime: 30 * 60 * 1000
+  })
+
+  // --- Get Categories --- //
+  const getCategories = useQuery({
+    queryKey: ['adminGetCategories'],
+    queryFn: () => categoryApi.getCategories(),
     staleTime: 30 * 60 * 1000
   })
 
@@ -46,8 +57,13 @@ export default function Products() {
     }
   })
 
+  console.log(queryConfig.category)
+
   const { data, fetchNextPage, hasNextPage } = getProducts
   const products = data?.pages.flatMap((page) => page.data.data.products) || []
+  const categories = useMemo(() => {
+    return getCategories.data?.data?.data?.categories || []
+  }, [getCategories.data?.data?.data?.categories])
 
   return (
     <div className='h-full bg-white'>
@@ -58,14 +74,45 @@ export default function Products() {
       {/* --- Filter Products --- */}
       <div id='scrollableDiv' className='py-4 h-[calc(100vh-120px)] overflow-y-scroll'>
         <div className='mb-4 px-4'>
-          <div className='flex items-center justify-between'>
+          <div className='flex items-center justify-between gap-4'>
             <input
-              // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-              // value={search}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+              value={search}
               type='text'
               placeholder='Tìm kiếm sản phẩm...'
-              className='w-[80%] border rounded-lg px-4 py-[9px] outline-none focus:ring-2 focus:ring-blue-500'
+              className='flex-1 border border-[#B3B3B3] placeholder:text-[#1A1A1A] rounded-lg px-4 py-[9px] outline-none focus:ring-1 focus:ring-blue-500'
             />
+            <div className='relative w-[20%] h-10 border border-solid border-[#B3B3B3] rounded-lg cursor-pointer'>
+              <select
+                value={queryConfig.category || ''}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  const value = e.target.value
+                  if (value === undefined) {
+                    setCategoryId(undefined) // reset danh mục
+                  } else {
+                    setCategoryId(Number(value))
+                  }
+                  setCategoryId(Number(e.target.value))
+                }}
+                className='appearance-none leading-[1.5] outline-none rounded-lg placeholder:text-[#666] placeholder:text-sm px-3 w-full h-full'
+              >
+                <option value=''>Chọn danh mục</option>
+                {categories.map((category: CategoryType) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='w-4 h-4 text-gray-600 absolute right-3 top-[50%] -translate-y-[50%] pointer-events-none'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+              </svg>
+            </div>
             <Link to={PATH.ADMIN_ADD_PRODUCT} className='bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700'>
               + Thêm sản phẩm
             </Link>
