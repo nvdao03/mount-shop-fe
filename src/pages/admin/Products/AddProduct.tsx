@@ -205,7 +205,7 @@ export default function AddProduct() {
           <div className='w-full relative'>
             <label className='block mb-2'>Thương Hiệu</label>
             <select
-              className='appearance-none w-full h-10 outline-none border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2'
+              className='leading-[1.5] appearance-none w-full h-10 outline-none border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2'
               {...register('brand_id')}
             >
               <option value=''>--- Chọn thương hiệu ---</option>\

@@ -56,7 +56,7 @@ export default function ProfileUserInfo({ setMenu, user }: PropTypes) {
             }}
             className='hidden md:block bg-[#4F46E5] text-white rounded-lg py-2 px-5 text-center text-sm font-semibold'
           >
-            Edit
+            Chỉnh sửa
           </button>
         </div>
         {/* Form */}
@@ -111,7 +111,7 @@ export default function ProfileUserInfo({ setMenu, user }: PropTypes) {
             }}
             className='flex-1 bg-[#4F46E5] text-white rounded-lg py-3 text-center text-sm font-semibold'
           >
-            Edit
+            Chỉnh sửa
           </button>
         </div>
       </div>
