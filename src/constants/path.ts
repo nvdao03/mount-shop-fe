@@ -6,10 +6,11 @@ export const PATH = {
   VERIFY_EMAIL: '/verify-email',
   VERIFY_FORGOT_PASSWORD: '/verify-forgot-password',
   RESET_PASSWORD: '/reset-password',
-  PRODUCT_DETAIL: '/product-detail/:product_id',
 
   // --- Shop (public pages) ---
   HOME: '/',
+  PRODUCT_DETAIL: '/product-detail/:product_id',
+  PRODUCT_LIST: '/products',
 
   // --- User  ---
   USER_PROFILE: '/profile',

@@ -16,11 +16,13 @@ import { getUsernameFromEmail } from '../../utils/other'
 import { authApi } from '../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../constants/message'
+import type { ProductQueryParamsConfig } from '../../configs/product.config'
 
 export default function Header() {
   const { avatar, isAuthenticated, fullName, email, refreshToken, resetAppContext } = useContext(AppContext)
+  const queryPageProducts: ProductQueryParamsConfig = {}
   const queryClient = useQueryClient()
-  const navidate = useNavigate()
+  const navigate = useNavigate()
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -50,7 +52,7 @@ export default function Header() {
     onSuccess: () => {
       toast.success(AUTH_MESSAGE.LOGOUT_SUCCESS)
       resetAppContext()
-      navidate(PATH.HOME)
+      navigate(PATH.HOME)
     }
   })
 
@@ -178,7 +180,20 @@ export default function Header() {
                   {brands &&
                     brands.map((brand: BrandType) => (
                       <div key={brand.id} className='flex flex-col items-center gap-2 justify-center'>
-                        <button className='px-2 py-2 rounded-[14px] bg-[#F5F5FA] flex justify-center items-center'>
+                        <button
+                          onClick={() =>
+                            navigate(PATH.PRODUCT_LIST, {
+                              state: {
+                                queryPageProducts: {
+                                  ...queryPageProducts,
+                                  category: selectedCategoryId,
+                                  brands: [brand.id]
+                                }
+                              }
+                            })
+                          }
+                          className='px-2 py-2 rounded-[14px] bg-[#F5F5FA] flex justify-center items-center'
+                        >
                           <img className='w-[64px] h-[58px] object-contain' src={brand.image} alt='' />
                         </button>
                         <span className='text-[13px] text-center'>{brand.name}</span>
@@ -420,12 +435,27 @@ export default function Header() {
             <h4 className='text-sm font-semibold mb-3'>Thương hiệu</h4>
             <div className='grid grid-cols-4 gap-4'>
               {mobileBrands?.map((brand: BrandType) => (
-                <div key={brand.id} className='flex flex-col items-center gap-2'>
+                <button
+                  onClick={() => {
+                    handleCloseMobile()
+                    navigate(PATH.PRODUCT_LIST, {
+                      state: {
+                        queryPageProducts: {
+                          ...queryPageProducts,
+                          category: mobileSelectedCategory.id,
+                          brands: [brand.id]
+                        }
+                      }
+                    })
+                  }}
+                  key={brand.id}
+                  className='flex flex-col items-center gap-2'
+                >
                   <div className='px-2 py-2 rounded-[14px] bg-[#F5F5FA] flex justify-center items-center'>
                     <img className='w-[64px] h-[58px] object-contain' src={brand.image} alt={brand.name} />
                   </div>
                   <span className='text-[13px]'>{brand.name}</span>
-                </div>
+                </button>
               ))}
             </div>
           </div>

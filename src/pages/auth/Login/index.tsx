@@ -179,7 +179,7 @@ export default function Login() {
                   classNameLabel='block text-sm mb-1'
                   classNameError='mt-2 flex items-center gap-1'
                   classNameErrorMessage='text-red-500 text-[13px]'
-                  classNameInput='text-[15px] w-full h-full border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none'
+                  classNameInput='text-[15px] w-full h-full border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 forcus:border-blue-500 outline-none'
                   register={register}
                   errorMessage={errors?.email?.message as string}
                   type='email'
@@ -192,7 +192,7 @@ export default function Login() {
                   classNameLabel='block text-sm mb-1'
                   classNameError='mt-2 flex items-center gap-1'
                   classNameErrorMessage='text-red-500 text-[13px]'
-                  classNameInput='text-[15px] w-full h-full border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none'
+                  classNameInput='text-[15px] w-full h-full border border-solid border-[#B3B3B3] placeholder:text-[#666] placeholder:text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 forcus:border-blue-500 outline-none'
                   register={register}
                   errorMessage={errors?.password?.message as string}
                   type='password'

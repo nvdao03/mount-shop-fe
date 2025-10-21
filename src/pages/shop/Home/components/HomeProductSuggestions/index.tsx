@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CategoryType } from '../../../../../types/category.type'
 import { categoryApi } from '../../../../../apis/shared/category.api'
 import useQueryParams from '../../../../../hooks/useQueryParams'
@@ -15,6 +15,7 @@ export default function HomeProductSuggestions() {
   const [categories, setCategories] = useState<CategoryType[] | []>([])
   const [categoryId, setCategoryId] = useState<number | undefined>(undefined)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640)
+  const productListRef = useRef<HTMLDivElement>(null)
   const excludedCategories = ['Máy giặt', 'Tủ lạnh', 'Nhà sách', 'Âm thanh', 'Túi xách']
   const queryConfig: ProductQueryParamsConfig = {
     page: queryParams.page || 1,
@@ -49,6 +50,15 @@ export default function HomeProductSuggestions() {
     getCategories()
   }, [])
 
+  // --- Xử lý cuộn nên đầu trang khi F5 --- //
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0)
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [])
+
   // --- Get Products --- //
   const getProducts = useInfiniteQuery({
     queryKey: ['getProductsPageHome', queryConfig],
@@ -63,7 +73,7 @@ export default function HomeProductSuggestions() {
   })
 
   // --- Handle Reset and cached data page 1 --- //
-  const handleReset = () => {
+  const handleCollapse = () => {
     const cachedData = queryClient.getQueryData<any>(['getProductsPageHome', queryConfig])
     if (cachedData) {
       queryClient.setQueryData(['getProductsPageHome', queryConfig], {
@@ -71,13 +81,17 @@ export default function HomeProductSuggestions() {
         pages: [cachedData.pages[0]]
       })
     }
+    productListRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
   }
 
   const { isFetching, hasNextPage, fetchNextPage } = getProducts
   const products = getProducts.data?.pages.flatMap((page) => page.data.data.products) || []
 
   return (
-    <section className='pt-[20px] py-6 md:py-10 bg-white'>
+    <section ref={productListRef} className='pt-[20px] py-6 md:py-10 bg-white'>
       <div className='max-w-7xl mx-auto px-4 relative'>
         {/* Filter */}
         <div className='flex gap-5 flex-col md:flex-row md:items-center'>
@@ -100,7 +114,7 @@ export default function HomeProductSuggestions() {
           </div>
         </div>
         {/* Products */}
-        <div className='mt-6 md:mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 pb-10'>
+        <div className='mt-6 md:mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 pb-7 sm:pb-10'>
           {products.map((product: ProductType) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -119,7 +133,7 @@ export default function HomeProductSuggestions() {
           )}
           {!hasNextPage && (
             <button
-              onClick={handleReset}
+              onClick={handleCollapse}
               className='text-primary border border-solid border-primary rounded-md py-3 px-4 font-semibold'
             >
               {isFetching ? 'Đang tải...' : 'Đóng lại'}

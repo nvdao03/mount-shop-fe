@@ -65,5 +65,6 @@ export const PRODUCT_MESSAGE = {
   PRODUCT_PRICE_INVALID: 'Giá sản phẩm không hợp lệ',
   ADD_PRODUCT_SUCCESS: 'Tạo sản phẩm thành công',
   DELETE_PRODUCT_SUCCESS: 'Xoá sản phẩm thành công',
-  UPDATE_PRODUCT_SUCCESS: 'Cập nhật sản phẩm thành công'
+  UPDATE_PRODUCT_SUCCESS: 'Cập nhật sản phẩm thành công',
+  MIN_PRICE_GREATER_THAN_MAX_PRICE: 'Giá từ phải nhỏ hơn giá đến'
 }

@@ -21,6 +21,7 @@ export interface GetProductsResponseSuccess {
     products: ProductType[]
     pagination: {
       page: number
+      total: number
       limit: number
       total_page: number
     }
