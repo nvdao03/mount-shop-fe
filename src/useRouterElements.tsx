@@ -25,6 +25,7 @@ import AddProduct from './pages/admin/Products/AddProduct'
 import AdminProductDetail from './pages/admin/Products/AdminProductDetail'
 import UpdateProduct from './pages/admin/Products/UpdateProduct'
 import ProductList from './pages/shop/ProductList'
+import ProductDetail from './pages/shop/ProductDetail'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -61,6 +62,14 @@ export default function useRouterElements() {
       element: (
         <MainLayout>
           <ProductList />
+        </MainLayout>
+      )
+    },
+    {
+      path: PATH.PRODUCT_DETAIL,
+      element: (
+        <MainLayout>
+          <ProductDetail />
         </MainLayout>
       )
     },

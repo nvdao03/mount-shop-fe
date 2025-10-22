@@ -193,3 +193,9 @@ body {
 .custom_title_h2 {
   @apply text-[16px] md:text-[18px] font-semibold;
 }
+
+.prose p {
+  margin: 0 0 !important;
+  line-height: 1.5 !important;
+  font-size: 15px !important;
+}

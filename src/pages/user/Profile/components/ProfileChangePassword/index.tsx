@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query'
 import { authApi } from '../../../../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../../../../constants/message'
+import { HTTP_STATUS } from '../../../../../constants/httpStatus'
 
 interface PropTypes {
   setMenu: React.Dispatch<
@@ -36,6 +37,10 @@ export default function ProfileChangePassword({ setMenu }: PropTypes) {
       setMenu('user_info')
     },
     onError: (errors: any) => {
+      if (errors.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        const message = errors.response.data.message
+        toast.warning(message)
+      }
       const message = errors.response.data.errors.current_password.message
       setError('current_password', {
         message,

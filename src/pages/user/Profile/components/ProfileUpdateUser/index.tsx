@@ -50,6 +50,10 @@ export default function ProfileUpdateUser({ setMenu, user }: PropTypes) {
     onSuccess: (response) => {
       const avatar = response.data.data[0].url
       setAvatarPreview(avatar)
+    },
+    onError: (errors: any) => {
+      const message = errors.response.data.message
+      toast.warning(message)
     }
   })
 
@@ -69,6 +73,10 @@ export default function ProfileUpdateUser({ setMenu, user }: PropTypes) {
           lineHeight: '1.5'
         }
       })
+    },
+    onError: (errors: any) => {
+      const message = errors.response.data.message
+      toast.warning(message)
     }
   })
 

@@ -33,3 +33,15 @@ export function fomatNumberToSocialStyle(value: number) {
     .format(value)
     .replace('.', ',')
 }
+
+// Giảm giá
+export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
+
+// Lấy ra giờ và phút
+export const formatTime = (createAt: string) => {
+  return new Date(createAt).toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  })
+}

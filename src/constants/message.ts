@@ -66,5 +66,13 @@ export const PRODUCT_MESSAGE = {
   ADD_PRODUCT_SUCCESS: 'Tạo sản phẩm thành công',
   DELETE_PRODUCT_SUCCESS: 'Xoá sản phẩm thành công',
   UPDATE_PRODUCT_SUCCESS: 'Cập nhật sản phẩm thành công',
-  MIN_PRICE_GREATER_THAN_MAX_PRICE: 'Giá từ phải nhỏ hơn giá đến'
+  MIN_PRICE_GREATER_THAN_MAX_PRICE: 'Giá từ phải nhỏ hơn giá đến',
+  PRODUCT_ID_REQUIRED: 'Vui lòng truyền lên ID sản phẩm'
+}
+
+export const COMMET_MESSAGE = {
+  COMMENT_CONTENT_REQUIRED: 'Nội dung bình luận không được để trống',
+  COMMENT_CONTENT_INVALID_LENGTH: 'Nội dung bình luận phải không được vượt quá 255 ký tự',
+  ADD_COMMENT_SUCCESS: 'Đã bình luận thành công',
+  DELETE_COMMENT_SUCCESS: 'Xóa bình luận thành công'
 }

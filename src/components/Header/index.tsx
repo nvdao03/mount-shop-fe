@@ -17,9 +17,10 @@ import { authApi } from '../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../constants/message'
 import type { ProductQueryParamsConfig } from '../../configs/product.config'
+import { ROLES } from '../../constants/other'
 
 export default function Header() {
-  const { avatar, isAuthenticated, fullName, email, refreshToken, resetAppContext } = useContext(AppContext)
+  const { avatar, isAuthenticated, fullName, email, refreshToken, resetAppContext, userRole } = useContext(AppContext)
   const queryPageProducts: ProductQueryParamsConfig = {}
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -278,15 +279,21 @@ export default function Header() {
                   </svg>
                   <span className='text-[#333] font-semibold'>Đơn hàng của tôi</span>
                 </Link>
-                <Link
-                  to={PATH.ADMIN_DASHBOARD}
-                  className='flex items-center gap-4 pt-4 pb-5 px-[21px] hover:underline transition-all duration-300 ease-in-out'
-                >
-                  <svg className='w-[22px] h-6 fill-[#4F46E5]' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'>
-                    <path d='M136 192C136 125.7 189.7 72 256 72C322.3 72 376 125.7 376 192C376 258.3 322.3 312 256 312C189.7 312 136 258.3 136 192zM48 546.3C48 447.8 127.8 368 226.3 368L285.7 368C384.2 368 464 447.8 464 546.3C464 562.7 450.7 576 434.3 576L77.7 576C61.3 576 48 562.7 48 546.3zM544 160C557.3 160 568 170.7 568 184L568 232L616 232C629.3 232 640 242.7 640 256C640 269.3 629.3 280 616 280L568 280L568 328C568 341.3 557.3 352 544 352C530.7 352 520 341.3 520 328L520 280L472 280C458.7 280 448 269.3 448 256C448 242.7 458.7 232 472 232L520 232L520 184C520 170.7 530.7 160 544 160z' />
-                  </svg>
-                  <span className='text-[#333] font-semibold'>Trang quản trị</span>
-                </Link>
+                {userRole === ROLES.ADMIN && (
+                  <Link
+                    to={PATH.ADMIN_DASHBOARD}
+                    className='flex items-center gap-4 pt-4 pb-5 px-[21px] hover:underline transition-all duration-300 ease-in-out'
+                  >
+                    <svg
+                      className='w-[22px] h-6 fill-[#4F46E5]'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 640 640'
+                    >
+                      <path d='M136 192C136 125.7 189.7 72 256 72C322.3 72 376 125.7 376 192C376 258.3 322.3 312 256 312C189.7 312 136 258.3 136 192zM48 546.3C48 447.8 127.8 368 226.3 368L285.7 368C384.2 368 464 447.8 464 546.3C464 562.7 450.7 576 434.3 576L77.7 576C61.3 576 48 562.7 48 546.3zM544 160C557.3 160 568 170.7 568 184L568 232L616 232C629.3 232 640 242.7 640 256C640 269.3 629.3 280 616 280L568 280L568 328C568 341.3 557.3 352 544 352C530.7 352 520 341.3 520 328L520 280L472 280C458.7 280 448 269.3 448 256C448 242.7 458.7 232 472 232L520 232L520 184C520 170.7 530.7 160 544 160z' />
+                    </svg>
+                    <span className='text-[#333] font-semibold'>Trang quản trị</span>
+                  </Link>
+                )}
                 <div className='px-5 pb-4'>
                   <button
                     onClick={handleLogout}

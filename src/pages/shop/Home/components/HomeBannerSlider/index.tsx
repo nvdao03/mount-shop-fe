@@ -38,6 +38,7 @@ export default function HomeBannerSlider() {
     <section className='w-full bg-white pt-[96px] md:pt-[117px]'>
       <div className='max-w-7xl mx-auto px-4 relative'>
         <Swiper
+          className='rounded-2xl'
           modules={[Navigation, Pagination, Autoplay]}
           slidesPerView={1}
           spaceBetween={30}

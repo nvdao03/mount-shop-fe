@@ -8,8 +8,11 @@ export default {
     extend: {
       colors: {
         primary: '#4F46E5'
+      },
+      screens: {
+        'custom-sm': '500px'
       }
     }
   },
-  plugins: []
+  plugins: [require('@tailwindcss/typography')]
 }
