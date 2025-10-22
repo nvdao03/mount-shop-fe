@@ -26,6 +26,7 @@ import AdminProductDetail from './pages/admin/Products/AdminProductDetail'
 import UpdateProduct from './pages/admin/Products/UpdateProduct'
 import ProductList from './pages/shop/ProductList'
 import ProductDetail from './pages/shop/ProductDetail'
+import Comments from './pages/admin/Comments'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -188,6 +189,14 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <UpdateProduct />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_COMMENTS,
+              element: (
+                <AdminLayout>
+                  <Comments />
                 </AdminLayout>
               )
             }
