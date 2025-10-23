@@ -32,6 +32,8 @@ export const PATH = {
   ADMIN_PRODUCT_DETAIL: '/admin/products/product-detail/:product_id',
 
   ADMIN_USERS: '/admin/users',
+  ADMIN_ADD_USER: '/admin/users/add-user',
+
   ADMIN_VOUCHERS: '/admin/vouchers',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_COMMENTS: '/admin/comments'

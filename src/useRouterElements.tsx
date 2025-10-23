@@ -27,6 +27,8 @@ import UpdateProduct from './pages/admin/Products/UpdateProduct'
 import ProductList from './pages/shop/ProductList'
 import ProductDetail from './pages/shop/ProductDetail'
 import Comments from './pages/admin/Comments'
+import Users from './pages/admin/Users'
+import AddUser from './pages/admin/Users/AddUser'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -197,6 +199,22 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <Comments />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_USERS,
+              element: (
+                <AdminLayout>
+                  <Users />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_ADD_USER,
+              element: (
+                <AdminLayout>
+                  <AddUser />
                 </AdminLayout>
               )
             }

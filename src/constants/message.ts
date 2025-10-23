@@ -19,11 +19,14 @@ export const AUTH_MESSAGE = {
   CHANGE_PASSWORD_SUCCESS: 'Đổi mật khâu thành công',
   VERIFY_EMAIL_SUCCESS: 'Kích hoạt tài khoản thành công',
   RESET_PASSWORD_SUCCESS: 'Đổi mật khâu thành công',
-  FORGOT_PASSWORD_TOKEN_REQUIRED: 'Token không được để trống'
+  FORGOT_PASSWORD_TOKEN_REQUIRED: 'Token không được để trống',
+  ROLE_ID_REQUIRED: 'Vui lòng nhập vai trò người dùng'
 }
 
 export const USER_MESSAGE = {
-  UPDATE_USER_SUCCESS: 'Cập nhật thông tin tài khoản thành công'
+  UPDATE_USER_SUCCESS: 'Cập nhật thông tin tài khoản thành công',
+  DELETE_USER_SUCCESS: 'Xóa người dùng thành công',
+  UPDATE_USER_ROLE_SUCCESS: 'Cập nhật vai trò người dùng thành công'
 }
 
 export const CATEGORY_MESSAGE = {
@@ -75,4 +78,9 @@ export const COMMET_MESSAGE = {
   COMMENT_CONTENT_INVALID_LENGTH: 'Nội dung bình luận phải không được vượt quá 255 ký tự',
   ADD_COMMENT_SUCCESS: 'Đã bình luận thành công',
   DELETE_COMMENT_SUCCESS: 'Xóa bình luận thành công'
+}
+
+export const ADMIN_MESSAGE = {
+  LOGIN_FAILED: 'Đăng nhập quản trị thất bại, vui lòng kiểm tra lại thông tin',
+  ADD_USER_SUCCESS: 'Tạo người dùng thành công'
 }

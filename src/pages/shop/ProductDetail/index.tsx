@@ -23,6 +23,7 @@ import { COMMET_MESSAGE } from '../../../constants/message'
 import { userCommentApi } from '../../../apis/users/comment.api'
 import AvatarDefault from '../../../assets/images/avatar-default.png'
 import type { ProductQueryParamsConfig } from '../../../configs/product.config'
+import ProductListSection from '../../../components/ProductListSection'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -470,9 +471,12 @@ export default function ProductDetail() {
             </section>
           </div>
         </main>
-        {/* Action Mobile */}
+        {/* Related Product */}
+        <div className='mt-4 md:mt-6'>
+          <ProductListSection title='Có thể bạn quan tâm' background='white' />
+        </div>
       </div>
-
+      {/* Action Add Cart On Mobile */}
       <div className='flex md:hidden z-30 fixed w-full bottom-0 p-4 border-t [box-shadow:0_-1px_8px_0_rgba(0,_0,_0,_0.15)] border-[#E6E6E6] bg-white  justify-between gap-3'>
         <button className='w-full rounded-[10px] font-semibold py-3 border border-solid border-primary text-primary'>
           Thêm vào giỏ hàng
