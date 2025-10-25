@@ -5,7 +5,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 import useQueryParams from '../../../hooks/useQueryParams'
 import type { UserQueryParamsConfig } from '../../../configs/user.config'
 import { adminUserApi } from '../../../apis/admin/user.api'
-import type { UserType } from '../../../types/user.type'
+import type { AdminGetUserType } from '../../../types/user.type'
 import AvatarDefault from '../../../assets/images/avatar-default.png'
 import { ROLES } from '../../../constants/other'
 import { adminRoleApi } from '../../../apis/admin/roles.api'
@@ -113,7 +113,7 @@ export default function Users() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user: UserType, index) => (
+                {users.map((user: AdminGetUserType, index) => (
                   <tr key={user.id} className={index % 2 === 0 ? 'bg-[#F9F9F9]' : ''}>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{user.id}</td>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle leading-[1.5]'>
@@ -147,7 +147,7 @@ export default function Users() {
                           {user.role === ROLES.CUSTOMER ? 'Khách hàng' : user.role}
                         </option>
                         {roles.map((role: RoleType) => (
-                          <option className={`${role.id === user.role_id && 'hidden'}`} value={role.id}>
+                          <option key={role.id} className={`${role.id === user.role_id && 'hidden'}`} value={role.id}>
                             {role.name === ROLES.CUSTOMER
                               ? 'Khách hàng'
                               : role.name === ROLES.ADMIN

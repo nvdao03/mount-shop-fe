@@ -32,8 +32,10 @@ export default function Profile() {
 
   // --- Get User Profile ---
   useEffect(() => {
-    const user = getUserProfile?.data?.data && (getUserProfile.data.data as GetUserProfileResponseSuccess)
-    setUser(user?.data || null)
+    if (getUserProfile?.data?.data) {
+      const user = getUserProfile?.data?.data && (getUserProfile.data.data as GetUserProfileResponseSuccess)
+      setUser(user?.data || null)
+    }
   }, [getUserProfile?.data?.data])
 
   // --- Logout Mutation ---

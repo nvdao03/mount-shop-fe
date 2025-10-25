@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import InputAuth from '../../../components/InputAuth'
 import { PATH } from '../../../constants/path'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Logo from '../../../assets/images/logo.png'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { schemaForgotPassword, type TypeSchemaForgotPassword } from '../../../validation/auth'

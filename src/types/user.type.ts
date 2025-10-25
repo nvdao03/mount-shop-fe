@@ -17,6 +17,19 @@ export interface GetUserProfileResponseSuccess {
 // --- User Type ---
 export interface UserType {
   id: number
+  role: string
+  email: string
+  full_name: string
+  phone: string
+  address: string
+  avatar: string
+  created_at: string
+  update_at: string
+}
+
+// --- Admin Get User Type ---
+export interface AdminGetUserType {
+  id: number
   full_name: string
   email: string
   phone: null
@@ -31,7 +44,7 @@ export interface UserType {
 export interface GetUsersAllResponseSuccess {
   message: string
   data: {
-    users: UserType[]
+    users: AdminGetUserType[]
     pagiantion: {
       page: number
       limit: number
