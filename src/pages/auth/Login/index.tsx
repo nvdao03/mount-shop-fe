@@ -11,15 +11,25 @@ import { authApi } from '../../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../../constants/message'
 import { AppContext } from '../../../contexts/app.context'
-import type { AuthResponseSuccess } from '../../../types/auth.type'
+import type { AuthResponseSuccess, GoogleOauthResponseSuccess } from '../../../types/auth.type'
 import Loading from '../../../components/Loading'
 import { schemaLogin, type TypeSchemaLogin } from '../../../validation/auth'
+import useQueryParams from '../../../hooks/useQueryParams'
+import {
+  saveAccessToken,
+  saveAvtar,
+  saveEmail,
+  saveFullName,
+  saveRefreshToken,
+  saveUserRole
+} from '../../../utils/auth'
 
 type FormData = TypeSchemaLogin
 
 export default function Login() {
   const { setIsAuthenticated, setAvatar, setEmail, setFullName, setRefreshToken, setUserRole } = useContext(AppContext)
   const navigate = useNavigate()
+  const params = useQueryParams()
 
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
 
@@ -70,6 +80,49 @@ export default function Login() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  // --- Google Oauth 2.0 ---
+  const getGoogleOauthUrl = () => {
+    const { VITE_GOOGLE_CLIENT_ID, VITE_GOOGLE_REDIRECT_URI } = import.meta.env
+    const URL = 'https://accounts.google.com/o/oauth2/auth'
+    const query = new URLSearchParams({
+      client_id: VITE_GOOGLE_CLIENT_ID as string,
+      redirect_uri: VITE_GOOGLE_REDIRECT_URI as string,
+      response_type: 'code',
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile'
+      ].join(' '),
+      prompt: 'consent'
+    })
+    return `${URL}?${query.toString()}`
+  }
+
+  // --- Google Oauth 2.0 ---
+  useEffect(() => {
+    if (!params) return
+    if (params) {
+      const { access_token, refresh_token, avatar, email, full_name, id, role } =
+        params as unknown as GoogleOauthResponseSuccess
+      if (!id || !access_token) return
+
+      setIsAuthenticated(true)
+      setRefreshToken(refresh_token)
+      setFullName(full_name)
+      setEmail(email)
+      setUserRole(role)
+      setAvatar(avatar || '')
+
+      saveAccessToken(access_token)
+      saveRefreshToken(refresh_token)
+      saveAvtar(avatar || '')
+      saveFullName(full_name)
+      saveEmail(email)
+      saveUserRole(role)
+
+      navigate(PATH.HOME)
+    }
+  }, [params])
 
   return (
     <div className='min-h-screen flex'>
@@ -144,7 +197,7 @@ export default function Login() {
                 <hr className='w-full h-[1.5px] bg-[#ccc]' />
               </div>
               <Link
-                to={''}
+                to={getGoogleOauthUrl()}
                 className='w-full flex items-center justify-center gap-x-2 py-[11px] px-4 border border-solid border-[#B3B3B3] rounded-lg mt-4 text-[14px] font-semibold'
               >
                 <img src={googleIcon} alt='google' />
@@ -216,7 +269,7 @@ export default function Login() {
                 <hr className='w-full h-[1.5px] bg-[#ccc]' />
               </div>
               <Link
-                to={''}
+                to={getGoogleOauthUrl()}
                 className='w-full flex items-center justify-center gap-x-2 py-[11px] px-4 border border-solid border-[#B3B3B3] rounded-lg mt-4 text-[14px] font-semibold'
               >
                 <img src={googleIcon} alt='google' />

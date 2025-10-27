@@ -35,3 +35,17 @@ export interface VerifyEmailResponseSuccess {
     }
   }
 }
+
+export interface GoogleOauthResponseSuccess {
+  access_token: string
+  avatar: string
+  created_at: string
+  email: string
+  expires_access_token: string
+  expries_refresh_token: string
+  full_name: string
+  id: string
+  refresh_token: string
+  role: string
+  updated_at: string
+}
