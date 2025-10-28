@@ -37,6 +37,7 @@ export default function Register() {
       const data: AuthResponseSuccess = response.data
       toast.success(AUTH_MESSAGE.REGISTER_SUCCESS, {
         style: {
+          fontSize: '16px',
           lineHeight: '1.5'
         }
       })

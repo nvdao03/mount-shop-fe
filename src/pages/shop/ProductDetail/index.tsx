@@ -19,11 +19,14 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { schemaAddComment, type TypeSChemaAddComment } from '../../../validation/comment'
 import { toast } from 'react-toastify'
-import { COMMET_MESSAGE } from '../../../constants/message'
+import { CART_MESSAGE, COMMET_MESSAGE, PRODUCT_MESSAGE } from '../../../constants/message'
 import { userCommentApi } from '../../../apis/users/comment.api'
 import AvatarDefault from '../../../assets/images/avatar-default.png'
 import type { ProductQueryParamsConfig } from '../../../configs/product.config'
 import ProductListSection from '../../../components/ProductListSection'
+import { schemaAddCart, type TypeSchemaAddCart } from '../../../validation/cart'
+import { userCartApi } from '../../../apis/users/cart.api'
+import { number } from 'yup'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -38,6 +41,8 @@ export default function ProductDetail() {
     page: queryParams.page || 1,
     limit: queryParams.limit || 3
   }
+
+  // --- Form Add Comment --- //
   const {
     register,
     handleSubmit,
@@ -45,6 +50,15 @@ export default function ProductDetail() {
     setValue
   } = useForm({
     resolver: yupResolver(schemaAddComment)
+  })
+
+  // --- Form Add Product Cart --- //
+  const { handleSubmit: handleSubmitCart, reset: resetCart } = useForm({
+    resolver: yupResolver(schemaAddCart),
+    defaultValues: {
+      product_id: product_id,
+      quantity: 1
+    }
   })
 
   // --- Get Product --- //
@@ -79,6 +93,20 @@ export default function ProductDetail() {
     onError: (errors: any) => {
       const message = errors.response.data.message
       toast.warning(message)
+    }
+  })
+
+  // --- Add Cart Mutation --- //
+  const addCartMutation = useMutation({
+    mutationFn: (data: TypeSchemaAddCart) => userCartApi.addCart(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getCarts'])
+      toast.success(CART_MESSAGE.ADD_CART_SUCCESS, {
+        style: {
+          lineHeight: '1.5',
+          fontSize: '16px'
+        }
+      })
     }
   })
 
@@ -138,6 +166,18 @@ export default function ProductDetail() {
     if (!getComments.data?.pages) return
     return getComments.data.pages.flatMap((page) => page.data.data.comments) as CommentType[]
   }, [product_id, getComments.data?.pages])
+
+  // --- Handle Submit Cart --- //
+  const handleAddCart = handleSubmitCart((data: TypeSchemaAddCart) => {
+    if (product && product.data.stock <= 0) {
+      toast.warning(PRODUCT_MESSAGE.OUT_OF_STOCK)
+      return
+    }
+    addCartMutation.mutate({
+      product_id,
+      quantity: data.quantity
+    })
+  })
 
   return (
     <>
@@ -296,7 +336,7 @@ export default function ProductDetail() {
                 )}
               </div>
               {/* Action */}
-              <div className='hidden md:flex mt-8 flex-col gap-4'>
+              <form onSubmit={handleAddCart} className='hidden md:flex mt-8 flex-col gap-4'>
                 <button className='w-full rounded-[10px] font-semibold flex items-center justify-center gap-2 py-4 border border-solid border-primary text-primary'>
                   Thêm vào giỏ hàng
                   <svg xmlns='http://www.w3.org/2000/svg' width='20' height='18' viewBox='0 0 20 18' fill='none'>
@@ -315,7 +355,7 @@ export default function ProductDetail() {
                     />
                   </svg>
                 </button>
-              </div>
+              </form>
               {/* Banner */}
               <div className='w-full mt-5 md:mt-5 lg:mt-10'>
                 <img src={ProductDetailBg} className='object-cover w-full' alt='' />
@@ -477,14 +517,17 @@ export default function ProductDetail() {
         </div>
       </div>
       {/* Action Add Cart On Mobile */}
-      <div className='flex md:hidden z-30 fixed w-full bottom-0 p-4 border-t [box-shadow:0_-1px_8px_0_rgba(0,_0,_0,_0.15)] border-[#E6E6E6] bg-white  justify-between gap-3'>
+      <form
+        onSubmit={handleAddCart}
+        className='flex md:hidden z-30 fixed w-full bottom-0 p-4 border-t [box-shadow:0_-1px_8px_0_rgba(0,_0,_0,_0.15)] border-[#E6E6E6] bg-white  justify-between gap-3'
+      >
         <button className='w-full rounded-[10px] font-semibold py-3 border border-solid border-primary text-primary'>
           Thêm vào giỏ hàng
         </button>
         <button className='w-full rounded-[10px] font-semibold bg-primary py-3 border border-solid border-primary text-white'>
           Mua ngay
         </button>
-      </div>
+      </form>
     </>
   )
 }

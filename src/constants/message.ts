@@ -70,7 +70,8 @@ export const PRODUCT_MESSAGE = {
   DELETE_PRODUCT_SUCCESS: 'Xoá sản phẩm thành công',
   UPDATE_PRODUCT_SUCCESS: 'Cập nhật sản phẩm thành công',
   MIN_PRICE_GREATER_THAN_MAX_PRICE: 'Giá từ phải nhỏ hơn giá đến',
-  PRODUCT_ID_REQUIRED: 'Vui lòng truyền lên ID sản phẩm'
+  PRODUCT_ID_REQUIRED: 'Vui lòng truyền lên ID sản phẩm',
+  OUT_OF_STOCK: 'Sản phẩm đã hết hàng'
 }
 
 export const COMMET_MESSAGE = {
@@ -83,4 +84,12 @@ export const COMMET_MESSAGE = {
 export const ADMIN_MESSAGE = {
   LOGIN_FAILED: 'Đăng nhập quản trị thất bại, vui lòng kiểm tra lại thông tin',
   ADD_USER_SUCCESS: 'Tạo người dùng thành công'
+}
+
+export const CART_MESSAGE = {
+  ADD_CART_SUCCESS: 'Thêm sản phảm vào giỏ hàng thành công',
+  UPDATE_CART_SUCCESS: 'Cập nhật sản phẩm thành công',
+  DELETE_CART_SUCCESS: 'Xoá sản phẩm thành công',
+  CART_PRODUCT_ID_REQUIRED: 'Vui lòng truyền lên ID sản phẩm',
+  CART_QUANTITY_REQUIRED: 'Vui lòng truyền lên số lượng'
 }

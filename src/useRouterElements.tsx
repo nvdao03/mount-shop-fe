@@ -29,6 +29,7 @@ import ProductDetail from './pages/shop/ProductDetail'
 import Comments from './pages/admin/Comments'
 import Users from './pages/admin/Users'
 import AddUser from './pages/admin/Users/AddUser'
+import Cart from './pages/user/Cart'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -100,6 +101,14 @@ export default function useRouterElements() {
           element: (
             <MainLayout>
               <Profile />
+            </MainLayout>
+          )
+        },
+        {
+          path: PATH.USER_CART,
+          element: (
+            <MainLayout>
+              <Cart />
             </MainLayout>
           )
         },

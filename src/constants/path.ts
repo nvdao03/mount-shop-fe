@@ -15,6 +15,7 @@ export const PATH = {
   // --- User  ---
   USER_PROFILE: '/profile',
   USER_FORGOT_PASSWORD: '/forgot-password',
+  USER_CART: '/cart',
 
   // --- Admin ---
   ADMIN_DASHBOARD: '/admin/dashboard',
@@ -34,7 +35,6 @@ export const PATH = {
   ADMIN_USERS: '/admin/users',
   ADMIN_ADD_USER: '/admin/users/add-user',
 
-  ADMIN_VOUCHERS: '/admin/vouchers',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_COMMENTS: '/admin/comments'
 }

@@ -235,7 +235,7 @@ export default function Header() {
           <button className='bg-[#EAE9FC] hidden md:block p-2 md:p-2.5 rounded-[50%]'>
             <img src={Notification} alt='' />
           </button>
-          <Link to={''} className='bg-[#EAE9FC] hidden md:block p-2 md:p-2.5 rounded-[50%]'>
+          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] hidden md:block p-2 md:p-2.5 rounded-[50%]'>
             <img src={Cart} alt='' />
           </Link>
           <button onClick={handleOpenMobileSearch} className='bg-[#EAE9FC] block md:hidden rounded-[50%] p-[11px]'>
@@ -246,11 +246,14 @@ export default function Header() {
               />
             </svg>
           </button>
+          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] block md:hidden p-2 md:p-2.5 rounded-[50%]'>
+            <img src={Cart} alt='' />
+          </Link>
           {isAuthenticated ? (
-            <div className='relative group'>
+            <div className='hidden sm:block relative group'>
               <Link
                 to={isTablet ? PATH.USER_PROFILE : ''}
-                className='block bg-[#EAE9FC] rounded-[50%] w-10 h-10 md:w-11 md:h-11 cursor-pointer'
+                className='hidden sm:block bg-[#EAE9FC] rounded-[50%] w-10 h-10 md:w-11 md:h-11 cursor-pointer'
               >
                 <img className='w-full h-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
               </Link>
