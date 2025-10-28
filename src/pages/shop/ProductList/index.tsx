@@ -25,6 +25,7 @@ export default function ProductList() {
   const [checkPriceLevel, setCheckPriceLevel] = useState<number | undefined>(undefined)
   const [order, setOrder] = useState<'asc' | 'desc' | undefined>(undefined)
   const [brandIds, setBrandIds] = useState<number[]>([])
+  const [search, setSearch] = useState<string>('')
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 640)
   let totalResult = 0
 
@@ -37,8 +38,11 @@ export default function ProductList() {
     brands: brandIds,
     order: order,
     min_price: minPrice,
-    max_price: maxPrice
+    max_price: maxPrice,
+    search: search
   }
+
+  console.log(stateQuery)
 
   // --- Get Products --- //
   const getProducts = useInfiniteQuery({
@@ -74,6 +78,14 @@ export default function ProductList() {
       setBrandIds((prev) => [...prev, ...categoryArr])
     }
   }, [stateQuery.brands])
+
+  // --- Xử lý lấy search từ component header truyền xuống --- //
+  useEffect(() => {
+    if (!stateQuery.search) return
+    if (stateQuery.search) {
+      setSearch(stateQuery.search)
+    }
+  }, [stateQuery.search])
 
   // --- Chặn cuộn body khi mở modal ---
   useEffect(() => {
@@ -213,6 +225,7 @@ export default function ProductList() {
           brands={brands}
           checkPriceLevel={checkPriceLevel}
           rating={rating}
+          search={search}
           handleOnChangePriceLevelAll={handleOnChangePriceLevelAll}
           setMaxPriceInput={setMaxPriceInput}
           setMinPriceInput={setMinPriceInput}
@@ -233,6 +246,7 @@ export default function ProductList() {
           order={order}
           setOrder={setOrder}
           totalResult={totalResult}
+          search={search}
           setIsFilterOpen={setIsFilterOpen}
           handleCollapse={handleCollapse}
         />
@@ -248,6 +262,7 @@ export default function ProductList() {
         handleResetFilterForMobile={handleResetFilterForMobile}
         isFilterOpen={isFilterOpen}
         rating={rating}
+        search={search}
         setIsFilterOpen={setIsFilterOpen}
         setMaxPriceInput={setMaxPriceInput}
         setMinPriceInput={setMinPriceInput}

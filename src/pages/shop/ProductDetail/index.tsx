@@ -363,7 +363,7 @@ export default function ProductDetail() {
             </section>
           </div>
           {/* Row 2 */}
-          <div className='mt-4 grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 items-start'>
+          <div className='mt-4 grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6'>
             <section className='md:col-span-6 p-4 lg:p-8 bg-white rounded-[10px]'>
               <h2 className='custom_title_h2 mb-2 leading-[1.5]'>Giới thiệu về sản phẩm</h2>
               <div

@@ -29,6 +29,8 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [mobileSelectedCategory, setMobileSelectedCategory] = useState<CategoryType | null>(null)
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false)
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchValueMobile, setSearchValueMobile] = useState<string>('')
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
 
   // --- Get All Category ---
@@ -37,6 +39,8 @@ export default function Header() {
     queryFn: () => categoryApi.getCategories(),
     staleTime: 30 * 60 * 1000
   })
+
+  console.log(searchValue)
 
   // --- Get Brands By Category Id ---
   const getBrandsByCategoryId = useQuery({
@@ -206,39 +210,82 @@ export default function Header() {
           </div>
         </div>
         {/* Search bar */}
-        <form className='overflow-hidden relative hidden lg:flex items-center w-full lg:max-w-[450px] xl:max-w-[500px] ml-[25px] xl:ml-[32px] h-[44px] bg-[#E6E6E6] rounded-full'>
-          <button className='pl-4 h-full'>
+        <form
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault()
+            if (searchValue.trim() === '' && !searchValue) return toast.warning('Vui lớn nhập từ khoá tìm kiếm')
+            navigate(PATH.PRODUCT_LIST, {
+              state: {
+                queryPageProducts: {
+                  ...queryPageProducts,
+                  search: searchValue
+                }
+              }
+            })
+            setSearchValue('')
+          }}
+          className='overflow-hidden relative hidden lg:flex items-center w-full lg:max-w-[450px] xl:max-w-[500px] ml-[25px] xl:ml-[32px] h-[44px] bg-[#E6E6E6] rounded-full'
+        >
+          <button
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+              e.preventDefault()
+              if (searchValue.trim() === '' && !searchValue) return toast.warning('Vui lớn nhập từ khoá tìm kiếm')
+              navigate(PATH.PRODUCT_LIST, {
+                state: {
+                  queryPageProducts: {
+                    ...queryPageProducts,
+                    search: searchValue
+                  }
+                }
+              })
+              setSearchValue('')
+            }}
+            className='pl-4 h-full'
+          >
             <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
               <path
                 d='M15.755 14.255H14.965L14.685 13.985C15.665 12.845 16.255 11.365 16.255 9.755C16.255 6.165 13.345 3.255 9.755 3.255C6.165 3.255 3.255 6.165 3.255 9.755C3.255 13.345 6.165 16.255 9.755 16.255C11.365 16.255 12.845 15.665 13.985 14.685L14.255 14.965V15.755L19.255 20.745L20.745 19.255L15.755 14.255ZM9.755 14.255C7.26501 14.255 5.255 12.245 5.255 9.755C5.255 7.26501 7.26501 5.255 9.755 5.255C12.245 5.255 14.255 7.26501 14.255 9.755C14.255 12.245 12.245 14.255 9.755 14.255Z'
-                fill='#B3B3B3'
+                fill={searchValue.trim() !== '' ? '#1A1A1A' : '#B3B3B3'}
               />
             </svg>
           </button>
           <input
             type='text'
+            value={searchValue}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
             placeholder='Tìm kiếm sản phẩm'
             className='w-full rounded-full h-full flex-1 bg-[#E6E6E6] placeholder:text-[#B3B3B3] text-[15px] outline-none py-3 pl-3 text-[#1A1A1A]'
           />
-          <button className='h-full px-4'>
-            <svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'>
-              <path
-                d='M13.293 1.41016L7.70312 7L13.293 12.5898L12.5898 13.293L7 7.70312L1.41016 13.293L0.707031 12.5898L6.29688 7L0.707031 1.41016L1.41016 0.707031L7 6.29688L12.5898 0.707031L13.293 1.41016Z'
-                fill='#121212'
-                stroke='#1A1A1A'
-              />
-            </svg>
-          </button>
+          {searchValue.trim() !== '' && searchValue && (
+            <button
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                e.preventDefault()
+                setSearchValue('')
+              }}
+              className='h-full px-4'
+            >
+              <svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'>
+                <path
+                  d='M13.293 1.41016L7.70312 7L13.293 12.5898L12.5898 13.293L7 7.70312L1.41016 13.293L0.707031 12.5898L6.29688 7L0.707031 1.41016L1.41016 0.707031L7 6.29688L12.5898 0.707031L13.293 1.41016Z'
+                  fill='#121212'
+                  stroke='#1A1A1A'
+                />
+              </svg>
+            </button>
+          )}
         </form>
         {/* Right icons */}
         <div className='relative ml-auto flex items-center gap-x-[18px]'>
-          <button className='bg-[#EAE9FC] hidden md:block p-2 md:p-2.5 rounded-[50%]'>
+          <button className='bg-[#EAE9FC] hidden lg:block p-2 md:p-2.5 rounded-[50%]'>
             <img src={Notification} alt='' />
           </button>
-          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] hidden md:block p-2 md:p-2.5 rounded-[50%]'>
+          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] hidden lg:block p-2 md:p-2.5 rounded-[50%]'>
             <img src={Cart} alt='' />
           </Link>
-          <button onClick={handleOpenMobileSearch} className='bg-[#EAE9FC] block md:hidden rounded-[50%] p-[11px]'>
+          <button
+            onClick={handleOpenMobileSearch}
+            className='bg-[#EAE9FC] block lg:hidden rounded-[50%] p-[11px] md:p-[13px]'
+          >
             <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'>
               <path
                 d='M17.1052 15.076L13.86 11.8309C13.7136 11.6844 13.515 11.6031 13.3067 11.6031H12.7762C13.6745 10.4541 14.2083 9.00891 14.2083 7.4368C14.2083 3.69693 11.178 0.666626 7.43814 0.666626C3.69827 0.666626 0.667969 3.69693 0.667969 7.4368C0.667969 11.1767 3.69827 14.207 7.43814 14.207C9.01025 14.207 10.4554 13.6732 11.6044 12.7748V13.3054C11.6044 13.5137 11.6858 13.7122 11.8322 13.8587L15.0774 17.1038C15.3833 17.4098 15.8781 17.4098 16.1808 17.1038L17.1019 16.1827C17.4079 15.8767 17.4079 15.382 17.1052 15.076ZM7.43814 11.6031C5.13693 11.6031 3.27188 9.74126 3.27188 7.4368C3.27188 5.13559 5.13368 3.27054 7.43814 3.27054C9.73935 3.27054 11.6044 5.13234 11.6044 7.4368C11.6044 9.73801 9.7426 11.6031 7.43814 11.6031Z'
@@ -246,7 +293,7 @@ export default function Header() {
               />
             </svg>
           </button>
-          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] block md:hidden p-2 md:p-2.5 rounded-[50%]'>
+          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] block lg:hidden p-2 md:p-2.5 rounded-[50%]'>
             <img src={Cart} alt='' />
           </Link>
           {isAuthenticated ? (
@@ -501,34 +548,84 @@ export default function Header() {
                 />
               </svg>
             </button>
-            <form className='flex-1 relative bg-[#E6E6E6] rounded-full'>
+            <form
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault()
+                if (searchValueMobile.trim() === '' && !searchValueMobile)
+                  return toast.warning('Vui lớn nhập từ khoá tìm kiếm')
+                navigate(PATH.PRODUCT_LIST, {
+                  state: {
+                    queryPageProducts: {
+                      ...queryPageProducts,
+                      search: searchValueMobile
+                    }
+                  }
+                })
+                setSearchValueMobile('')
+                handleCloseMobileSearch()
+              }}
+              className='flex-1 relative bg-[#E6E6E6] rounded-full'
+            >
               <input
+                value={searchValueMobile}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValueMobile(e.target.value)}
                 type='text'
                 placeholder='Tìm kiếm sản phẩm'
                 className='w-full rounded-full h-[40px] pl-10 pr-4 bg-transparent placeholder:text-[#B3B3B3] text-sm outline-none'
               />
-              <svg
-                className='absolute left-3 top-1/2 -translate-y-1/2'
-                xmlns='http://www.w3.org/2000/svg'
-                width='16'
-                height='16'
-                viewBox='0 0 16 16'
-                fill='none'
+              <button
+                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                  e.preventDefault()
+                  if (searchValueMobile.trim() === '' && !searchValueMobile)
+                    return toast.warning('Vui lớn nhập từ khoá tìm kiếm')
+                  navigate(PATH.PRODUCT_LIST, {
+                    state: {
+                      queryPageProducts: {
+                        ...queryPageProducts,
+                        search: searchValueMobile
+                      }
+                    }
+                  })
+                  setSearchValueMobile('')
+                  handleCloseMobileSearch()
+                }}
               >
-                <path
-                  d='M11.3137 10.0596H10.6553L10.422 9.83463C11.422 8.66796 11.9387 7.0763 11.6553 5.38463C11.2637 3.06796 9.33034 1.21796 6.99701 0.934629C3.47201 0.501295 0.505339 3.46796 0.938672 6.99296C1.22201 9.3263 3.07201 11.2596 5.38867 11.6513C7.08034 11.9346 8.67201 11.418 9.83867 10.418L10.0637 10.6513V11.3096L13.6053 14.8513C13.947 15.193 14.5053 15.193 14.847 14.8513C15.1887 14.5096 15.1887 13.9513 14.847 13.6096L11.3137 10.0596ZM6.31367 10.0596C4.23867 10.0596 2.56367 8.38463 2.56367 6.30963C2.56367 4.23463 4.23867 2.55963 6.31367 2.55963C8.38867 2.55963 10.0637 4.23463 10.0637 6.30963C10.0637 8.38463 8.38867 10.0596 6.31367 10.0596Z'
-                  fill='#B3B3B3'
-                />
-              </svg>
+                <svg
+                  className='absolute left-3 top-1/2 -translate-y-1/2'
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='16'
+                  height='16'
+                  viewBox='0 0 16 16'
+                  fill='none'
+                >
+                  <path
+                    d='M11.3137 10.0596H10.6553L10.422 9.83463C11.422 8.66796 11.9387 7.0763 11.6553 5.38463C11.2637 3.06796 9.33034 1.21796 6.99701 0.934629C3.47201 0.501295 0.505339 3.46796 0.938672 6.99296C1.22201 9.3263 3.07201 11.2596 5.38867 11.6513C7.08034 11.9346 8.67201 11.418 9.83867 10.418L10.0637 10.6513V11.3096L13.6053 14.8513C13.947 15.193 14.5053 15.193 14.847 14.8513C15.1887 14.5096 15.1887 13.9513 14.847 13.6096L11.3137 10.0596ZM6.31367 10.0596C4.23867 10.0596 2.56367 8.38463 2.56367 6.30963C2.56367 4.23463 4.23867 2.55963 6.31367 2.55963C8.38867 2.55963 10.0637 4.23463 10.0637 6.30963C10.0637 8.38463 8.38867 10.0596 6.31367 10.0596Z'
+                    fill='#B3B3B3'
+                  />
+                </svg>
+              </button>
             </form>
           </div>
           {/* Từ khóa nổi bật */}
           <div className='px-4 py-4'>
             <h4 className='text-sm font-semibold text-[#1A1A1A] mb-3'>Từ khóa nổi bật</h4>
             <div className='flex flex-wrap gap-3'>
-              {['Iphone 16 Pro', 'Xiaomi 14T', 'Oppo ra sản phẩm mới', 'Gucci ra mắt bộ sưu tập', 'LLV ra mắt'].map(
+              {['Iphone 16', 'Xiaomi 15T', 'Điện Thoại OPPO A18', 'Tivi QLED', 'Túi đeo chéo LOUIS VUITTON'].map(
                 (keyword, index) => (
                   <button
+                    onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                      e.preventDefault()
+                      navigate(PATH.PRODUCT_LIST, {
+                        state: {
+                          queryPageProducts: {
+                            ...queryPageProducts,
+                            search: keyword
+                          }
+                        }
+                      })
+                      setSearchValueMobile('')
+                      handleCloseMobileSearch()
+                    }}
                     key={index}
                     className='px-4 py-2 border border-gray-300 rounded-full text-sm bg-white hover:bg-gray-100 transition'
                   >

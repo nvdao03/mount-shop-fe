@@ -9,6 +9,7 @@ interface PropTypes {
   checkPriceLevel: number | undefined
   rating: number | undefined
   brandIds: number[]
+  search: string
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>
   setMinPriceInput: React.Dispatch<React.SetStateAction<string>>
   setMaxPriceInput: React.Dispatch<React.SetStateAction<string>>
@@ -36,6 +37,7 @@ export default function ProductListFilterMobileDrawer({
   checkPriceLevel,
   rating,
   brandIds,
+  search,
   setIsFilterOpen,
   setMinPriceInput,
   setMaxPriceInput,
@@ -149,41 +151,43 @@ export default function ProductListFilterMobileDrawer({
             </button>
           </div>
           {/* Option brands */}
-          <div>
-            <h3 className='font-semibold text-[16px] mt-7'>Thương hiệu</h3>
-            <ul className='mt-[10px] text-[14px]'>
-              <li>
-                <div className='flex items-center gap-2 cursor-pointer w-full'>
-                  <input
-                    type='checkbox'
-                    id='brand-all'
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChangeInputBrandAll(e)}
-                    checked={brandIds.length === 0}
-                  />
-                  <label className='w-full cursor-pointer py-2 select-none' htmlFor='brand-all'>
-                    Tất cả
-                  </label>
-                </div>
-              </li>
-              {brands &&
-                brands.map((brand: BrandType) => (
-                  <li key={brand.id}>
-                    <div className='flex items-center gap-2 cursor-pointer w-full'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id={String(brand.id)}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChangeInputBrand(e, brand.id)}
-                        checked={brandIds.includes(brand.id)}
-                      />
-                      <label className='w-full cursor-pointer py-2 select-none' htmlFor={String(brand.id)}>
-                        {brand.name}
-                      </label>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-          </div>
+          {!search && (
+            <div>
+              <h3 className='font-semibold text-[16px] mt-7'>Thương hiệu</h3>
+              <ul className='mt-[10px] text-[14px]'>
+                <li>
+                  <div className='flex items-center gap-2 cursor-pointer w-full'>
+                    <input
+                      type='checkbox'
+                      id='brand-all'
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChangeInputBrandAll(e)}
+                      checked={brandIds.length === 0}
+                    />
+                    <label className='w-full cursor-pointer py-2 select-none' htmlFor='brand-all'>
+                      Tất cả
+                    </label>
+                  </div>
+                </li>
+                {brands &&
+                  brands.map((brand: BrandType) => (
+                    <li key={brand.id}>
+                      <div className='flex items-center gap-2 cursor-pointer w-full'>
+                        <input
+                          type='checkbox'
+                          name=''
+                          id={String(brand.id)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChangeInputBrand(e, brand.id)}
+                          checked={brandIds.includes(brand.id)}
+                        />
+                        <label className='w-full cursor-pointer py-2 select-none' htmlFor={String(brand.id)}>
+                          {brand.name}
+                        </label>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
           {/* Option rating star */}
           <div>
             <h3 className='font-semibold text-[16px] mt-5'>Đánh giá</h3>

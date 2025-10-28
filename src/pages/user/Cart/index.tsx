@@ -222,7 +222,7 @@ export default function Cart() {
         className={`cursor-pointer fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center transition-opacity duration-500 ease-in-out ${isModalDeleteOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         onClick={() => handleCloseModalDelete()}
       >
-        <div className='min-w-[315px] md:min-w-[400px] bg-white rounded-[10px]'>
+        <div className='min-w-[315px] custom-sm:min-w-[400px] bg-white rounded-[10px]'>
           <div className='flex items-center py-3 px-4 sm:py-4 sm:px-6 border-b border-solid border-[#E6E6E6]'>
             <span className='text-center ml-[45px] flex-1 block font-semibold sm:text-[17px] text-[#333]'>
               Xác nhận

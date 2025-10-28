@@ -18,6 +18,7 @@ interface PropTypes {
 
   // --- State and Set State --- //
   order: 'asc' | 'desc' | undefined
+  search: string
   setOrder: React.Dispatch<React.SetStateAction<'asc' | 'desc' | undefined>>
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>
 
@@ -31,6 +32,7 @@ export default function ProductListContent({
   hasNextPage,
   isFetching,
   order,
+  search,
   totalResult,
   fetchNextPage,
   setOrder,
@@ -42,7 +44,8 @@ export default function ProductListContent({
       {/* Title */}
       <div className='flex justify-between items-center p-4 border-b border-solid border-[#E6E6E6]'>
         <div>
-          <span className='text-[16px] md:text-[17px] font-semibold'>Kết quả cho: Isphone </span>
+          {search && <span className='text-[16px] md:text-[17px] font-semibold'>Kết quả cho: {search} </span>}
+          {!search && <span className='text-[16px] md:text-[17px] font-semibold'>Kết quả tìm được</span>}
           <p className='mt-3 text-[#666] text-[14px]'>
             Đã tìm thấy <span className='text-primary font-semibold'>{totalResult}</span> kết quả
           </p>
