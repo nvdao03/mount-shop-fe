@@ -359,7 +359,14 @@ export default function ProductDetail() {
                     />
                   </svg>
                 </button>
-                <button className='w-full rounded-[10px] font-semibold flex items-center justify-center bg-primary gap-2 py-4 border border-solid border-primary text-white'>
+                <button
+                  type='submit'
+                  onClick={() => {
+                    handleAddCart()
+                    navigate(PATH.USER_CART)
+                  }}
+                  className='w-full rounded-[10px] font-semibold flex items-center justify-center bg-primary gap-2 py-4 border border-solid border-primary text-white'
+                >
                   Mua ngay
                   <svg xmlns='http://www.w3.org/2000/svg' width='20' height='18' viewBox='0 0 20 18' fill='none'>
                     <path
@@ -537,7 +544,14 @@ export default function ProductDetail() {
         <button className='w-full rounded-[10px] font-semibold py-3 border border-solid border-primary text-primary'>
           Thêm vào giỏ hàng
         </button>
-        <button className='w-full rounded-[10px] font-semibold bg-primary py-3 border border-solid border-primary text-white'>
+        <button
+          type='submit'
+          onClick={() => {
+            handleAddCart()
+            navigate(PATH.USER_CART)
+          }}
+          className='w-full rounded-[10px] font-semibold bg-primary py-3 border border-solid border-primary text-white'
+        >
           Mua ngay
         </button>
       </form>

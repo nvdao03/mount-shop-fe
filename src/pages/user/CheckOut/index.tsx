@@ -1,10 +1,10 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
 import ArrowRight from '../../../assets/icons/arrow-right.svg'
 import { formatCurrency } from '../../../utils/other'
 import type { CartType } from '../../../types/cart.type'
 import CheckOutItem from '../../../components/CheckOutItem'
-import { useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { userAddressApi } from '../../../apis/users/address.api'
 import type { AddressType } from '../../../types/address.type'
@@ -13,10 +13,15 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { schemaAddAddress, type TypeSchemaAddAddress } from '../../../validation/address'
 import { toast } from 'react-toastify'
-import { ADDRESS_MESSAGE } from '../../../constants/message'
+import { ADDRESS_MESSAGE, ORDER_MESSAGE } from '../../../constants/message'
+import { userOrderApi } from '../../../apis/users/order.api'
+import { AppContext } from '../../../contexts/app.context'
+import { saveSelectedCartIds } from '../../../utils/auth'
 
 export default function CheckOut() {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const { setSelectedCartIds } = useContext(AppContext)
   const location = useLocation()
   const {
     register,
@@ -53,26 +58,66 @@ export default function CheckOut() {
     }
   })
 
+  // --- Add Order Mutation --- //
+  const addOrderMutation = useMutation({
+    mutationFn: (body: { address_id: number; cart_ids: number[]; total_price: number }) => userOrderApi.addOrder(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getCarts'])
+      setSelectedCartIds([])
+      saveSelectedCartIds([])
+      toast.success(ORDER_MESSAGE.ADD_ORDER_SUCCESS)
+      navigate(PATH.USER_ORDER_SUCCESS)
+    }
+  })
+
   // --- Handle Submit Add Address --- //
   const handleSubmitAddAdress = handleSubmit((data: TypeSchemaAddAddress) => {
     ;(addAddressMutation.mutate(data), setIsModalAddAddressOpen(false))
   })
 
+  // --- Handle Submit Add Order --- //
+  const handleSubmitAddOrder = () => {
+    if (addressId === undefined || addressId === null || !addressId) {
+      toast.warning(ORDER_MESSAGE.ADD_ADDRESS_FIRST)
+      return
+    }
+
+    const cartIds = cartItems.map((cart) => cart.id)
+
+    addOrderMutation.mutate({
+      address_id: addressId as number,
+      cart_ids: cartIds,
+      total_price: totalPrice
+    })
+  }
+
   // --- Close Modal Add Address --- //
   const handleCloseModalAddAddress = () => {
     setIsModalAddAddressOpen(false)
-    reset({ address: '', full_name: '', phone: '' })
+    reset()
   }
+
+  // --- Xử lý khi người dùng cố tình sang trang Check Out khi chưa chọn sản phẩm --- //
+  useEffect(() => {
+    if (!cartItems || cartItems.length <= 0) {
+      toast.warning(ORDER_MESSAGE.CART_EMPTY)
+      navigate(PATH.HOME)
+      return
+    }
+  }, [cartItems])
 
   const totalPrice = useMemo(() => {
     return cartItems.reduce((total, cart) => total + cart.price * cart.quantity, 0)
   }, [cartItems])
 
+  const addresses = useMemo(() => {
+    return (getAddress.data?.data && (getAddress.data.data.data.addresses as AddressType[])) || []
+  }, [getAddress.data?.data])
+
   const fullName = watch('full_name')
   const phone = watch('phone')
   const address = watch('address')
   const isDisable = fullName.trim() === '' || phone?.trim() === '' || address?.trim() === ''
-  const addresses = (getAddress.data?.data && (getAddress.data.data.data.addresses as AddressType[])) || []
 
   return (
     <div>
@@ -178,7 +223,11 @@ export default function CheckOut() {
                   <span className='block text-primary font-semibold md:text-[18px]'>{formatCurrency(totalPrice)}đ</span>
                 </li>
               </ul>
-              <button className='w-full bg-primary hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'>
+              <button
+                type='submit'
+                onClick={() => handleSubmitAddOrder()}
+                className='w-full bg-primary hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'
+              >
                 Đặt hàng
               </button>
             </div>
