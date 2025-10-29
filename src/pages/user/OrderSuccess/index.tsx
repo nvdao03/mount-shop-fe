@@ -2,10 +2,12 @@ import ProductListSection from '../../../components/ProductListSection'
 import OrderSuccesses from '../../../assets/images/order/order-success.png'
 import { Link } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
+import Confetti from '../../../components/Confetti'
 
 export default function OrderSuccess() {
   return (
     <main className='w-full pt-[96px] md:pt-[117px]'>
+      <Confetti />
       <div className='max-w-7xl mx-auto px-4 relative mb-4'>
         <div className='flex flex-col justify-center items-center gap-5 md:gap-6 w-full rounded-[10px] bg-white py-6 md:py-[50px]'>
           <div className=''>
