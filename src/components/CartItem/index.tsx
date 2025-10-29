@@ -57,7 +57,7 @@ export default function CartItem({
               <span className='text-[18px] sm:text-[19px] font-semibold text-primary'>
                 {formatCurrency(cart.price)}đ
               </span>
-              {Number(10) > 0 && (
+              {Number(cart.price_before_discount) > 0 && (
                 <div className='flex items-center gap-3 sm:gap-2'>
                   <span className='text-[#666] font-medium text-[15px] sm:text-[16px] line-through'>
                     {formatCurrency(cart.price_before_discount)}đ

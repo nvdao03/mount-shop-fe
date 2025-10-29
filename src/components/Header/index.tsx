@@ -40,8 +40,6 @@ export default function Header() {
     staleTime: 30 * 60 * 1000
   })
 
-  console.log(searchValue)
-
   // --- Get Brands By Category Id ---
   const getBrandsByCategoryId = useQuery({
     queryKey: ['getBrandsByCategoryId', selectedCategoryId],
@@ -293,9 +291,11 @@ export default function Header() {
               />
             </svg>
           </button>
-          <Link to={PATH.USER_CART} className='bg-[#EAE9FC] block lg:hidden p-2 md:p-2.5 rounded-[50%]'>
-            <img src={Cart} alt='' />
-          </Link>
+          {isAuthenticated && (
+            <Link to={PATH.USER_CART} className='bg-[#EAE9FC] block lg:hidden p-2 md:p-2.5 rounded-[50%]'>
+              <img src={Cart} alt='' />
+            </Link>
+          )}
           {isAuthenticated ? (
             <div className='hidden sm:block relative group'>
               <Link

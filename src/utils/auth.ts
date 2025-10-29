@@ -29,6 +29,11 @@ export const removeAvatar = () => removeFromLocalStorage('avatar')
 export const removeFullName = () => removeFromLocalStorage('full_name')
 export const removeEmail = () => removeFromLocalStorage('email')
 
+// --- cart ---
+export const saveSelectedCartIds = (cartIds: number[]) => saveToLocalStorage('cartIds', JSON.stringify(cartIds))
+export const getSelectedCartIds = () => JSON.parse(getFromLocalStorage('cartIds') || '[]')
+export const removeSelectedCartIds = () => removeFromLocalStorage('cartIds')
+
 // --- reset ---
 export const resetToLocalStorage = () => {
   removeAccessToken()
@@ -38,4 +43,6 @@ export const resetToLocalStorage = () => {
   removeAvatar()
   removeFullName()
   removeEmail()
+
+  removeSelectedCartIds()
 }

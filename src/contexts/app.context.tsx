@@ -1,5 +1,13 @@
 import { createContext, useState } from 'react'
-import { getAccessToken, getAvatar, getEmail, getFullName, getRefreshToken, getUserRole } from '../utils/auth'
+import {
+  getAccessToken,
+  getAvatar,
+  getEmail,
+  getFullName,
+  getRefreshToken,
+  getSelectedCartIds,
+  getUserRole
+} from '../utils/auth'
 
 // --- AppContext Type ---
 interface AppContextType {
@@ -11,6 +19,8 @@ interface AppContextType {
   email: string
   fullName: string
 
+  selectedCartIds: number[]
+
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
   setRefreshToken: React.Dispatch<React.SetStateAction<string>>
   setUserRole: React.Dispatch<React.SetStateAction<string>>
@@ -18,6 +28,8 @@ interface AppContextType {
   setAvatar: React.Dispatch<React.SetStateAction<string>>
   setEmail: React.Dispatch<React.SetStateAction<string>>
   setFullName: React.Dispatch<React.SetStateAction<string>>
+
+  setSelectedCartIds: React.Dispatch<React.SetStateAction<number[]>>
 
   resetAppContext: () => void
 }
@@ -32,6 +44,8 @@ const initalContextValues: AppContextType = {
   email: getEmail(),
   fullName: getFullName(),
 
+  selectedCartIds: getSelectedCartIds(),
+
   setIsAuthenticated: () => null,
   setRefreshToken: () => null,
   setUserRole: () => null,
@@ -39,6 +53,8 @@ const initalContextValues: AppContextType = {
   setAvatar: () => null,
   setEmail: () => null,
   setFullName: () => null,
+
+  setSelectedCartIds: () => null,
 
   resetAppContext: () => null
 }
@@ -52,6 +68,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [avatar, setAvatar] = useState<string>(initalContextValues.avatar)
   const [email, setEmail] = useState<string>(initalContextValues.email)
   const [fullName, setFullName] = useState<string>(initalContextValues.fullName)
+  const [selectedCartIds, setSelectedCartIds] = useState<number[]>(initalContextValues.selectedCartIds)
 
   const resetAppContext = () => {
     setIsAuthenticated(false)
@@ -71,12 +88,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         avatar,
         email,
         fullName,
+        selectedCartIds,
         setIsAuthenticated,
         setRefreshToken,
         setUserRole,
         setAvatar,
         setEmail,
         setFullName,
+        setSelectedCartIds,
         resetAppContext
       }}
     >

@@ -42,9 +42,11 @@ export default function ProductListContent({
   return (
     <section className='col-span-12 md:col-span-8 lg:col-span-9 bg-white rounded-[10px] pb-7'>
       {/* Title */}
-      <div className='flex justify-between items-center p-4 border-b border-solid border-[#E6E6E6]'>
-        <div>
-          {search && <span className='text-[16px] md:text-[17px] font-semibold'>Kết quả cho: {search} </span>}
+      <div className='flex justify-between items-start gap-2 md:gap-3 p-4 border-b border-solid border-[#E6E6E6]'>
+        <div className='w-[70%] lg:w-[80%]'>
+          {search && (
+            <span className='text-[16px] md:text-[17px] font-semibold leading-[1.5]'>Kết quả cho: {search} </span>
+          )}
           {!search && <span className='text-[16px] md:text-[17px] font-semibold'>Kết quả tìm được</span>}
           <p className='mt-3 text-[#666] text-[14px]'>
             Đã tìm thấy <span className='text-primary font-semibold'>{totalResult}</span> kết quả
@@ -85,7 +87,7 @@ export default function ProductListContent({
         {/* Filer tablet / mobile */}
         <button
           onClick={() => setIsFilterOpen(true)}
-          className='md:hidden flex items-center gap-2 border border-solid border-primary rounded-lg text-[14px] font-semibold text-primary p-3'
+          className='md:hidden flex-shrink-0 flex items-center gap-2 border border-solid border-primary rounded-lg text-[14px] font-semibold text-primary p-3'
         >
           <span>Bộ lọc</span>
           <svg xmlns='http://www.w3.org/2000/svg' width='14' height='15' viewBox='0 0 14 15' fill='none'>

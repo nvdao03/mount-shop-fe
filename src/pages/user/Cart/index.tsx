@@ -1,19 +1,22 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
 import ArrowRight from '../../../assets/icons/arrow-right.svg'
 import CartItem from '../../../components/CartItem'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { userCartApi } from '../../../apis/users/cart.api'
 import type { CartType } from '../../../types/cart.type'
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { formatCurrency } from '../../../utils/other'
 import { toast } from 'react-toastify'
 import { CART_MESSAGE } from '../../../constants/message'
 import CartEmptyImage from '../../../assets/images/cart/cart-empty-img.png'
+import { AppContext } from '../../../contexts/app.context'
+import { saveSelectedCartIds } from '../../../utils/auth'
 
 export default function Cart() {
+  const { selectedCartIds, setSelectedCartIds } = useContext(AppContext)
   const queryClient = useQueryClient()
-  const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const navigate = useNavigate()
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false)
   const [isCartSumaryModal, setIsCartSumaryModal] = useState<boolean>(false)
   const [imageDelete, setImageDelete] = useState<string>('')
@@ -29,17 +32,21 @@ export default function Cart() {
 
   // --- Check box cart ---
   const handleSelect = (cart_id: number) => {
-    setSelectedIds((prev) => {
-      return prev.includes(cart_id) ? prev.filter((id) => id !== cart_id) : [...prev, cart_id]
+    setSelectedCartIds((prev) => {
+      const cartIds = prev.includes(cart_id) ? prev.filter((id) => id !== cart_id) : [...prev, cart_id]
+      saveSelectedCartIds(cartIds)
+      return cartIds
     })
   }
 
   // --- Check box cart all ---
   const handleSelectAll = () => {
-    if (carts.length === selectedIds.length) {
-      setSelectedIds([])
+    if (carts.length === selectedCartIds.length) {
+      setSelectedCartIds([])
+      saveSelectedCartIds([])
     } else {
-      setSelectedIds(carts.map((cart) => cart.id))
+      setSelectedCartIds(carts.map((cart) => cart.id))
+      saveSelectedCartIds(carts.map((cart) => cart.id))
     }
   }
 
@@ -54,13 +61,19 @@ export default function Cart() {
   // --- Delete cart ---
   const handleDeleteCart = (cart_id: number) => {
     deleteCartMutation.mutate(cart_id)
+    setSelectedCartIds((prev) => {
+      const cartIds = prev.filter((id) => id !== cart_id)
+      saveSelectedCartIds(cartIds)
+      return cartIds
+    })
   }
 
   // --- Delete all cart ---
   const handleDeleteSelectAll = async () => {
-    if (selectedIds.length <= 0) return
-    await Promise.all(selectedIds.map((cart_id) => deleteCartMutation.mutateAsync(cart_id)))
-    setSelectedIds([])
+    if (selectedCartIds.length <= 0) return
+    await Promise.all(selectedCartIds.map((cart_id) => deleteCartMutation.mutateAsync(cart_id)))
+    setSelectedCartIds([])
+    saveSelectedCartIds([])
     toast.success(CART_MESSAGE.DELETE_CART_SUCCESS)
   }
 
@@ -71,13 +84,27 @@ export default function Cart() {
     setIsModalDeleteOpen(false)
   }
 
+  // --- Handle Checkout --- //
+  const handleCheckout = () => {
+    if (selectedCartIds.length <= 0) {
+      toast.warning(CART_MESSAGE.CART_EMPTY)
+      return
+    }
+    const selectedProducts = carts.filter((cart) => selectedCartIds.includes(cart.id))
+    navigate(PATH.USER_CHECKOUT, {
+      state: {
+        cartItems: selectedProducts
+      }
+    })
+  }
+
   const total = getCarts.data?.data && (getCarts.data.data.data.total as number)
   const carts = (getCarts.data?.data && (getCarts.data.data.data.carts as CartType[])) || []
   const totalPrice = useMemo(() => {
     return carts
-      .filter((cart) => selectedIds.includes(cart.id))
+      .filter((cart) => selectedCartIds.includes(cart.id))
       .reduce((total, cart) => total + cart.price * cart.quantity, 0)
-  }, [selectedIds, carts])
+  }, [selectedCartIds, carts])
 
   return (
     <div>
@@ -117,7 +144,7 @@ export default function Cart() {
                       type='checkbox'
                       id='cart-all'
                       onChange={handleSelectAll}
-                      checked={selectedIds.length === carts.length}
+                      checked={selectedCartIds.length === carts.length}
                     />
                     <label htmlFor='cart-all' className='select-none cursor-pointer'>
                       Chọn tất cả
@@ -147,7 +174,7 @@ export default function Cart() {
                         setIsModalDeleteOpen={setIsModalDeleteOpen}
                         setImageDelete={setImageDelete}
                         setCartId={setCartId}
-                        selectedIds={selectedIds}
+                        selectedIds={selectedCartIds}
                         handleSelect={handleSelect}
                         cart={cart}
                         key={cart.id}
@@ -177,7 +204,10 @@ export default function Cart() {
                     </span>
                   </li>
                 </ul>
-                <button className='w-full bg-primary hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'>
+                <button
+                  onClick={() => handleCheckout()}
+                  className='w-full bg-primary hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'
+                >
                   Tiến hành thanh toán
                 </button>
               </div>
@@ -197,7 +227,7 @@ export default function Cart() {
         <div className='flex lg:hidden z-30 fixed w-full bottom-0 p-4 border-t [box-shadow:0_-1px_8px_0_rgba(0,_0,_0,_0.15)] border-[#E6E6E6] bg-white justify-between gap-4'>
           <button
             onClick={() => setIsCartSumaryModal(true)}
-            className='w-full flex items-center justify-between sm:justify-normal gap-2 bg-white rounded-[10px] py-2'
+            className='w-full flex items-center justify-between sm:justify-normal gap-2 bg-white rounded-[10px] py-1'
           >
             <div className='flex justify-start flex-col items-start gap-2'>
               <span className='text-[#1A1A1A] font-normal'>Tổng tiền</span>
@@ -212,7 +242,10 @@ export default function Cart() {
               </svg>
             </button>
           </button>
-          <button className='w-full rounded-[10px] font-semibold bg-primary py-2 border border-solid border-primary text-white'>
+          <button
+            onClick={() => handleCheckout()}
+            className='w-full rounded-[10px] font-semibold bg-primary py-1 border border-solid border-primary text-white'
+          >
             Tiến hành thanh toán
           </button>
         </div>

@@ -16,6 +16,7 @@ export const PATH = {
   USER_PROFILE: '/profile',
   USER_FORGOT_PASSWORD: '/forgot-password',
   USER_CART: '/cart',
+  USER_CHECKOUT: '/checkout',
 
   // --- Admin ---
   ADMIN_DASHBOARD: '/admin/dashboard',

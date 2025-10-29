@@ -42,8 +42,6 @@ export default function ProductList() {
     search: search
   }
 
-  console.log(stateQuery)
-
   // --- Get Products --- //
   const getProducts = useInfiniteQuery({
     queryKey: ['getProducts', queryConfig],

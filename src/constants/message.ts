@@ -20,7 +20,9 @@ export const AUTH_MESSAGE = {
   VERIFY_EMAIL_SUCCESS: 'Kích hoạt tài khoản thành công',
   RESET_PASSWORD_SUCCESS: 'Đổi mật khâu thành công',
   FORGOT_PASSWORD_TOKEN_REQUIRED: 'Token không được để trống',
-  ROLE_ID_REQUIRED: 'Vui lòng nhập vai trò người dùng'
+  ROLE_ID_REQUIRED: 'Vui lòng nhập vai trò người dùng',
+  USER_NOT_VERIFIED: 'Tài khoản chưa được xác thực',
+  USER_NOT_LOGGED_IN: 'Vui lòng đăng nhập'
 }
 
 export const USER_MESSAGE = {
@@ -91,5 +93,14 @@ export const CART_MESSAGE = {
   UPDATE_CART_SUCCESS: 'Cập nhật sản phẩm thành công',
   DELETE_CART_SUCCESS: 'Xoá sản phẩm thành công',
   CART_PRODUCT_ID_REQUIRED: 'Vui lòng truyền lên ID sản phẩm',
-  CART_QUANTITY_REQUIRED: 'Vui lòng truyền lên số lượng'
+  CART_QUANTITY_REQUIRED: 'Vui lòng truyền lên số lượng',
+  CART_EMPTY: 'Vui lòng chọn sản phẩm để thanh toán'
+}
+
+export const ADDRESS_MESSAGE = {
+  FULLNAME_INVALID_MIN_LENGTH: 'Họ và tên phải có ít nhất 6 ký tự',
+  FULLNAME_INVALID_LENGTH: 'Họ và tên phải có ít nhất 6 - 180 ký tự',
+  FULLNAME_REQUIRED: 'Vui lòng nhập họ và tên',
+  PHONE_INVALID_LENGTH: 'Số điện thoại tối thiểu và tối đa 10 ký tự',
+  ADD_ADDRESS_SUCCESS: 'Thêm địa chỉ thành công'
 }

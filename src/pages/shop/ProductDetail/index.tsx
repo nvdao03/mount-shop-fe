@@ -19,14 +19,14 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { schemaAddComment, type TypeSChemaAddComment } from '../../../validation/comment'
 import { toast } from 'react-toastify'
-import { CART_MESSAGE, COMMET_MESSAGE, PRODUCT_MESSAGE } from '../../../constants/message'
+import { AUTH_MESSAGE, CART_MESSAGE, COMMET_MESSAGE, PRODUCT_MESSAGE } from '../../../constants/message'
 import { userCommentApi } from '../../../apis/users/comment.api'
 import AvatarDefault from '../../../assets/images/avatar-default.png'
 import type { ProductQueryParamsConfig } from '../../../configs/product.config'
 import ProductListSection from '../../../components/ProductListSection'
 import { schemaAddCart, type TypeSchemaAddCart } from '../../../validation/cart'
 import { userCartApi } from '../../../apis/users/cart.api'
-import { number } from 'yup'
+import { HTTP_STATUS } from '../../../constants/httpStatus'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -53,7 +53,7 @@ export default function ProductDetail() {
   })
 
   // --- Form Add Product Cart --- //
-  const { handleSubmit: handleSubmitCart, reset: resetCart } = useForm({
+  const { handleSubmit: handleSubmitCart } = useForm({
     resolver: yupResolver(schemaAddCart),
     defaultValues: {
       product_id: product_id,
@@ -91,8 +91,13 @@ export default function ProductDetail() {
       toast.success(COMMET_MESSAGE.ADD_COMMENT_SUCCESS)
     },
     onError: (errors: any) => {
-      const message = errors.response.data.message
-      toast.warning(message)
+      if (errors.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        const message = errors.response.data.message
+        toast.warning(message)
+      }
+      if (errors.response.status === HTTP_STATUS.UNPROCESSABLE_ENTITY) {
+        toast.warning(AUTH_MESSAGE.USER_NOT_LOGGED_IN)
+      }
     }
   })
 
@@ -107,6 +112,14 @@ export default function ProductDetail() {
           fontSize: '16px'
         }
       })
+    },
+    onError: (errors: any) => {
+      if (errors.response.status === HTTP_STATUS.UNPROCESSABLE_ENTITY) {
+        navigate(PATH.LOGIN)
+      }
+      if (errors.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        toast.warning(AUTH_MESSAGE.USER_NOT_VERIFIED)
+      }
     }
   })
 
