@@ -8,7 +8,6 @@ interface PropTypes {
 export default function CheckOutItem({ cart }: PropTypes) {
   return (
     <div className='mt-2 md:mt-4 bg-white py-4 px-2 md:px-4 rounded-[10px] flex flex-col md:gap-8 md:flex md:flex-row md:items-center md:justify-between'>
-      {/* Block left */}
       <div className='flex items-start gap-4'>
         <div className='flex gap-3 md:gap-4'>
           <div className='flex-shrink-0 w-[80px] h-[80px]'>

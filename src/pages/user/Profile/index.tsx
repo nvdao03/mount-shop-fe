@@ -8,19 +8,21 @@ import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../../constants/message'
 import { PATH } from '../../../constants/path'
 import { AppContext } from '../../../contexts/app.context'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import ProfileUpdateUser from './components/ProfileUpdateUser'
 import type { GetUserProfileResponseSuccess, UserType } from '../../../types/user.type'
 import { userApi } from '../../../apis/users/user.api'
 import ProfileChangePassword from './components/ProfileChangePassword'
 
+type MenuType = 'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'
+
 export default function Profile() {
   const { refreshToken: refresh_token, resetAppContext } = useContext(AppContext)
   const navigate = useNavigate()
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
-  const [menu, setMenu] = useState<'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'>(
-    isTablet ? 'sider_bar' : 'user_info'
-  )
+  const [searchParams, setSearchParams] = useSearchParams()
+  const menuFromUrl = searchParams.get('menu') as MenuType | null
+  const [menu, setMenu] = useState<MenuType>(menuFromUrl ?? (isTablet ? 'sider_bar' : 'user_info'))
   const [user, setUser] = useState<UserType | null>(null)
 
   // --- Get User Profile ---
@@ -46,6 +48,13 @@ export default function Profile() {
       navigate(PATH.HOME)
     }
   })
+
+  // --- Set Menu --- //
+  useEffect(() => {
+    if (menu) {
+      setSearchParams({ menu })
+    }
+  }, [menu])
 
   // --- Handle Resize Screen --- //
   useEffect(() => {
@@ -86,7 +95,7 @@ export default function Profile() {
           className={`${menu === 'sider_bar' ? 'hidden md:block' : 'block'} col-span-12 md:col-span-8 lg:col-span-9 bg-white rounded-[10px]`}
         >
           {menu === 'user_info' && <ProfileUserInfo user={user} setMenu={setMenu} />}
-          {menu === 'order_item' && <ProfileOrderItem />}
+          {menu === 'order_item' && <ProfileOrderItem setMenu={setMenu} />}
           {menu === 'update_profile' && <ProfileUpdateUser user={user} setMenu={setMenu} />}
           {menu === 'change_password' && <ProfileChangePassword setMenu={setMenu} />}
         </section>
