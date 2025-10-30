@@ -110,5 +110,6 @@ export const ORDER_MESSAGE = {
   ADD_ORDER_SUCCESS: 'Tạo đơn hàng thành công',
   ADD_ADDRESS_FIRST: 'Vui lòng thêm địa chỉ nhận hàng',
   CART_EMPTY: 'Vui lòng chọn sản phẩm để thanh toán',
-  CANCEL_ORDER_SUCCESS: 'Huỷ đơn hàng thành công'
+  CANCEL_ORDER_SUCCESS: 'Huỷ đơn hàng thành công',
+  UPDATE_ORDER_SUCCESS: 'Cập nhật đơn hàng thành công'
 }

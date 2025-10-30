@@ -6,6 +6,7 @@ import {
   getFullName,
   getRefreshToken,
   getSelectedCartIds,
+  getUserId,
   getUserRole
 } from '../utils/auth'
 
@@ -15,6 +16,7 @@ interface AppContextType {
   refreshToken: string
   userRole: string
 
+  userId: number
   avatar: string
   email: string
   fullName: string
@@ -25,6 +27,7 @@ interface AppContextType {
   setRefreshToken: React.Dispatch<React.SetStateAction<string>>
   setUserRole: React.Dispatch<React.SetStateAction<string>>
 
+  setUserId: React.Dispatch<React.SetStateAction<number>>
   setAvatar: React.Dispatch<React.SetStateAction<string>>
   setEmail: React.Dispatch<React.SetStateAction<string>>
   setFullName: React.Dispatch<React.SetStateAction<string>>
@@ -40,6 +43,7 @@ const initalContextValues: AppContextType = {
   refreshToken: getRefreshToken(),
   userRole: getUserRole(),
 
+  userId: Number(getUserId()),
   avatar: getAvatar(),
   email: getEmail(),
   fullName: getFullName(),
@@ -50,6 +54,7 @@ const initalContextValues: AppContextType = {
   setRefreshToken: () => null,
   setUserRole: () => null,
 
+  setUserId: () => null,
   setAvatar: () => null,
   setEmail: () => null,
   setFullName: () => null,
@@ -64,6 +69,7 @@ export const AppContext = createContext<AppContextType>(initalContextValues)
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initalContextValues.isAuthenticated)
   const [refreshToken, setRefreshToken] = useState<string>(initalContextValues.refreshToken)
+  const [userId, setUserId] = useState<number>(initalContextValues.userId)
   const [userRole, setUserRole] = useState<string>(initalContextValues.userRole)
   const [avatar, setAvatar] = useState<string>(initalContextValues.avatar)
   const [email, setEmail] = useState<string>(initalContextValues.email)
@@ -84,6 +90,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         isAuthenticated,
         refreshToken,
+        userId,
         userRole,
         avatar,
         email,
@@ -91,6 +98,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         selectedCartIds,
         setIsAuthenticated,
         setRefreshToken,
+        setUserId,
         setUserRole,
         setAvatar,
         setEmail,

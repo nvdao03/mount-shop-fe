@@ -27,7 +27,8 @@ import {
 type FormData = TypeSchemaLogin
 
 export default function Login() {
-  const { setIsAuthenticated, setAvatar, setEmail, setFullName, setRefreshToken, setUserRole } = useContext(AppContext)
+  const { setIsAuthenticated, setAvatar, setEmail, setFullName, setRefreshToken, setUserRole, setUserId } =
+    useContext(AppContext)
   const navigate = useNavigate()
   const params = useQueryParams()
 
@@ -50,6 +51,7 @@ export default function Login() {
       toast.success(AUTH_MESSAGE.LOGIN_SUCCESS)
       setIsAuthenticated(true)
       setRefreshToken(data.data.refresh_token)
+      setUserId(data.data.user.id)
       setUserRole(data.data.user.role)
       setAvatar(data.data.user.avatar || '')
       setEmail(data.data.user.email)

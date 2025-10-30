@@ -14,7 +14,7 @@ import { AppContext } from '../../../contexts/app.context'
 import { saveSelectedCartIds } from '../../../utils/auth'
 
 export default function Cart() {
-  const { selectedCartIds, setSelectedCartIds } = useContext(AppContext)
+  const { selectedCartIds, setSelectedCartIds, userId } = useContext(AppContext)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false)
@@ -24,7 +24,7 @@ export default function Cart() {
 
   // --- Get Carts ---
   const getCarts = useQuery({
-    queryKey: ['getCarts'],
+    queryKey: ['getCarts', userId],
     queryFn: () => userCartApi.getCarts(),
     keepPreviousData: true,
     staleTime: 30 * 60 * 1000

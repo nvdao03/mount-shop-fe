@@ -3,3 +3,10 @@ export interface OrderQueryParamConfig {
   page?: number | string
   status?: string
 }
+
+export interface AdminGetOrdersQueryParamConfig {
+  limit?: number | string
+  page?: number | string
+  search?: string
+  status?: string
+}

@@ -17,7 +17,8 @@ import { schemaRegister, type TypeSchemaRegister } from '../../../validation/aut
 type FormData = TypeSchemaRegister
 
 export default function Register() {
-  const { setAvatar, setRefreshToken, setIsAuthenticated, setUserRole, setEmail, setFullName } = useContext(AppContext)
+  const { setAvatar, setRefreshToken, setIsAuthenticated, setUserRole, setEmail, setFullName, setUserId } =
+    useContext(AppContext)
   const navigate = useNavigate()
 
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
@@ -43,6 +44,7 @@ export default function Register() {
       })
       setIsAuthenticated(true)
       setRefreshToken(data.data.refresh_token)
+      setUserId(data.data.user.id)
       setUserRole(data.data.user.role)
       setAvatar(data.data.user.avatar || '')
       setEmail(data.data.user.email)

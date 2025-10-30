@@ -33,6 +33,7 @@ import Cart from './pages/user/Cart'
 import CheckOut from './pages/user/CheckOut'
 import OrderSuccess from './pages/user/OrderSuccess'
 import OderDetail from './pages/user/OderDetail'
+import Orders from './pages/admin/Orders'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -251,6 +252,14 @@ export default function useRouterElements() {
               element: (
                 <AdminLayout>
                   <AddUser />
+                </AdminLayout>
+              )
+            },
+            {
+              path: PATH.ADMIN_ORDERS,
+              element: (
+                <AdminLayout>
+                  <Orders />
                 </AdminLayout>
               )
             }

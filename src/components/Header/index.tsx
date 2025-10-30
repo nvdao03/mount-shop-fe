@@ -5,7 +5,7 @@ import Cart from '../../assets/icons/cart.svg'
 import User from '../../assets/icons/user.svg'
 import Notification from '../../assets/icons/notification.svg'
 import CategoryIcon from '../../assets/icons/category.svg'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { categoryApi } from '../../apis/shared/category.api'
 import type { CategoryType } from '../../types/category.type'
 import type { BrandType } from '../../types/brand.type'
@@ -13,14 +13,11 @@ import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../contexts/app.context'
 import AvatarDefault from '../../assets/images/avatar-default.png'
 import { getUsernameFromEmail } from '../../utils/other'
-import { authApi } from '../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
-import { AUTH_MESSAGE } from '../../constants/message'
 import type { ProductQueryParamsConfig } from '../../configs/product.config'
-import { ROLES } from '../../constants/other'
 
 export default function Header() {
-  const { avatar, isAuthenticated, fullName, email, refreshToken, resetAppContext, userRole } = useContext(AppContext)
+  const { avatar, isAuthenticated, fullName, email } = useContext(AppContext)
   const queryPageProducts: ProductQueryParamsConfig = {}
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -47,16 +44,6 @@ export default function Header() {
     enabled: !!selectedCategoryId,
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000
-  })
-
-  // --- Handle Logout Mutation ---
-  const logoutMutation = useMutation({
-    mutationFn: (body: { refresh_token: string }) => authApi.logout(body),
-    onSuccess: () => {
-      toast.success(AUTH_MESSAGE.LOGOUT_SUCCESS)
-      resetAppContext()
-      navigate(PATH.HOME)
-    }
   })
 
   // --- Handle Resize ---
@@ -107,11 +94,6 @@ export default function Header() {
       })
     }
     setMobileSelectedCategory(category)
-  }
-
-  // --- Handle Logout ---
-  const handleLogout = () => {
-    logoutMutation.mutate({ refresh_token: refreshToken as string })
   }
 
   const brands = getBrandsByCategoryId?.data?.data && getBrandsByCategoryId?.data?.data.data.brands

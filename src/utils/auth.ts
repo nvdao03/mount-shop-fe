@@ -17,14 +17,17 @@ export const removeRefreshToken = () => removeFromLocalStorage('refresh_token')
 export const removeUserRole = () => removeFromLocalStorage('role')
 
 // --- user ---
+export const saveUserId = (id: string) => saveToLocalStorage('user_id', id)
 export const saveAvtar = (avatar: string) => saveToLocalStorage('avatar', avatar)
 export const saveFullName = (fulName: string) => saveToLocalStorage('full_name', fulName)
 export const saveEmail = (email: string) => saveToLocalStorage('email', email)
 
+export const getUserId = () => getFromLocalStorage('user_id')
 export const getAvatar = () => getFromLocalStorage('avatar')
 export const getFullName = () => getFromLocalStorage('full_name')
 export const getEmail = () => getFromLocalStorage('email')
 
+export const removeUserId = () => removeFromLocalStorage('user_id')
 export const removeAvatar = () => removeFromLocalStorage('avatar')
 export const removeFullName = () => removeFromLocalStorage('full_name')
 export const removeEmail = () => removeFromLocalStorage('email')
@@ -40,6 +43,7 @@ export const resetToLocalStorage = () => {
   removeRefreshToken()
   removeUserRole()
 
+  removeUserId()
   removeAvatar()
   removeFullName()
   removeEmail()

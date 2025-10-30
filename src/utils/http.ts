@@ -7,6 +7,7 @@ import {
   getEmail,
   getFullName,
   getRefreshToken,
+  getUserId,
   getUserRole,
   resetToLocalStorage,
   saveAccessToken,
@@ -14,6 +15,7 @@ import {
   saveEmail,
   saveFullName,
   saveRefreshToken,
+  saveUserId,
   saveUserRole
 } from './auth'
 
@@ -23,6 +25,7 @@ class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
+  private userId: string
   private userRole: string
   private avatar: string
   private email: string
@@ -31,6 +34,7 @@ class Http {
   constructor() {
     this.accessToken = getAccessToken()
     this.refreshToken = getRefreshToken()
+    this.userId = getUserId()
     this.userRole = getUserRole()
     this.avatar = getAvatar()
     this.email = getEmail()
@@ -67,12 +71,14 @@ class Http {
           const data: AuthResponseSuccess = response.data
           this.accessToken = data.data.access_token
           this.refreshToken = data.data.refresh_token
+          this.userId = String(data.data.user.id)
           this.userRole = data.data.user.role
           this.avatar = data.data.user.avatar || ''
           this.email = data.data.user.email
           this.fullName = data.data.user.full_name
           saveAccessToken(this.accessToken)
           saveRefreshToken(this.refreshToken)
+          saveUserId(String(this.userId))
           saveUserRole(this.userRole)
           saveAvtar(this.avatar)
           saveEmail(this.email)
@@ -80,6 +86,7 @@ class Http {
         } else if (url === '/auth/logout') {
           this.accessToken = ''
           this.refreshToken = ''
+          this.userId = ''
           this.userRole = ''
           this.avatar = ''
           this.email = ''

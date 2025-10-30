@@ -57,7 +57,7 @@ export default function SidebarAdmin() {
         <ul>
           {adminSidebars.map((sidebar) => (
             <li key={sidebar.id}>
-              <Link className='flex items-center gap-3 px-4 py-4 font-semibold' to={sidebar.url}>
+              <Link className='flex items-center gap-3 px-4 py-5 font-semibold' to={sidebar.url}>
                 {sidebar.icon}
                 {sidebar.name}
               </Link>

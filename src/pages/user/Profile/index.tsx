@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import ProfileSidebar from './components/ProfileSidebar'
 import ProfileUserInfo from './components/ProfileUserInfo'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { authApi } from '../../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../../constants/message'
@@ -17,7 +17,7 @@ import ProfileOrder from './components/ProfileOrder'
 type MenuType = 'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'
 
 export default function Profile() {
-  const { refreshToken: refresh_token, resetAppContext } = useContext(AppContext)
+  const { refreshToken: refresh_token, resetAppContext, userId } = useContext(AppContext)
   const navigate = useNavigate()
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
   const [searchParams, setSearchParams] = useSearchParams()
@@ -27,7 +27,7 @@ export default function Profile() {
 
   // --- Get User Profile ---
   const getUserProfile = useQuery({
-    queryKey: ['userProfile'],
+    queryKey: ['userProfile', userId],
     queryFn: () => userApi.getProfile(),
     staleTime: 30 * 60 * 1000
   })

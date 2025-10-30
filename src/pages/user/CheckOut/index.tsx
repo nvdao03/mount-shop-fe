@@ -205,7 +205,7 @@ export default function CheckOut() {
                   ))}
                 </div>
               ) : (
-                <div className='flex items-center justify-center mt-12'>
+                <div className='flex items-center justify-center mt-12 mb-5 leading-[1.5]'>
                   <span>Bạn chưa có địa chỉ nhận hàng, vui lòng thêm điểm nhận hàng.</span>
                 </div>
               )}

@@ -29,3 +29,13 @@ export interface GetOrdersResponseSuccess {
     }
   }
 }
+
+export interface AdminGetOrderType {
+  id: number
+  full_name: string
+  total_price: number
+  avatar: string
+  status: string
+  createdAt: string
+  updatedAt: string
+}
