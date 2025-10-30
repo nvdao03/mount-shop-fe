@@ -20,7 +20,7 @@ export default function ProfileOrder({ setMenu }: PropTypes) {
   const navigate = useNavigate()
   const queryParams: OrderQueryParamConfig = useQueryParams()
   const queryConfig: OrderQueryParamConfig = {
-    limit: queryParams.limit || 15,
+    limit: queryParams.limit || 30,
     page: queryParams.page || 1,
     status: queryParams.status || orderStatus
   }

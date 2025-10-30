@@ -98,7 +98,7 @@ export default function Brands() {
                   <tr key={brand.id} className={index % 2 === 0 ? 'bg-[#F9F9F9]' : ''}>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{brand.id}</td>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{brand.name}</td>
-                    <td className='px-4 border-b border-solid border-[#E6E6E6] text-center'>
+                    <td className='px-4 border-b py-4 border-solid border-[#E6E6E6] text-center'>
                       <div className='flex justify-center items-center'>
                         <img
                           src={brand.image}

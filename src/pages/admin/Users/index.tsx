@@ -106,7 +106,7 @@ export default function Users() {
                 <tr>
                   <th className='p-4 border-b border-solid border-[#E6E6E6] w-[10%]'>ID</th>
                   <th className='p-4 border-b border-solid border-[#E6E6E6] w-[10%]'>Email</th>
-                  <th className='p-4 border-b border-solid border-[#E6E6E6] w-[20%]'>Tên người dùng</th>
+                  <th className='p-4 border-b border-solid border-[#E6E6E6] w-[25%]'>Tên người dùng</th>
                   <th className='p-4 border-b border-solid border-[#E6E6E6] w-[20%] text-center'>Hình ảnh</th>
                   <th className='p-4 border-b border-solid border-[#E6E6E6] w-[20%] text-center'>Vai trò</th>
                   <th className='p-4 border-b border-solid border-[#E6E6E6] text-center w-[15%]'>Thao tác</th>
@@ -130,7 +130,7 @@ export default function Users() {
                         />
                       </div>
                     </td>
-                    <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>
+                    <td className='border-b border-solid border-[#E6E6E6] align-middle'>
                       <select
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                           if (e.target.value) {
@@ -140,7 +140,7 @@ export default function Users() {
                             })
                           }
                         }}
-                        className='w-full border-none outline-none cursor-pointer'
+                        className='px-2 w-full border border-[#B3B3B3] rounded-lg py-[9px] bg-transparent outline-none cursor-pointer focus:ring-2 focus:ring-blue-500'
                         value={user.role_id}
                       >
                         <option value='' disabled>

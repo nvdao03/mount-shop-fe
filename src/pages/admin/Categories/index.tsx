@@ -99,7 +99,7 @@ export default function Categories() {
                   <tr key={category.id} className={index % 2 === 0 ? 'bg-[#F9F9F9]' : ''}>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{category.id}</td>
                     <td className='px-4 border-b border-solid border-[#E6E6E6] align-middle'>{category.name}</td>
-                    <td className='px-4 border-b border-solid border-[#E6E6E6] text-center'>
+                    <td className='px-4 border-b py-4 border-solid border-[#E6E6E6] text-center'>
                       <div className='flex justify-center items-center'>
                         <img
                           src={category.image}
