@@ -7,6 +7,7 @@ import useQueryParams from '../../../../../hooks/useQueryParams'
 import type { OrderQueryParamConfig } from '../../../../../configs/order.config'
 import type { OrderReponseSuccess } from '../../../../../types/order.type'
 import { formatCurrency } from '../../../../../utils/other'
+import { ORDER_STATUS } from '../../../../../constants/other'
 
 interface PropTypes {
   setMenu: React.Dispatch<
@@ -14,7 +15,7 @@ interface PropTypes {
   >
 }
 
-export default function ProfileOrderItem({ setMenu }: PropTypes) {
+export default function ProfileOrder({ setMenu }: PropTypes) {
   const [orderStatus, setOrderStatus] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
   const queryParams: OrderQueryParamConfig = useQueryParams()
@@ -32,6 +33,7 @@ export default function ProfileOrderItem({ setMenu }: PropTypes) {
         ...queryConfig,
         page: pageParam
       }),
+    keepPreviousData: true,
     getNextPageParam: (lastpage) => {
       const { pagination } = lastpage.data.data
       return pagination.page < pagination.total_page ? pagination.page + 1 : undefined
@@ -90,18 +92,24 @@ export default function ProfileOrderItem({ setMenu }: PropTypes) {
       <div className='pb-6 pt-3 flex flex-col gap-4'>
         {orders.map((order: OrderReponseSuccess) => {
           return (
-            <div className='relative after:absolute after:w-full after:left-0 after:right-0 after:h-[0.5px] after:bg-[#E6E6E6] after:bottom-0 px-4 lg:px-4 py-2'>
+            <div
+              key={order.id}
+              className='relative after:absolute after:w-full after:left-0 after:right-0 after:h-[0.5px] after:bg-[#E6E6E6] after:bottom-0 px-4 lg:px-4 py-2'
+            >
               <div className='px-0 md:px-4 mb-2 flex justify-between items-center'>
                 <h3 className='font-semibold text-[16px] leading-[1.5] md:text-[17px]'>
-                  {order.status === 'processing'
+                  {order.status === ORDER_STATUS.PROCESSING
                     ? 'Đang xử lý'
-                    : order.status === 'delivering'
+                    : order.status === ORDER_STATUS.DELIVERING
                       ? 'Đang giao hàng'
-                      : order.status === 'delivered'
+                      : order.status === ORDER_STATUS.DELIVERED
                         ? 'Đã nhận hàng'
-                        : 'Đã huỷ'}
+                        : ORDER_STATUS.CANCELLED}
                 </h3>
-                <Link to={''} className='text-[14px] text-primary font-semibold flex items-center gap-2'>
+                <Link
+                  to={`/order-detail/${order.id}`}
+                  className='text-[14px] text-primary font-semibold flex items-center gap-2'
+                >
                   Xem chi tiết
                   <svg xmlns='http://www.w3.org/2000/svg' width='11' height='17' viewBox='0 0 11 17' fill='none'>
                     <path
@@ -111,8 +119,12 @@ export default function ProfileOrderItem({ setMenu }: PropTypes) {
                   </svg>
                 </Link>
               </div>
-              {order.items.map((item) => (
-                <div className='bg-white py-4 md:py-4 px-2 md:px-4 rounded-[10px] flex flex-col md:gap-8 md:flex md:flex-row md:items-center md:justify-between'>
+              {order.items.map((item, index) => (
+                <Link
+                  to={`/product-detail/${item.product_id}`}
+                  key={index}
+                  className='bg-white py-4 md:py-4 px-2 md:px-4 rounded-[10px] flex flex-col md:gap-8 md:flex md:flex-row md:items-center md:justify-between'
+                >
                   <div className='flex items-start gap-4'>
                     <div className='flex gap-3 md:gap-4'>
                       <div className='flex-shrink-0 w-[80px] h-[80px]'>
@@ -132,7 +144,7 @@ export default function ProfileOrderItem({ setMenu }: PropTypes) {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
               <div className='px-0 md:px-4 my-4 flex items-center justify-between'>
                 <span className='text-[14px]'>Tổng cộng:</span>

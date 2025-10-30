@@ -32,6 +32,7 @@ import AddUser from './pages/admin/Users/AddUser'
 import Cart from './pages/user/Cart'
 import CheckOut from './pages/user/CheckOut'
 import OrderSuccess from './pages/user/OrderSuccess'
+import OderDetail from './pages/user/OderDetail'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -127,6 +128,14 @@ export default function useRouterElements() {
           element: (
             <MainLayout>
               <OrderSuccess />
+            </MainLayout>
+          )
+        },
+        {
+          path: PATH.USER_ORDER_DETAIL,
+          element: (
+            <MainLayout>
+              <OderDetail />
             </MainLayout>
           )
         },

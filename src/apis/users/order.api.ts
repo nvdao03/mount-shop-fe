@@ -8,5 +8,7 @@ export const userOrderApi = {
   getOrders: (params: OrderQueryParamConfig) =>
     http.get('/user/orders', {
       params
-    })
+    }),
+  // --- Get Order Detail ---
+  getOrderDetail: (order_id: number) => http.get(`/user/orders/${order_id}`)
 }

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import ProfileSidebar from './components/ProfileSidebar'
 import ProfileUserInfo from './components/ProfileUserInfo'
-import ProfileOrderItem from './components/ProfileOrderItem'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { authApi } from '../../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
@@ -13,6 +12,7 @@ import ProfileUpdateUser from './components/ProfileUpdateUser'
 import type { GetUserProfileResponseSuccess, UserType } from '../../../types/user.type'
 import { userApi } from '../../../apis/users/user.api'
 import ProfileChangePassword from './components/ProfileChangePassword'
+import ProfileOrder from './components/ProfileOrder'
 
 type MenuType = 'sider_bar' | 'user_info' | 'order_item' | 'update_profile' | 'change_password'
 
@@ -95,7 +95,7 @@ export default function Profile() {
           className={`${menu === 'sider_bar' ? 'hidden md:block' : 'block'} col-span-12 md:col-span-8 lg:col-span-9 bg-white rounded-[10px]`}
         >
           {menu === 'user_info' && <ProfileUserInfo user={user} setMenu={setMenu} />}
-          {menu === 'order_item' && <ProfileOrderItem setMenu={setMenu} />}
+          {menu === 'order_item' && <ProfileOrder setMenu={setMenu} />}
           {menu === 'update_profile' && <ProfileUpdateUser user={user} setMenu={setMenu} />}
           {menu === 'change_password' && <ProfileChangePassword setMenu={setMenu} />}
         </section>

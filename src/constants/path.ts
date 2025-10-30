@@ -18,6 +18,7 @@ export const PATH = {
   USER_CART: '/cart',
   USER_CHECKOUT: '/checkout',
   USER_ORDER_SUCCESS: '/order-success',
+  USER_ORDER_DETAIL: '/order-detail/:order_id',
 
   // --- Admin ---
   ADMIN_DASHBOARD: '/admin/dashboard',

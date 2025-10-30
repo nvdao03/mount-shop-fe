@@ -1,10 +1,13 @@
 import ProductListSection from '../../../components/ProductListSection'
 import OrderSuccesses from '../../../assets/images/order/order-success.png'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
 import Confetti from '../../../components/Confetti'
 
 export default function OrderSuccess() {
+  const location = useLocation()
+  const orderId = location.state.orderId
+
   return (
     <main className='w-full pt-[96px] md:pt-[117px]'>
       <Confetti />
@@ -27,7 +30,7 @@ export default function OrderSuccess() {
               Trở về trang chủ
             </Link>
             <Link
-              to={PATH.HOME}
+              to={`/order-detail/${orderId}`}
               className='flex items-center justify-center text-white bg-primary font-semibold border-primary border border-solid rounded-lg py-3 md:py-4 w-full'
             >
               Xem đơn hàng

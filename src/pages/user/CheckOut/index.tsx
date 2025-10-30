@@ -61,12 +61,17 @@ export default function CheckOut() {
   // --- Add Order Mutation --- //
   const addOrderMutation = useMutation({
     mutationFn: (body: { address_id: number; cart_ids: number[]; total_price: number }) => userOrderApi.addOrder(body),
-    onSuccess: () => {
+    onSuccess: (response) => {
+      const orderId = response.data.data.order.id
       queryClient.invalidateQueries(['getCarts'])
       setSelectedCartIds([])
       saveSelectedCartIds([])
       toast.success(ORDER_MESSAGE.ADD_ORDER_SUCCESS)
-      navigate(PATH.USER_ORDER_SUCCESS)
+      navigate(PATH.USER_ORDER_SUCCESS, {
+        state: {
+          orderId
+        }
+      })
     }
   })
 
