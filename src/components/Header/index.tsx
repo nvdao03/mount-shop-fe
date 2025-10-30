@@ -297,63 +297,12 @@ export default function Header() {
             </Link>
           )}
           {isAuthenticated ? (
-            <div className='hidden sm:block relative group'>
-              <Link
-                to={isTablet ? PATH.USER_PROFILE : ''}
-                className='hidden sm:block bg-[#EAE9FC] rounded-[50%] w-10 h-10 md:w-11 md:h-11 cursor-pointer'
-              >
-                <img className='w-full h-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
-              </Link>
-              <div className='absolute hidden md:block right-0 mt-3 w-[300px] bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 rounded-md [box-shadow:0px_0px_8px_0px_rgba(0,_0,_0,_0.25)]'>
-                <Link
-                  to={PATH.USER_PROFILE}
-                  className='flex items-center gap-4 pt-5 pb-4 px-5 hover:underline transition-all duration-300 ease-in-out'
-                >
-                  <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' fill='none'>
-                    <path
-                      d='M11.0013 12C14.2233 12 16.8346 9.38867 16.8346 6.16667C16.8346 2.94466 14.2233 0.333336 11.0013 0.333336C7.7793 0.333336 5.16797 2.94466 5.16797 6.16667C5.16797 9.38867 7.7793 12 11.0013 12ZM15.0846 13.4583H14.3236C13.3118 13.9232 12.1862 14.1875 11.0013 14.1875C9.81641 14.1875 8.69531 13.9232 7.67904 13.4583H6.91797C3.53646 13.4583 0.792969 16.2018 0.792969 19.5833V21.4792C0.792969 22.6869 1.77279 23.6667 2.98047 23.6667H19.0221C20.2298 23.6667 21.2096 22.6869 21.2096 21.4792V19.5833C21.2096 16.2018 18.4661 13.4583 15.0846 13.4583Z'
-                      fill='#4F46E5'
-                    />
-                  </svg>
-                  <span className='text-[#333] font-semibold'>Thông tin cá nhân</span>
-                </Link>
-                <Link
-                  to={''}
-                  className='flex items-center gap-4 py-[18px] px-5 hover:underline transition-all duration-300 ease-in-out'
-                >
-                  <svg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 24 22' fill='none'>
-                    <path
-                      d='M21.7258 12.8358L23.6408 4.40991C23.779 3.80154 23.3166 3.22222 22.6927 3.22222H6.78143L6.41012 1.407C6.3176 0.954552 5.91947 0.629627 5.45763 0.629627H1.30425C0.767303 0.629627 0.332031 1.0649 0.332031 1.60185V2.25C0.332031 2.78695 0.767303 3.22222 1.30425 3.22222H4.13516L6.98086 17.1345C6.30006 17.526 5.84129 18.2602 5.84129 19.1019C5.84129 20.3547 6.85694 21.3704 8.10981 21.3704C9.36268 21.3704 10.3783 20.3547 10.3783 19.1019C10.3783 18.4669 10.1172 17.8933 9.6968 17.4815H18.1894C17.7691 17.8933 17.508 18.4669 17.508 19.1019C17.508 20.3547 18.5236 21.3704 19.7765 21.3704C21.0293 21.3704 22.045 20.3547 22.045 19.1019C22.045 18.2037 21.5229 17.4275 20.7658 17.06L20.9892 16.0766C21.1275 15.4682 20.6651 14.8889 20.0412 14.8889H9.16779L8.90266 13.5926H20.7777C21.2317 13.5926 21.6252 13.2785 21.7258 12.8358Z'
-                      fill='#4F46E5'
-                    />
-                  </svg>
-                  <span className='text-[#333] font-semibold'>Đơn hàng của tôi</span>
-                </Link>
-                {userRole === ROLES.ADMIN && (
-                  <Link
-                    to={PATH.ADMIN_DASHBOARD}
-                    className='flex items-center gap-4 pt-4 pb-5 px-[21px] hover:underline transition-all duration-300 ease-in-out'
-                  >
-                    <svg
-                      className='w-[22px] h-6 fill-[#4F46E5]'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 640 640'
-                    >
-                      <path d='M136 192C136 125.7 189.7 72 256 72C322.3 72 376 125.7 376 192C376 258.3 322.3 312 256 312C189.7 312 136 258.3 136 192zM48 546.3C48 447.8 127.8 368 226.3 368L285.7 368C384.2 368 464 447.8 464 546.3C464 562.7 450.7 576 434.3 576L77.7 576C61.3 576 48 562.7 48 546.3zM544 160C557.3 160 568 170.7 568 184L568 232L616 232C629.3 232 640 242.7 640 256C640 269.3 629.3 280 616 280L568 280L568 328C568 341.3 557.3 352 544 352C530.7 352 520 341.3 520 328L520 280L472 280C458.7 280 448 269.3 448 256C448 242.7 458.7 232 472 232L520 232L520 184C520 170.7 530.7 160 544 160z' />
-                    </svg>
-                    <span className='text-[#333] font-semibold'>Trang quản trị</span>
-                  </Link>
-                )}
-                <div className='px-5 pb-4'>
-                  <button
-                    onClick={handleLogout}
-                    className='w-full bg-blue-600 hover:bg-blue-700 mt-1 text-white py-3 rounded-lg font-medium transition'
-                  >
-                    Đăng xuất
-                  </button>
-                </div>
-              </div>
-            </div>
+            <Link
+              to={PATH.USER_PROFILE}
+              className='hidden sm:block bg-[#EAE9FC] rounded-[50%] w-10 h-10 md:w-11 md:h-11 cursor-pointer'
+            >
+              <img className='w-full h-full object-cover rounded-[50%]' src={avatar || AvatarDefault} alt='avatar' />
+            </Link>
           ) : (
             <Link to={PATH.LOGIN} className='bg-[#EAE9FC] rounded-[50%] p-2 md:p-2.5'>
               <img src={User} alt='avatar' />

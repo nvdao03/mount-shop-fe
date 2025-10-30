@@ -1,22 +1,56 @@
 import { Link, useParams } from 'react-router-dom'
 import { PATH } from '../../../constants/path'
-import ArrowRight from '../../../assets/icons/arrow-right.svg'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { userOrderApi } from '../../../apis/users/order.api'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type { OrderReponseSuccess } from '../../../types/order.type'
 import { ORDER_STATUS } from '../../../constants/other'
 import { formatCurrency } from '../../../utils/other'
+import { toast } from 'react-toastify'
+import { ORDER_MESSAGE } from '../../../constants/message'
 
 export default function OderDetail() {
   const params = useParams()
+  const queryClient = useQueryClient()
   const orderId = Number(params.order_id)
+  const [isCancelOrderModal, setIsCancelOrderModal] = useState<boolean>(false)
+  const [messageCancel, setMessageCancel] = useState<string>('')
+  const [checkIdCancel, setCheckIdCancel] = useState<number | undefined>(undefined)
 
+  // --- Get Order Detail ---
   const getOrderDetail = useQuery({
     queryKey: ['getOrderDetail', orderId],
+    keepPreviousData: true,
     queryFn: () => userOrderApi.getOrderDetail(orderId as number),
     staleTime: 30 * 60 * 1000
   })
+
+  // --- Update Order Cancel ---
+  const updateOrderCancelMutation = useMutation({
+    mutationFn: ({ order_id, body }: { order_id: number; body: { cancel_reason: string; status: string } }) =>
+      userOrderApi.updateOrderCancel(order_id, body),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getOrderDetail', orderId])
+      queryClient.invalidateQueries(['getOrders'])
+      setIsCancelOrderModal(false)
+      toast.success(ORDER_MESSAGE.CANCEL_ORDER_SUCCESS)
+    }
+  })
+
+  // --- Handle Cancel Order ---
+  const handleCancelOrder = (order_id: number, body: { cancel_reason: string; status: string }) => {
+    updateOrderCancelMutation.mutate({ order_id, body })
+  }
+
+  // --- Handle Close Cancel Order Modal ---
+  const handleCloseCancelOrderModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation()
+    setIsCancelOrderModal(false)
+    setCheckIdCancel(undefined)
+    setMessageCancel('')
+  }
 
   const order = useMemo(() => {
     if (!getOrderDetail.data?.data) return
@@ -52,7 +86,22 @@ export default function OderDetail() {
                   <span className='font-semibold'>Mã đơn hàng: 0{order?.id}</span>
                   {order?.status === ORDER_STATUS.PROCESSING && (
                     <span>
-                      Trạng thái xử lý: <span className='font-semibold'>Đang xử lý</span>
+                      Trạng thái: <span className='font-semibold'>ĐANG XỬ LÝ</span>
+                    </span>
+                  )}
+                  {order?.status === ORDER_STATUS.DELIVERING && (
+                    <span>
+                      Trạng thái: <span className='font-semibold'>ĐANG GIAO HÀNG</span>
+                    </span>
+                  )}
+                  {order?.status === ORDER_STATUS.DELIVERED && (
+                    <span className='text-[#34C759]'>
+                      Trạng thái: <span className='font-semibold'>GIAO HÀNG THÀNH CÔNG</span>
+                    </span>
+                  )}
+                  {order?.status === ORDER_STATUS.CANCELLED && (
+                    <span className='text-[#FF3B30]'>
+                      Trạng thái: <span className='font-semibold'>HUỶ ĐƠN HÀNG</span>
                     </span>
                   )}
                   {order?.cancel_reason && order.cancel_reason.trim() !== '' && (
@@ -122,10 +171,38 @@ export default function OderDetail() {
               </ul>
               {order?.status === ORDER_STATUS.PROCESSING && (
                 <button
+                  onClick={() => setIsCancelOrderModal(true)}
                   type='submit'
                   className='w-full bg-[#FF3B30] mt-1 text-white py-3 md:py-4 rounded-lg font-medium transition'
                 >
                   Huỷ đơn hàng
+                </button>
+              )}
+              {order?.status === ORDER_STATUS.DELIVERING && (
+                <button
+                  type='submit'
+                  disabled={true}
+                  className='w-full cursor-not-allowed opacity-50 bg-primary mt-1 text-white py-3 md:py-4 rounded-lg font-medium transition'
+                >
+                  Huỷ đơn hàng
+                </button>
+              )}
+              {order?.status === ORDER_STATUS.DELIVERED && (
+                <button
+                  type='submit'
+                  disabled={true}
+                  className='w-full cursor-not-allowed opacity-50 bg-primary mt-1 text-white py-3 md:py-4 rounded-lg font-medium transition'
+                >
+                  Đã giao hàng
+                </button>
+              )}
+              {order?.status === ORDER_STATUS.CANCELLED && (
+                <button
+                  disabled={true}
+                  type='submit'
+                  className='w-full opacity-50 cursor-not-allowed bg-[#FF3B30] mt-1 text-white py-3 md:py-4 rounded-lg font-medium transition'
+                >
+                  Đã huỷ đơn hàng
                 </button>
               )}
             </div>
@@ -133,6 +210,89 @@ export default function OderDetail() {
         </main>
       </div>
       {/* Modal */}
+      <div
+        className={`cursor-pointer fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center transition-opacity duration-500 ease-in-out ${
+          isCancelOrderModal ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={() => {
+          setIsCancelOrderModal(false)
+          setCheckIdCancel(undefined)
+          setMessageCancel('')
+        }}
+      >
+        <div
+          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            e.stopPropagation()
+          }}
+          className='max-w-[330px] custom-sm:min-w-[450px] bg-white rounded-[10px]'
+        >
+          <div className='flex items-center py-3 px-4 sm:py-4 sm:px-6 border-b border-solid border-[#E6E6E6]'>
+            <span className='text-center ml-[45px] flex-1 block font-semibold sm:text-[17px] text-[#333]'>
+              Chọn lý do
+            </span>
+            <button
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleCloseCancelOrderModal(e)}
+              className='ml-auto bg-[#EAE9FC] block p-3.5 rounded-[50%]'
+            >
+              <svg xmlns='http://www.w3.org/2000/svg' width='17' height='15' viewBox='0 0 17 15' fill='none'>
+                <path
+                  d='M15.1042 0H1.5625C0.69987 0 0 0.69987 0 1.5625V13.0208C0 13.8835 0.69987 14.5833 1.5625 14.5833H15.1042C15.9668 14.5833 16.6667 13.8835 16.6667 13.0208V1.5625C16.6667 0.69987 15.9668 0 15.1042 0ZM12.3828 9.45638C12.5391 9.61263 12.5391 9.86654 12.3828 10.0228L11.0645 11.3411C10.9082 11.4974 10.6543 11.4974 10.498 11.3411L8.33333 9.1569L6.16862 11.3411C6.01237 11.4974 5.75846 11.4974 5.60221 11.3411L4.28385 10.0228C4.1276 9.86654 4.1276 9.61263 4.28385 9.45638L6.4681 7.29167L4.28385 5.12695C4.1276 4.9707 4.1276 4.7168 4.28385 4.56055L5.60221 3.24219C5.75846 3.08594 6.01237 3.08594 6.16862 3.24219L8.33333 5.42643L10.498 3.24219C10.6543 3.08594 10.9082 3.08594 11.0645 3.24219L12.3828 4.56055C12.5391 4.7168 12.5391 4.9707 12.3828 5.12695L10.1986 7.29167L12.3828 9.45638Z'
+                  fill='#4F46E5'
+                />
+              </svg>
+            </button>
+          </div>
+          <form
+            onSubmit={() =>
+              handleCancelOrder(orderId, { cancel_reason: messageCancel, status: ORDER_STATUS.CANCELLED })
+            }
+          >
+            <div className='px-4 py-5 sm:py-6 sm:px-6 flex flex-col gap-4'>
+              <span className='font-semibold md:text-[16px] leading-[1.5]'>
+                Vui lòng chọn 1 trong số các lý do bạn muốn hủy đơn hàng:
+              </span>
+              <div className='flex flex-col'>
+                {[
+                  { id: 0, value: 'Sản phẩm giao hàng hơi lâu ' },
+                  { id: 1, value: 'Sản phẩm không đúng với mô tả ' },
+                  { id: 2, value: 'Tôi muốn đổi sản phẩm khác ' },
+                  { id: 3, value: 'Tôi tìm thấy sản phẩm khác tương tự  ' },
+                  { id: 4, value: 'Tôi muốn nhập thêm ưu đãi ' },
+                  { id: 5, value: 'Thông tin cá nhân của tôi bị sai lệch ' },
+                  { id: 6, value: 'Lý do khác' }
+                ].map((item) => (
+                  <div
+                    onClick={() => setMessageCancel(item.value)}
+                    key={item.id}
+                    className='flex items-center gap-3 cursor-pointer'
+                  >
+                    <input
+                      checked={checkIdCancel === item.id}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setCheckIdCancel(e.target.checked ? item.id : undefined)
+                      }
+                      className='cursor-pointer'
+                      type='checkbox'
+                      id={`check-id-${item.id}`}
+                    />
+                    <label className='w-full py-3 cursor-pointer' htmlFor={`check-id-${item.id}`}>
+                      {item.value}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className='flex gap-3 p-4 pt-0 sm:px-6 sm:pt-0'>
+              <button
+                disabled={checkIdCancel === undefined}
+                className={`${checkIdCancel === undefined && 'opacity-50 cursor-not-allowed'} rounded-[8px] font-semibold py-3 sm:py-4 flex-1 flex bg-primary text-white items-center justify-center border border-solid border-primary`}
+              >
+                Xong
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }

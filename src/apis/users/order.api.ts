@@ -10,5 +10,8 @@ export const userOrderApi = {
       params
     }),
   // --- Get Order Detail ---
-  getOrderDetail: (order_id: number) => http.get(`/user/orders/${order_id}`)
+  getOrderDetail: (order_id: number) => http.get(`/user/orders/${order_id}`),
+  // --- Update Order Cancel ---
+  updateOrderCancel: (order_id: number, data: { cancel_reason: string; status: string }) =>
+    http.put(`/user/orders/${order_id}`, data)
 }

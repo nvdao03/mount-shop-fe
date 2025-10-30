@@ -109,5 +109,6 @@ export const ORDER_MESSAGE = {
   ORDER_ID_REQUIRED: 'Vui lòng truyền lên ID đơn hàng',
   ADD_ORDER_SUCCESS: 'Tạo đơn hàng thành công',
   ADD_ADDRESS_FIRST: 'Vui lòng thêm địa chỉ nhận hàng',
-  CART_EMPTY: 'Vui lòng chọn sản phẩm để thanh toán'
+  CART_EMPTY: 'Vui lòng chọn sản phẩm để thanh toán',
+  CANCEL_ORDER_SUCCESS: 'Huỷ đơn hàng thành công'
 }

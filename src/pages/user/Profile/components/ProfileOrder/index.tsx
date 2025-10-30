@@ -90,6 +90,12 @@ export default function ProfileOrder({ setMenu }: PropTypes) {
       </div>
       {/* List orders */}
       <div className='pb-6 pt-3 flex flex-col gap-4'>
+        {!orders ||
+          (orders.length === 0 && (
+            <div className='flex justify-center items-center mt-[180px]'>
+              <span className='text-[#B3B3B3] text-[15px] font-medium'>Không có đơn hàng nào</span>
+            </div>
+          ))}
         {orders.map((order: OrderReponseSuccess) => {
           return (
             <div
@@ -104,7 +110,7 @@ export default function ProfileOrder({ setMenu }: PropTypes) {
                       ? 'Đang giao hàng'
                       : order.status === ORDER_STATUS.DELIVERED
                         ? 'Đã nhận hàng'
-                        : ORDER_STATUS.CANCELLED}
+                        : 'Đã huỷ'}
                 </h3>
                 <Link
                   to={`/order-detail/${order.id}`}
