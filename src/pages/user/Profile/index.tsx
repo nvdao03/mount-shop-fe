@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import ProfileSidebar from './components/ProfileSidebar'
 import ProfileUserInfo from './components/ProfileUserInfo'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { authApi } from '../../../apis/shared/auth.api'
 import { toast } from 'react-toastify'
 import { AUTH_MESSAGE } from '../../../constants/message'

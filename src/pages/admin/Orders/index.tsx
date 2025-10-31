@@ -16,7 +16,6 @@ export default function Orders() {
   const queryClient = useQueryClient()
   const [search, setSearch] = useState<string>('')
   const [statusOrdeFilter, setStatusOrderFilter] = useState<string>('')
-  const [statusOrder, setStatusOrder] = useState<string>('')
   const searchDebounce = useDebounce(search, 500)
 
   const queryParams: AdminGetOrdersQueryParamConfig = useQueryParams()

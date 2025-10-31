@@ -9,7 +9,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { categoryApi } from '../../apis/shared/category.api'
 import type { CategoryType } from '../../types/category.type'
 import type { BrandType } from '../../types/brand.type'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { AppContext } from '../../contexts/app.context'
 import AvatarDefault from '../../assets/images/avatar-default.png'
 import { getUsernameFromEmail } from '../../utils/other'
@@ -28,7 +28,6 @@ export default function Header() {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>('')
   const [searchValueMobile, setSearchValueMobile] = useState<string>('')
-  const [isTablet, setIsTablet] = useState(window.innerWidth <= 768)
 
   // --- Get All Category ---
   const getCategories = useQuery({
@@ -45,13 +44,6 @@ export default function Header() {
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000
   })
-
-  // --- Handle Resize ---
-  useEffect(() => {
-    const handleResize = () => setIsTablet(window.innerWidth <= 768)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   // --- Prefetch query khi hover ---
   const handleMouseEnter = (categoryId: number) => {
