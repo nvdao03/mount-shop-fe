@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes } from 'react'
 
-interface InputEmailPropTypes extends InputHTMLAttributes<HTMLInputElement> {
+interface InputPropTypes extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   customHeight?: string
   register: any
@@ -31,7 +31,7 @@ export default function Input({
   multiple,
   customHeight,
   handleOnChangeSubmitImage
-}: InputEmailPropTypes) {
+}: InputPropTypes) {
   return (
     <div>
       <label className={classNameLabel}>{label}</label>

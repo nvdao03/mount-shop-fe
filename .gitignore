@@ -26,3 +26,6 @@ document.doc
 
 .env.development
 .env.production
+
+*storybook.log
+storybook-static
