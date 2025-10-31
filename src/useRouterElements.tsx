@@ -34,6 +34,7 @@ import CheckOut from './pages/user/CheckOut'
 import OrderSuccess from './pages/user/OrderSuccess'
 import OderDetail from './pages/user/OderDetail'
 import Orders from './pages/admin/Orders'
+import NotFound from './pages/NotFound'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -287,6 +288,10 @@ export default function useRouterElements() {
           )
         }
       ]
+    },
+    {
+      path: '*',
+      element: <NotFound />
     }
   ])
 
