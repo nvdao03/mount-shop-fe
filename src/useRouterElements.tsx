@@ -1,40 +1,42 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+import { lazy, Suspense, useContext } from 'react'
+import { AppContext } from './contexts/app.context'
 import { PATH } from './constants/path'
+
 import AuthLayout from './layouts/AuthLayout'
-import Register from './pages/auth/Register'
 import MainLayout from './layouts/MainLayout'
+import AdminLayout from './layouts/AdminLayout'
+import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
 import Home from './pages/shop/Home'
-import { useContext } from 'react'
-import { AppContext } from './contexts/app.context'
 import Profile from './pages/user/Profile'
-import AdminLayout from './layouts/AdminLayout'
-import Dashboard from './pages/admin/Dashboard'
-import Categories from './pages/admin/Categories'
-import Brands from './pages/admin/Brands'
-import AddCategory from './pages/admin/Categories/AddCategory'
-import UpdateCategory from './pages/admin/Categories/UpdateCategory'
-import AddBrand from './pages/admin/Brands/AddBrand'
-import UpdateBrand from './pages/admin/Brands/UpdateBrand'
 import VerifyEmail from './pages/auth/VerifyEmail'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import VerifyForgotPassword from './pages/auth/VerifyForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
-import Products from './pages/admin/Products'
-import AddProduct from './pages/admin/Products/AddProduct'
-import AdminProductDetail from './pages/admin/Products/AdminProductDetail'
-import UpdateProduct from './pages/admin/Products/UpdateProduct'
 import ProductList from './pages/shop/ProductList'
 import ProductDetail from './pages/shop/ProductDetail'
-import Comments from './pages/admin/Comments'
-import Users from './pages/admin/Users'
-import AddUser from './pages/admin/Users/AddUser'
 import Cart from './pages/user/Cart'
 import CheckOut from './pages/user/CheckOut'
 import OrderSuccess from './pages/user/OrderSuccess'
 import OderDetail from './pages/user/OderDetail'
-import Orders from './pages/admin/Orders'
-import NotFound from './pages/NotFound'
+
+const Orders = lazy(() => import('./pages/admin/Orders'))
+const Users = lazy(() => import('./pages/admin/Users'))
+const Categories = lazy(() => import('./pages/admin/Categories'))
+const AddCategory = lazy(() => import('./pages/admin/Categories/AddCategory'))
+const UpdateCategory = lazy(() => import('./pages/admin/Categories/UpdateCategory'))
+const AddBrand = lazy(() => import('./pages/admin/Brands/AddBrand'))
+const UpdateBrand = lazy(() => import('./pages/admin/Brands/UpdateBrand'))
+const Products = lazy(() => import('./pages/admin/Products'))
+const Brands = lazy(() => import('./pages/admin/Brands'))
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
+const UpdateProduct = lazy(() => import('./pages/admin/Products/UpdateProduct'))
+const AddProduct = lazy(() => import('./pages/admin/Products/AddProduct'))
+const AdminProductDetail = lazy(() => import('./pages/admin/Products/AdminProductDetail'))
+const Comments = lazy(() => import('./pages/admin/Comments'))
+const AddUser = lazy(() => import('./pages/admin/Users/AddUser'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -148,7 +150,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_DASHBOARD,
               element: (
                 <AdminLayout>
-                  <Dashboard />
+                  <Suspense>
+                    <Dashboard />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -156,7 +160,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_CATEGORIES,
               element: (
                 <AdminLayout>
-                  <Categories />
+                  <Suspense>
+                    <Categories />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -164,7 +170,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_ADD_CATEGORY,
               element: (
                 <AdminLayout>
-                  <AddCategory />
+                  <Suspense>
+                    <AddCategory />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -172,7 +180,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_UPDATE_CATEGORY,
               element: (
                 <AdminLayout>
-                  <UpdateCategory />
+                  <Suspense>
+                    <UpdateCategory />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -180,7 +190,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_BRANDS,
               element: (
                 <AdminLayout>
-                  <Brands />
+                  <Suspense>
+                    <Brands />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -188,7 +200,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_ADD_BRAND,
               element: (
                 <AdminLayout>
-                  <AddBrand />
+                  <Suspense>
+                    <AddBrand />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -196,7 +210,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_UPDATE_BRAND,
               element: (
                 <AdminLayout>
-                  <UpdateBrand />
+                  <Suspense>
+                    <UpdateBrand />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -204,7 +220,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_PRODUCTS,
               element: (
                 <AdminLayout>
-                  <Products />
+                  <Suspense>
+                    <Products />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -212,7 +230,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_ADD_PRODUCT,
               element: (
                 <AdminLayout>
-                  <AddProduct />
+                  <Suspense>
+                    <AddProduct />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -220,7 +240,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_PRODUCT_DETAIL,
               element: (
                 <AdminLayout>
-                  <AdminProductDetail />
+                  <Suspense>
+                    <AdminProductDetail />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -228,7 +250,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_UPDATE_PRODUCT,
               element: (
                 <AdminLayout>
-                  <UpdateProduct />
+                  <Suspense>
+                    <UpdateProduct />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -236,7 +260,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_COMMENTS,
               element: (
                 <AdminLayout>
-                  <Comments />
+                  <Suspense>
+                    <Comments />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -244,7 +270,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_USERS,
               element: (
                 <AdminLayout>
-                  <Users />
+                  <Suspense>
+                    <Users />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -252,7 +280,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_ADD_USER,
               element: (
                 <AdminLayout>
-                  <AddUser />
+                  <Suspense>
+                    <AddUser />
+                  </Suspense>
                 </AdminLayout>
               )
             },
@@ -260,7 +290,9 @@ export default function useRouterElements() {
               path: PATH.ADMIN_ORDERS,
               element: (
                 <AdminLayout>
-                  <Orders />
+                  <Suspense>
+                    <Orders />
+                  </Suspense>
                 </AdminLayout>
               )
             }
@@ -291,7 +323,11 @@ export default function useRouterElements() {
     },
     {
       path: '*',
-      element: <NotFound />
+      element: (
+        <Suspense>
+          <NotFound />
+        </Suspense>
+      )
     }
   ])
 
