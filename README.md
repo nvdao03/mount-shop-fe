@@ -1,73 +1,108 @@
-# React + TypeScript + Vite
+# 💻 Mount Shop - E-commerce Frontend (React + TypeScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-v18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-4%2Ex-blue?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-Bundler-yellow)
+![React Query](https://img.shields.io/badge/Data%20Fetching-React%20Query-ff69b4)
+![TailwindCSS](https://img.shields.io/badge/Style-TailwindCSS-38bdf8)
+![Axios](https://img.shields.io/badge/HTTP-Axios-orange)
+![Storybook](https://img.shields.io/badge/UI-Storybook-ff4785)
+![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Overview
 
-## React Compiler
+This is the **frontend** of the Mount Shop project — a modern eCommerce web application built with **React + TypeScript + Vite**.
+It provides an intuitive shopping experience with features like **product browsing, search, comment, cart management, checkout flow, and order tracking.**
+The UI is built using **TailwindCSS** to ensure responsiveness and modern design consistency.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+The project communicates with the **ExpressJS backend API** for data fetching and authentication, and supports **real-time updates** with React Query caching.
 
-## Expanding the ESLint configuration
+Live site: [https://mount.io.vn](https://mount.io.vn)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Backend repo: [https://github.com/nvdao03/mount-shop-be](https://github.com/nvdao03/mount-shop-be)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📑 Table of Contents
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- [💻 Mount Shop - E-commerce Frontend (React + TypeScript)](#-mount-shop---e-commerce-frontend-react--typescript)
+  - [🚀 Overview](#-overview)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [🧩 Tech Stack](#-tech-stack)
+  - [⚙️ Installation](#️-installation)
+  - [⚡ Usage](#-usage)
+  - [🧠 Features](#-features)
+  - [👨‍💻 Author](#-author)
+
+---
+
+## 🧩 Tech Stack
+
+- **Frontend Framework**: React + TypeScript
+- **Build Tool**: Vite
+- **UI Library**: TailwindCSS
+- **State Management**: ContextAPI
+- **Data Fetching**: React Query
+- **Validation**: Yup
+- **Routing**: React Router v6
+- **Rich Text Editor**: React Quill
+- **Form Handling**: React Hook Form
+- **Notification**: React Toastify
+- **Infinite Scroll**: React Infinite Scroll Component
+- **Documentation**: Storybook
+- **HTTP Client**: Axios
+- **Code Quality**: ESLint + Prettier
+- **Deployment**: Vercel
+
+---
+
+## ⚙️ Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/nvdao03/mount-shop-fe.git
+   ```
+
+2. Install the dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create `.env`
+
+   ```bash
+   VITE_API_URL=
+   VITE_GOOGLE_CLIENT_ID=
+   VITE_GOOGLE_REDIRECT_URI=
+   ```
+
+## ⚡ Usage
+
+Run the application
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🧠 Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**✅ User registration, login, logout, and email verification**
+**🔑 Forgot password and password reset functionality**
+**🌐 Google OAuth 2.0 login integration**
+**🛒 Shopping cart management (add, update, delete items)**
+**💳 Checkout and order management system**
+**👤 User account management**
+**🖼️ Image upload via AWS S3**
+**🔐 JWT authentication with access & refresh tokens**
+**🌗 Responsive UI**
+**⚡ Lazy loading and data caching using React Query**
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 👨‍💻 Author
+
+Developed by [Nguyễn Văn Đạo](https://www.facebook.com/van.ao.547278) 🚀
+GitHub: [nvdao03](https://github.com/nvdao03)
