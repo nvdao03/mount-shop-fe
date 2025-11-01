@@ -91,16 +91,16 @@ npm run dev
 
 ## 🧠 Features
 
-**✅ User registration, login, logout, and email verification**
-**🔑 Forgot password and password reset functionality**
-**🌐 Google OAuth 2.0 login integration**
-**🛒 Shopping cart management (add, update, delete items)**
-**💳 Checkout and order management system**
-**👤 User account management**
-**🖼️ Image upload via AWS S3**
-**🔐 JWT authentication with access & refresh tokens**
-**🌗 Responsive UI**
-**⚡ Lazy loading and data caching using React Query**
+- **✅ User registration, login, logout, and email verification**
+- **🔑 Forgot password and password reset functionality**
+- **🌐 Google OAuth 2.0 login integration**
+- **🛒 Shopping cart management (add, update, delete items)**
+- **💳 Checkout and order management system**
+- **👤 User account management**
+- **🖼️ Image upload via AWS S3**
+- **🔐 JWT authentication with access & refresh tokens**
+- **🌗 Responsive UI**
+- **⚡ Lazy loading and data caching using React Query**
 
 ## 👨‍💻 Author
 
