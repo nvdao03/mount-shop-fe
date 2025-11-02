@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import { visualizer } from 'rollup-plugin-visualizer'
 import path from 'path'
 
 // https://vite.dev/config/
@@ -11,7 +12,7 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), , visualizer()],
   server: {
     port: 3000
   },
@@ -21,6 +22,23 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './src')
+    }
+  },
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Tách các thư viện nặng ra riêng, các thư viện này ít thay đổi
+          react: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          form: ['react-hook-form', 'yup'],
+          query: ['@tanstack/react-query'],
+          editor: ['react-quill', 'quill'],
+          ui: ['swiper', 'react-toastify', 'canvas-confetti'],
+          vendor: ['axios', 'lodash']
+        }
+      }
     }
   },
   test: {
